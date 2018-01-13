@@ -54,14 +54,14 @@ func TestStemBranchDay(t *testing.T) {
 }
 
 func TestStemBranchHour(t *testing.T) {
-	log.Print(StemBranchDay(2018, 1, 12), "日")
+	log.Print(12, StemBranchDay(2018, 1, 12), "日")
 	for i := 0; i <= 23; i++ {
 
 		log.Println(i, StemBranchHour(2018, 1, 12, i))
 
 	}
-	log.Print(StemBranchDay(2018, 1, 13), "日")
-	log.Print(StemBranchDay(2018, 11, 14), "日")
+	log.Print(13, StemBranchDay(2018, 1, 13), "日")
+	log.Print(14, StemBranchDay(2017, 11, 14), "日")
 	log.Println(8, StemBranchHour(2017, 11, 14, 8))
 }
 
