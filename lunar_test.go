@@ -24,7 +24,7 @@ func TestGetDayString(t *testing.T) {
 }
 
 func TestGetTerm(t *testing.T) {
-	i := GetTerm(2018, 3)
+	i := GetTermInfo(2018, 3)
 	log.Println(i)
 }
 
@@ -34,8 +34,9 @@ func TestGetZodiac(t *testing.T) {
 
 func TestSolar2Lunar(t *testing.T) {
 	log.Println(Solar2Lunar(time.Now()))
-	log.Println(Solar2Lunar(time.Date(1900, 2, 18, 12, 12, 12, 0, time.Local)))
-
+	for i := 0; i < 31; i++ {
+		log.Println(Solar2Lunar(time.Date(1900, 2, i, 12, 12, 12, 0, time.Local)))
+	}
 }
 
 func TestStemBranchYear(t *testing.T) {
@@ -44,7 +45,7 @@ func TestStemBranchYear(t *testing.T) {
 }
 
 func TestStemBranchMonth(t *testing.T) {
-	log.Println(StemBranchMonth(2017, 9))
+	log.Println(StemBranchMonth(2017, 10, 15))
 }
 
 func TestStemBranchDay(t *testing.T) {
@@ -53,7 +54,17 @@ func TestStemBranchDay(t *testing.T) {
 }
 
 func TestStemBranchHour(t *testing.T) {
-	for i := 1; i <= 23; i++ {
-		log.Println(StemBranchHour(i))
+	log.Print(StemBranchDay(2018, 1, 12), "日")
+	for i := 0; i <= 23; i++ {
+
+		log.Println(i, StemBranchHour(2018, 1, 12, i))
+
 	}
+	log.Print(StemBranchDay(2018, 1, 13), "日")
+	log.Print(StemBranchDay(2018, 11, 14), "日")
+	log.Println(8, StemBranchHour(2017, 11, 14, 8))
 }
+
+//func TestSolar2Lunar2(t *testing.T) {
+//
+//}
