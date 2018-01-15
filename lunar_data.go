@@ -237,9 +237,9 @@ func StemBranchMonth(y, m, d int) string {
 	//sec := GetTermInfo(y, m*2)   //返回当月「节」为几日开始
 
 	//依据12节气修正干支月
-	var sb = GetStemBranch((y-1900)*12 + m + 11)
+	var sb = GetStemBranch(fixSuffix(y)*12 + m + 11)
 	if d >= fir {
-		sb = GetStemBranch((y-1900)*12 + m + 12)
+		sb = GetStemBranch(fixSuffix(y)*12 + m + 12)
 	}
 	return sb
 }

@@ -38,7 +38,7 @@ func TestStemBranchYear(t *testing.T) {
 }
 
 func TestStemBranchMonth(t *testing.T) {
-	log.Println(StemBranchMonth(2017, 10, 15))
+	log.Println(StemBranchMonth(2017, 11, 14))
 }
 
 func TestStemBranchDay(t *testing.T) {

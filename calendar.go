@@ -4,13 +4,33 @@ import "time"
 
 const DATE_FORMAT = "2006/01/02"
 
-type Calendar struct {
+type calendar struct {
 	lunar *Lunar
 	solar *Solar
 }
 
+type Calendar interface {
+	Lunar() *Lunar
+	Solar() *Solar
+}
+
+type CalendarData interface {
+	Type() string
+	Calendar() Calendar
+}
+
+func NewCalendar(calendar CalendarData) Calendar {
+	if calendar != nil {
+		return calendar.Calendar()
+	}
+	return &calendar{
+		lunar: NewLunar(nil),
+		solar: NewSolar(nil),
+	}
+}
+
 func CalendarFromLunar(y, m, d int) Calendar {
-	return Calendar{
+	return &calendar{
 		lunar: &Lunar{
 			year:  y,
 			month: m,
@@ -20,14 +40,14 @@ func CalendarFromLunar(y, m, d int) Calendar {
 }
 
 func CalendarFromSolar(time time.Time) Calendar {
-	return Calendar{
+	return &calendar{
 		solar: &Solar{
 			time: time,
 		},
 	}
 }
 
-func (c *Calendar) Lunar() *Lunar {
+func (c *calendar) Lunar() *Lunar {
 	time := time.Now()
 	if c.lunar != nil {
 		return c.lunar
@@ -37,4 +57,15 @@ func (c *Calendar) Lunar() *Lunar {
 	}
 	c.lunar = CalculateLunar(time.Format(DATE_FORMAT))
 	return c.lunar
+}
+
+func (c *calendar) Solar() *Solar {
+	if c.solar != nil {
+		return c.solar
+	}
+	return nil
+}
+
+func (c *calendar) LunarDate() string {
+	return c.Lunar().Date()
 }

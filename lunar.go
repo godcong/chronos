@@ -10,14 +10,20 @@ type Lunar struct {
 	year      int
 	month     int
 	day       int
+	hour      int
 	leapMonth int
 	isLeap    bool
 }
 
-//info		int //lunarInfo[index]
-type Solar struct {
-	time time.Time
+func (lunar *Lunar) Type() string {
+	return "lunar"
 }
+
+func (lunar *Lunar) Calendar() Calendar {
+	return CalendarFromLunar(lunar.year, lunar.month, lunar.day)
+}
+
+//info		int //lunarInfo[index]
 
 func GetZodiac(time time.Time) string {
 	return Zodiac[(time.Year()-4)%12]
@@ -25,14 +31,14 @@ func GetZodiac(time time.Time) string {
 
 //NewLunar
 //default return today's lunar
-func NewLunar(calendar *Calendar) *Lunar {
+func NewLunar(calendar Calendar) *Lunar {
 	t := time.Now()
 	if calendar != nil {
-		if calendar.lunar != nil {
-			return calendar.lunar
+		if calendar.Lunar() != nil {
+			return calendar.Lunar()
 		}
-		if calendar.solar != nil {
-			t = calendar.solar.time
+		if calendar.Solar() != nil {
+			t = calendar.Solar().time
 		}
 	}
 	return CalculateLunar(t.Format(DATE_FORMAT))
@@ -140,7 +146,7 @@ func CalculateLunar(date string) *Lunar {
 	if lunar.leapMonth > 0 {
 		isLeapYear = true
 	}
-	log.Print("offset ", offset)
+
 	for i = 1; i <= 12; i++ {
 		if i == lunar.leapMonth+1 && isLeapYear {
 			day = leapDay(year)
