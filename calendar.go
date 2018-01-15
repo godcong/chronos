@@ -19,9 +19,9 @@ type CalendarData interface {
 	Calendar() Calendar
 }
 
-func NewCalendar(calendar CalendarData) Calendar {
-	if calendar != nil {
-		return calendar.Calendar()
+func NewCalendar(c CalendarData) Calendar {
+	if c != nil {
+		return c.Calendar()
 	}
 	return &calendar{
 		lunar: NewLunar(nil),

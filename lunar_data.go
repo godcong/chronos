@@ -150,17 +150,12 @@ func GetTermInfo(y, n int) int {
 	if n < 1 || n > 24 {
 		return -1
 	}
-
-	t := termInfoList[y]
-	var day []string
-	for i := 0; i < 30; i += 5 {
-		i, _ := strconv.ParseInt("0x"+t[i:i+5], 0, 64)
-		a := strconv.Itoa(int(i))
-		day = append(day, a[0:1], a[1:3], a[3:4], a[4:6])
-
-	}
-
-	i, _ := strconv.Atoi(day[n-1])
+	i := (n - 1) / 4 * 5
+	n = (n - 1) % 4
+	idx, _ := strconv.ParseInt(termInfoList[y][i:i+5], 16, 64)
+	a := strconv.FormatInt(idx, 10)
+	day := []string{a[0:1], a[1:3], a[3:4], a[4:6]}
+	i, _ = strconv.Atoi(day[n])
 	return i
 }
 
