@@ -24,8 +24,11 @@ func TestGetDayString(t *testing.T) {
 }
 
 func TestGetTerm(t *testing.T) {
-	i := GetTermInfo(2018, 3)
-	log.Println(i)
+	for i := 1; i <= 24; i++ {
+		i := GetTermInfo(2018, i)
+		log.Println(i)
+	}
+
 }
 
 func TestGetZodiac(t *testing.T) {
@@ -59,4 +62,8 @@ func TestStemBranchHour(t *testing.T) {
 }
 func TestNewLunar(t *testing.T) {
 	log.Print(NewLunar(nil).Date())
+}
+
+func TestCalculateLunar(t *testing.T) {
+	log.Print("now: ", Solar2Lunar(time.Now()))
 }

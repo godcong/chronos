@@ -105,7 +105,7 @@ func GetAstro(m, d int) string {
 	return Astro[index] + "座"
 }
 
-func lunarYear(offset int) int {
+func lunarYear(offset int) (int, int) {
 	day := 0
 	i := 0
 	//求当年农历年天数
@@ -116,7 +116,7 @@ func lunarYear(offset int) int {
 		}
 		offset -= day
 	}
-	return i
+	return i, offset
 }
 
 func CalculateLunar(date string) *Lunar {
@@ -138,7 +138,7 @@ func CalculateLunar(date string) *Lunar {
 	}
 
 	offset := BetweenDay(input, start)
-	year := lunarYear(offset)
+	year, offset := lunarYear(offset)
 
 	lunar.leapMonth = leapMonth(year) //计算该年闰哪个月
 
@@ -163,6 +163,7 @@ func CalculateLunar(date string) *Lunar {
 			break
 		}
 	}
+
 	offset += day
 	lunar.month = i
 	lunar.day = offset
@@ -178,17 +179,17 @@ func BetweenDay(d time.Time, s time.Time) int {
 	return int(subValue)
 }
 
-//func Solar2Lunar(time time.Time) string {
-//	lunar := CalculateLunar(time.Format(DATE_FORMAT))
-//	log.Println(lunar)
-//	result := StemBranchYear(lunar.year) + "年"
-//	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
-//		result += "闰"
-//	}
-//	result += GetChineseMonth(lunar.month)
-//	result += GetChineseDay(lunar.day)
-//	return result
-//}
+func Solar2Lunar(time time.Time) string {
+	lunar := CalculateLunar(time.Format(DATE_FORMAT))
+	log.Println(lunar)
+	result := StemBranchYear(lunar.year) + "年"
+	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
+		result += "闰"
+	}
+	result += GetChineseMonth(lunar.month)
+	result += GetChineseDay(lunar.day)
+	return result
+}
 func (lunar *Lunar) Date() string {
 	result := StemBranchYear(lunar.year) + "年"
 	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
