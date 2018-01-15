@@ -25,20 +25,23 @@ func GetZodiac(time time.Time) string {
 
 //NewLunar
 //default return today's lunar
-func NewLunar(calendar *Calendar) Lunar {
-	if calendar == nil {
-		return Lunar{} //today
+func NewLunar(calendar *Calendar) *Lunar {
+	t := time.Now()
+	if calendar != nil {
+		if calendar.lunar != nil {
+			return calendar.lunar
+		}
+		if calendar.solar != nil {
+			t = calendar.solar.time
+		}
 	}
-	if calendar.solar != nil {
-		return Lunar{}
-	}
-	return Lunar{}
+	return CalculateLunar(t.Format(DATE_FORMAT))
 }
 
 func yearDay(y int) int {
 	i, sum := 348, 348
 	for i = 0x8000; i > 0x8; i >>= 1 {
-		if (GetLunarInfo(y-1900) & i) != 0 {
+		if (GetLunarInfo(y) & i) != 0 {
 			sum++
 		}
 	}
@@ -47,7 +50,7 @@ func yearDay(y int) int {
 
 func leapDay(y int) int {
 	if leapMonth(y) != 0 {
-		if (GetLunarInfo(y-1900) & 0x10000) != 0 {
+		if (GetLunarInfo(y) & 0x10000) != 0 {
 			return 30
 		}
 		return 29
@@ -106,12 +109,12 @@ func lunarYear(offset int) int {
 			break
 		}
 		offset -= day
-
 	}
 	return i
 }
 
-func CalculateLunar(date string) Lunar {
+func CalculateLunar(date string) *Lunar {
+	log.Print(date)
 	lunar := Lunar{
 		isLeap: false,
 	}
@@ -137,15 +140,17 @@ func CalculateLunar(date string) Lunar {
 	if lunar.leapMonth > 0 {
 		isLeapYear = true
 	}
-
+	log.Print("offset ", offset)
 	for i = 1; i <= 12; i++ {
 		if i == lunar.leapMonth+1 && isLeapYear {
 			day = leapDay(year)
+			log.Print("day", day)
 			isLeapYear = false
 			lunar.isLeap = true
 			i--
 		} else {
 			day = monthDays(year, i)
+			log.Print("day1 ", day)
 		}
 		offset -= day
 		if offset <= 0 {
@@ -156,13 +161,29 @@ func CalculateLunar(date string) Lunar {
 	lunar.month = i
 	lunar.day = offset
 	lunar.year = year
-	return lunar
+	return &lunar
 
 }
 
-func Solar2Lunar(time time.Time) string {
-	lunar := CalculateLunar(time.Format(DATE_FORMAT))
-	log.Println(lunar)
+//BetweenDay
+// 计算差的天数
+func BetweenDay(d time.Time, s time.Time) int {
+	subValue := float64(d.Unix()-s.Unix())/86400.0 + 0.5
+	return int(subValue)
+}
+
+//func Solar2Lunar(time time.Time) string {
+//	lunar := CalculateLunar(time.Format(DATE_FORMAT))
+//	log.Println(lunar)
+//	result := StemBranchYear(lunar.year) + "年"
+//	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
+//		result += "闰"
+//	}
+//	result += GetChineseMonth(lunar.month)
+//	result += GetChineseDay(lunar.day)
+//	return result
+//}
+func (lunar *Lunar) Date() string {
 	result := StemBranchYear(lunar.year) + "年"
 	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
@@ -172,13 +193,6 @@ func Solar2Lunar(time time.Time) string {
 	return result
 }
 
-// 计算差的天数
-func BetweenDay(d time.Time, s time.Time) int {
-	subValue := float64(d.Unix()-s.Unix())/86400.0 + 0.5
-	return int(subValue)
-}
-
-const DATE_FORMAT = "2006/01/02"
 const YEAR_MIN = 1900
 const YEAR_MAX = 2100
 
