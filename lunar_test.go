@@ -32,13 +32,6 @@ func TestGetZodiac(t *testing.T) {
 	log.Println(GetZodiac(time.Now()))
 }
 
-func TestSolar2Lunar(t *testing.T) {
-	log.Println(Solar2Lunar(time.Now()))
-	for i := 0; i < 31; i++ {
-		log.Println(Solar2Lunar(time.Date(1900, 2, i, 12, 12, 12, 0, time.Local)))
-	}
-}
-
 func TestStemBranchYear(t *testing.T) {
 	log.Println(StemBranchYear(2017))
 
@@ -60,11 +53,10 @@ func TestStemBranchHour(t *testing.T) {
 		log.Println(i, StemBranchHour(2018, 1, 12, i))
 
 	}
-	log.Print(13, StemBranchDay(2018, 1, 13), "日")
+	log.Print(13, StemBranchHour(2018, 1, 13, 8), "日")
 	log.Print(14, StemBranchDay(2017, 11, 14), "日")
 	log.Println(8, StemBranchHour(2017, 11, 14, 8))
 }
-
-//func TestSolar2Lunar2(t *testing.T) {
-//
-//}
+func TestNewLunar(t *testing.T) {
+	log.Print(NewLunar(nil).Date())
+}

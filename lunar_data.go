@@ -207,13 +207,9 @@ func GetStemBranch(y int) string {
 //`庚子`, `辛丑`, `壬寅`, `癸卯`, `甲辰`, `乙巳`, `丙午`, `丁未`, `戊申`, `己酉`, `庚戌`, `辛亥`, //丁或壬日
 //`壬子`, `癸丑`, `甲寅`, `乙卯`, `丙辰`, `丁巳`, `戊午`, `己未`, `庚申`, `辛酉`, `壬戌`, `癸亥`, //戊或癸日
 func StemBranchHour(y, m, d, h int) string {
-	_ = stemBranchIndex(y, m, d) % 10
-	//TODO
-	return "i"
-}
-func calcHourStemBranch(g, h int) string {
-	//hourStemBranch
-	return ""
+	i := stemBranchIndex(y, m, d) % 5 * 12
+	h = h / 2 % 12
+	return stemBranchTable[i+h]
 }
 
 func stemBranchIndex(y, m, d int) int {
@@ -229,6 +225,7 @@ func stemBranchIndex(y, m, d int) int {
 }
 
 // StemBranchDay
+// 获取日柱
 func StemBranchDay(y, m, d int) string {
 	return stemBranchTable[stemBranchIndex(y, m, d)]
 }
