@@ -1,9 +1,8 @@
 package lunar
 
 import (
-	"fmt"
-	"log"
 	"time"
+	"fmt"
 )
 
 type Lunar struct {
@@ -23,14 +22,12 @@ func (lunar *Lunar) Calendar() Calendar {
 	return CalendarFromLunar(lunar.year, lunar.month, lunar.day)
 }
 
-//info		int //lunarInfo[index]
-
 func GetZodiac(time time.Time) string {
 	return Zodiac[(time.Year()-4)%12]
 }
 
-//NewLunar
-//default return today's lunar
+//NewLunar 取得月历
+// 默认返回当前时间月历
 func NewLunar(calendar Calendar) *Lunar {
 	t := time.Now()
 	if calendar != nil {
@@ -95,6 +92,7 @@ func solarDays(y, m int) int {
 	}
 }
 
+//GetAstro 取得星座
 func GetAstro(m, d int) string {
 	arr := []int{20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22}
 	idx := d < arr[m-1]
@@ -120,7 +118,6 @@ func lunarYear(offset int) (int, int) {
 }
 
 func CalculateLunar(date string) *Lunar {
-	log.Print(date)
 	lunar := Lunar{
 		isLeap: false,
 	}
@@ -150,13 +147,11 @@ func CalculateLunar(date string) *Lunar {
 	for i = 1; i <= 12; i++ {
 		if i == lunar.leapMonth+1 && isLeapYear {
 			day = leapDay(year)
-			log.Print("day", day)
 			isLeapYear = false
 			lunar.isLeap = true
 			i--
 		} else {
 			day = monthDays(year, i)
-			log.Print("day1 ", day)
 		}
 		offset -= day
 		if offset <= 0 {
@@ -172,16 +167,15 @@ func CalculateLunar(date string) *Lunar {
 
 }
 
-//BetweenDay
-// 计算差的天数
+//BetweenDay 计算两个时间差的天数
 func BetweenDay(d time.Time, s time.Time) int {
 	subValue := float64(d.Unix()-s.Unix())/86400.0 + 0.5
 	return int(subValue)
 }
 
+//Solar2Lunar 输入日历输出月历
 func Solar2Lunar(time time.Time) string {
 	lunar := CalculateLunar(time.Format(DATE_FORMAT))
-	log.Println(lunar)
 	result := StemBranchYear(lunar.year) + "年"
 	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
