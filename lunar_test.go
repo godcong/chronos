@@ -1,4 +1,4 @@
-package lunar_test
+package chronos_test
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/godcong/lunar"
+	"github.com/godcong/chronos"
 )
 
 func TestGetSolarTerm(t *testing.T) {
@@ -27,47 +27,47 @@ func TestGetDayString(t *testing.T) {
 
 func TestGetTerm(t *testing.T) {
 	for i := 1; i <= 24; i++ {
-		i := lunar.GetTermInfo(2018, i)
+		i := chronos.GetTermInfo(2018, i)
 		log.Println(i)
 	}
 
 }
 
 func TestGetZodiac(t *testing.T) {
-	log.Println(lunar.GetZodiac(time.Now()))
+	log.Println(chronos.GetZodiac(time.Now()))
 }
 
 func TestStemBranchYear(t *testing.T) {
-	log.Println(lunar.StemBranchYear(2017))
+	log.Println(chronos.StemBranchYear(2017))
 
 }
 
 func TestStemBranchMonth(t *testing.T) {
-	log.Println(lunar.StemBranchMonth(2017, 11, 14))
+	log.Println(chronos.StemBranchMonth(2017, 11, 14))
 }
 
 func TestStemBranchDay(t *testing.T) {
-	log.Println(lunar.StemBranchDay(2017, 11, 14))
+	log.Println(chronos.StemBranchDay(2017, 11, 14))
 
 }
 
 func TestStemBranchHour(t *testing.T) {
-	log.Print(12, lunar.StemBranchDay(2018, 1, 12), "日")
+	log.Print(12, chronos.StemBranchDay(2018, 1, 12), "日")
 	for i := 0; i <= 23; i++ {
 
-		log.Println(i, lunar.StemBranchHour(2018, 1, 12, i))
+		log.Println(i, chronos.StemBranchHour(2018, 1, 12, i))
 
 	}
-	log.Print(13, lunar.StemBranchHour(2018, 1, 13, 8), "日")
-	log.Print(14, lunar.StemBranchDay(2017, 11, 14), "日")
-	log.Println(8, lunar.StemBranchHour(2017, 11, 14, 8))
+	log.Print(13, chronos.StemBranchHour(2018, 1, 13, 8), "日")
+	log.Print(14, chronos.StemBranchDay(2017, 11, 14), "日")
+	log.Println(8, chronos.StemBranchHour(2017, 11, 14, 8))
 }
 func TestNewLunar(t *testing.T) {
-	log.Print(lunar.NewLunar(nil).Date())
+	log.Print(chronos.NewLunar(nil).Date())
 }
 
 func TestCalculateLunar(t *testing.T) {
-	log.Print("now: ", lunar.Solar2Lunar(time.Now()))
-	log.Print(lunar.NewLunar(nil).Date())
+	log.Print("now: ", chronos.Solar2Lunar(time.Now()))
+	log.Print(chronos.NewLunar(nil).Date())
 
 }

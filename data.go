@@ -1,4 +1,4 @@
-package lunar
+package chronos
 
 import (
 	"strconv"
