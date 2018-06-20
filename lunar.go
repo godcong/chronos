@@ -3,9 +3,11 @@ package chronos
 import (
 	"time"
 	"fmt"
+	"log"
 )
 
 type Lunar struct {
+	time.Time
 	year      int
 	month     int
 	day       int
@@ -19,27 +21,37 @@ func (lunar *Lunar) Type() string {
 }
 
 func (lunar *Lunar) Calendar() Calendar {
-	return CalendarFromLunar(lunar.year, lunar.month, lunar.day)
+	t := time.Time{}
+	t.AddDate(lunar.year, lunar.month, lunar.day)
+	return New(t)
+}
+
+func (lunar *Lunar) EightCharacter() (year string, month string, day string, hour string) {
+	year = StemBranchYear(lunar.Year())
+	month = StemBranchMonth(lunar.Year(), int(lunar.Month()), lunar.Day())
+	day = StemBranchDay(lunar.Year(), int(lunar.Month()), lunar.Day())
+	hour = StemBranchHour(lunar.Year(), int(lunar.Month()), lunar.Day(), lunar.Hour())
+	return
 }
 
 func GetZodiac(time time.Time) string {
-	return Zodiac[(time.Year()-4)%12]
+	return zodiacs[(time.Year()-4)%12]
 }
 
-//NewLunar 取得月历
-// 默认返回当前时间月历
-func NewLunar(calendar Calendar) *Lunar {
-	t := time.Now()
-	if calendar != nil {
-		if calendar.Lunar() != nil {
-			return calendar.Lunar()
-		}
-		if calendar.Solar() != nil {
-			t = calendar.Solar().time
-		}
-	}
-	return CalculateLunar(t.Format(DATE_FORMAT))
-}
+////NewLunar 取得月历
+//// 默认返回当前时间月历
+//func NewLunar(calendar Calendar) *Lunar {
+//	t := time.Now()
+//	if calendar != nil {
+//		if calendar.Lunar() != nil {
+//			return calendar.Lunar()
+//		}
+//		if calendar.Solar() != nil {
+//			t = calendar.Solar().time
+//		}
+//	}
+//	return CalculateLunar(t.Format(DateFormat))
+//}
 
 func yearDay(y int) int {
 	i, sum := 348, 348
@@ -87,9 +99,8 @@ func solarDays(y, m int) int {
 			return 29
 		}
 		return 28
-	} else {
-		return monthDay[idx]
 	}
+	return monthDay[idx]
 }
 
 //GetAstro 取得星座
@@ -100,14 +111,14 @@ func GetAstro(m, d int) string {
 	if idx {
 		index = m*2 - 2
 	}
-	return Astro[index] + "座"
+	return constellation[index] + "座"
 }
 
 func lunarYear(offset int) (int, int) {
 	day := 0
 	i := 0
 	//求当年农历年天数
-	for i = YEAR_MIN; i <= YEAR_MAX; i++ {
+	for i = yearMin; i <= yearMax; i++ {
 		day = yearDay(i)
 		if offset-day < 1 {
 			break
@@ -117,26 +128,38 @@ func lunarYear(offset int) (int, int) {
 	return i, offset
 }
 
+func lunarStart() time.Time {
+	loc, _ := time.LoadLocation("Local")
+	start, err := time.ParseInLocation("2006/01/02", "1900/01/30", loc)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	return start
+}
+
+func lunarInput(date string) time.Time {
+	loc, _ := time.LoadLocation("Local")
+	input, err := time.ParseInLocation(DateFormat, date, loc)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	return input
+}
+
 func CalculateLunar(date string) *Lunar {
+	input := lunarInput(date)
 	lunar := Lunar{
+		Time:   input,
 		isLeap: false,
 	}
-	loc, _ := time.LoadLocation("Local")
-	i := 0
-	day := 0
+
+	i, day := 0, 0
 	isLeapYear := false
-	input, err := time.ParseInLocation(DATE_FORMAT, date, loc)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	start, err := time.ParseInLocation(DATE_FORMAT, "1900/01/30", loc)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
 
-	offset := BetweenDay(input, start)
+	start := lunarStart()
+	offset := betweenDay(input, start)
 	year, offset := lunarYear(offset)
-
+	log.Println(year, offset)
 	lunar.leapMonth = leapMonth(year) //计算该年闰哪个月
 
 	//设定当年是否有闰月
@@ -167,15 +190,15 @@ func CalculateLunar(date string) *Lunar {
 
 }
 
-//BetweenDay 计算两个时间差的天数
-func BetweenDay(d time.Time, s time.Time) int {
+//betweenDay 计算两个时间差的天数
+func betweenDay(d time.Time, s time.Time) int {
 	subValue := float64(d.Unix()-s.Unix())/86400.0 + 0.5
 	return int(subValue)
 }
 
 //Solar2Lunar 输入日历输出月历
 func Solar2Lunar(time time.Time) string {
-	lunar := CalculateLunar(time.Format(DATE_FORMAT))
+	lunar := CalculateLunar(time.Format(DateFormat))
 	result := StemBranchYear(lunar.year) + "年"
 	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
@@ -194,19 +217,15 @@ func (lunar *Lunar) Date() string {
 	return result
 }
 
-const YEAR_MIN = 1900
-const YEAR_MAX = 2100
+const yearMin = 1900
+const yearMax = 2100
 
-var Zodiac = []string{
+var zodiacs = []string{
 	`鼠`, `牛`, `虎`, `兔`, `龙`, `蛇`, `马`, `羊`, `猴`, `鸡`, `狗`, `猪`,
 }
 
-var SolarTerm = []string{
+var solarTerms = []string{
 	`小寒`, `大寒`, `立春`, `雨水`, `惊蛰`, `春分`, `清明`, `谷雨`, `立夏`, `小满`, `芒种`, `夏至`, `小暑`, `大暑`, `立秋`, `处暑`, `白露`, `秋分`, `寒露`, `霜降`, `立冬`, `小雪`, `大雪`, `冬至`,
-}
-
-var Astro = []string{
-	`魔羯`, `水瓶`, `双鱼`, `白羊`, `金牛`, `双子`, `巨蟹`, `狮子`, `处女`, `天秤`, `天蝎`, `射手`,
 }
 
 //一月	二月	三月	四月	五月	六月	七月	八月	九月	十月	十一月	十二月 :年份
@@ -217,10 +236,3 @@ var Astro = []string{
 //	`壬寅`, `癸卯`, `甲辰`, `乙巳`, `丙午`, `丁未`, `戊申`, `己酉`, `庚戌`, `辛亥`, `壬子`, `癸丑`, //丁、壬
 //	`甲寅`, `乙卯`, `丙辰`, `丁巳`, `戊午`, `己未`, `庚申`, `辛酉`, `壬戌`, `癸亥`, `甲子`, `乙丑`, //戊、癸
 //}
-
-/**
- * 公历每个月份的天数普通表
- * @Array Of Property
- * @return Number
- */
-var monthDay = []int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}

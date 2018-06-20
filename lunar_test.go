@@ -63,11 +63,10 @@ func TestStemBranchHour(t *testing.T) {
 	log.Println(8, chronos.StemBranchHour(2017, 11, 14, 8))
 }
 func TestNewLunar(t *testing.T) {
-	log.Print(chronos.NewLunar(nil).Date())
+	log.Print(chronos.New().Lunar().Date())
 }
 
 func TestCalculateLunar(t *testing.T) {
 	log.Print("now: ", chronos.Solar2Lunar(time.Now()))
-	log.Print(chronos.NewLunar(nil).Date())
-
+	log.Print(chronos.New().Lunar().EightCharacter())
 }
