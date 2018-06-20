@@ -1,12 +1,14 @@
 package chronos
 
-import "time"
+import (
+	"time"
+	"log"
+)
 
-const DATE_FORMAT = "2006/01/02"
+const DateFormat = "2006/01/02 15:04"
 
 type calendar struct {
-	lunar *Lunar
-	solar *Solar
+	time time.Time
 }
 
 type Calendar interface {
@@ -19,51 +21,68 @@ type CalendarData interface {
 	Calendar() Calendar
 }
 
-func NewCalendar(c CalendarData) Calendar {
-	if c != nil {
-		return c.Calendar()
+//New can input two type of time to create the calendar
+//"2006/01/02 03:04" format string or time.Time value
+func New(v ...interface{}) Calendar {
+	var c Calendar
+	if v == nil {
+		return &calendar{time.Now()}
 	}
-	return &calendar{
-		lunar: NewLunar(nil),
-		solar: NewSolar(nil),
+	switch vv := v[0].(type) {
+	case string:
+		c = formatString(vv)
+	case time.Time:
+		c = &calendar{vv}
 	}
+	return c
 }
 
-func CalendarFromLunar(y, m, d int) Calendar {
-	return &calendar{
-		lunar: &Lunar{
-			year:  y,
-			month: m,
-			day:   d,
-		},
+func formatString(s string) Calendar {
+	t, err := time.Parse(DateFormat, s)
+	if err != nil {
+		t = time.Now()
 	}
+	return &calendar{
+		time: t,
+	}
+
 }
 
-func CalendarFromSolar(time time.Time) Calendar {
-	return &calendar{
-		solar: &Solar{
-			time: time,
-		},
-	}
-}
+//func NewCalendar(c CalendarData) Calendar {
+//	if c != nil {
+//		return c.Calendar()
+//	}
+//	return &calendar{
+//		lunar: NewLunar(nil),
+//		solar: NewSolar(nil),
+//	}
+//}
+
+//func CalendarFromLunar(y, m, d int) Calendar {
+//	return &calendar{
+//		lunar: &Lunar{
+//			year:  y,
+//			month: m,
+//			day:   d,
+//		},
+//	}
+//}
+
+//func CalendarFromSolar(time time.Time) Calendar {
+//	return &calendar{
+//		solar: &Solar{
+//			time: time,
+//		},
+//	}
+//}
 
 func (c *calendar) Lunar() *Lunar {
-	time := time.Now()
-	if c.lunar != nil {
-		return c.lunar
-	}
-	if c.solar != nil {
-		time = c.solar.time
-	}
-	c.lunar = CalculateLunar(time.Format(DATE_FORMAT))
-	return c.lunar
+	log.Println(c.time.Format(DateFormat))
+	return CalculateLunar(c.time.Format(DateFormat))
 }
 
 func (c *calendar) Solar() *Solar {
-	if c.solar != nil {
-		return c.solar
-	}
-	return nil
+	return &Solar{time: c.time}
 }
 
 func (c *calendar) LunarDate() string {

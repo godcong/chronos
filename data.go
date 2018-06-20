@@ -128,12 +128,20 @@ var termInfoList = []string{
 
 var number = []string{`一`, `二`, `三`, `四`, `五`, `六`, `七`, `八`, `九`, `十`, `十一`, `十二`}
 var ten = []string{`初`, `十`, `廿`, `卅`}
+//月历月份
 var chineseNumber = []string{`正`, `二`, `三`, `四`, `五`, `六`, `七`, `八`, `九`, `十`, `十一`, `腊`}
+//公历每个月份的天数
+var monthDay = []int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+//12星座
+var constellation = []string{
+	`魔羯`, `水瓶`, `双鱼`, `白羊`, `金牛`, `双子`, `巨蟹`, `狮子`, `处女`, `天秤`, `天蝎`, `射手`,
+}
 
 func fixSuffix(y int) int {
 	return y - 1900
 }
 
+//GetLunarInfo 取得月历信息
 func GetLunarInfo(y int) int {
 	y = fixSuffix(y)
 	if y < 0 || y > len(lunarInfoList) {
@@ -159,6 +167,7 @@ func GetTermInfo(y, n int) int {
 	return i
 }
 
+//GetChineseMonth 取得月历月
 func GetChineseMonth(m int) string {
 	if m > 12 || m < 1 {
 		return "?月"
@@ -166,6 +175,7 @@ func GetChineseMonth(m int) string {
 	return chineseNumber[m-1] + "月" //加上月字
 }
 
+//GetChineseDay 取得月历日
 func GetChineseDay(d int) string {
 	if d < 0 || d > 31 {
 		return "?日"
@@ -186,7 +196,7 @@ func GetChineseDay(d int) string {
 
 }
 
-//GetStemBranch
+//GetStemBranch 取得干支
 func GetStemBranch(y int) string {
 	return heavenlyStem[y%10] + earthyBranch[y%12]
 }
@@ -213,7 +223,7 @@ func stemBranchIndex(y, m, d int) int {
 		return 0
 	}
 	if m < 3 {
-		y -= 1
+		y --
 	}
 	m = (m - 1) % 12
 	return (yearNumber[y] + monthNumber[m] + d - 1) % 60
