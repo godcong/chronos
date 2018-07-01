@@ -3,7 +3,6 @@ package chronos
 import (
 	"time"
 	"fmt"
-	"log"
 )
 
 type Lunar struct {
@@ -159,7 +158,6 @@ func CalculateLunar(date string) *Lunar {
 	start := lunarStart()
 	offset := betweenDay(input, start)
 	year, offset := lunarYear(offset)
-	log.Println(year, offset)
 	lunar.leapMonth = leapMonth(year) //计算该年闰哪个月
 
 	//设定当年是否有闰月
