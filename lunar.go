@@ -3,6 +3,7 @@ package chronos
 import (
 	"time"
 	"fmt"
+	"strings"
 )
 
 type Lunar struct {
@@ -32,6 +33,23 @@ func (lunar *Lunar) EightCharacter() (year string, month string, day string, hou
 	hour = StemBranchHour(lunar.Year(), int(lunar.Month()), lunar.Day(), lunar.Hour())
 	return
 }
+//ShiZhu 时柱
+func (lunar *Lunar) ShiZhu() []string {
+	return strings.Split(StemBranchHour(lunar.Year(), int(lunar.Month()), lunar.Day(), lunar.Hour()), "")
+}
+//RiZhu 日柱
+func (lunar *Lunar) RiZhu() []string {
+	return strings.Split(StemBranchDay(lunar.Year(), int(lunar.Month()), lunar.Day()), "")
+}
+//YueZhu 月柱
+func (lunar *Lunar) YueZhu() []string {
+	return strings.Split(StemBranchMonth(lunar.Year(), int(lunar.Month()), lunar.Day()), "")
+}
+//NianZhu 年柱
+func (lunar *Lunar) NianZhu() []string {
+	return strings.Split(StemBranchYear(lunar.Year()), "")
+}
+
 
 func GetZodiac(time time.Time) string {
 	return zodiacs[(time.Year()-4)%12]
