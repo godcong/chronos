@@ -26,30 +26,34 @@ func (lunar *Lunar) Calendar() Calendar {
 	return New(t)
 }
 
-func (lunar *Lunar) EightCharacter() (year string, month string, day string, hour string) {
-	year = StemBranchYear(lunar.Year())
-	month = StemBranchMonth(lunar.Year(), int(lunar.Month()), lunar.Day())
-	day = StemBranchDay(lunar.Year(), int(lunar.Month()), lunar.Day())
-	hour = StemBranchHour(lunar.Year(), int(lunar.Month()), lunar.Day(), lunar.Hour())
-	return
+func (lunar *Lunar) EightCharacter() ([]string) {
+	var rlt []string
+	rlt = append(rlt, lunar.NianZhu()...)
+	rlt = append(rlt, lunar.YueZhu()...)
+	rlt = append(rlt, lunar.RiZhu()...)
+	rlt = append(rlt, lunar.ShiZhu()...)
+	return rlt
 }
+
 //ShiZhu 时柱
 func (lunar *Lunar) ShiZhu() []string {
 	return strings.Split(StemBranchHour(lunar.Year(), int(lunar.Month()), lunar.Day(), lunar.Hour()), "")
 }
+
 //RiZhu 日柱
 func (lunar *Lunar) RiZhu() []string {
 	return strings.Split(StemBranchDay(lunar.Year(), int(lunar.Month()), lunar.Day()), "")
 }
+
 //YueZhu 月柱
 func (lunar *Lunar) YueZhu() []string {
 	return strings.Split(StemBranchMonth(lunar.Year(), int(lunar.Month()), lunar.Day()), "")
 }
+
 //NianZhu 年柱
 func (lunar *Lunar) NianZhu() []string {
 	return strings.Split(StemBranchYear(lunar.Year()), "")
 }
-
 
 func GetZodiac(time time.Time) string {
 	return zodiacs[(time.Year()-4)%12]
