@@ -15,6 +15,7 @@ type calendar struct {
 type Calendar interface {
 	Lunar() *Lunar
 	Solar() *Solar
+	LunarDate() string
 }
 
 // CalendarData ...
