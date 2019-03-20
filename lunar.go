@@ -1,11 +1,12 @@
 package chronos
 
 import (
-	"time"
 	"fmt"
 	"strings"
+	"time"
 )
 
+// Lunar ...
 type Lunar struct {
 	time.Time
 	year      int
@@ -16,17 +17,20 @@ type Lunar struct {
 	isLeap    bool
 }
 
+// Type ...
 func (lunar *Lunar) Type() string {
 	return "lunar"
 }
 
+// Calendar ...
 func (lunar *Lunar) Calendar() Calendar {
 	t := time.Time{}
 	t.AddDate(lunar.year, lunar.month, lunar.day)
 	return New(t)
 }
 
-func (lunar *Lunar) EightCharacter() ([]string) {
+// EightCharacter ...
+func (lunar *Lunar) EightCharacter() []string {
 	var rlt []string
 	rlt = append(rlt, lunar.NianZhu()...)
 	rlt = append(rlt, lunar.YueZhu()...)
@@ -55,24 +59,10 @@ func (lunar *Lunar) NianZhu() []string {
 	return strings.Split(StemBranchYear(lunar.Year()), "")
 }
 
+// GetZodiac ...
 func GetZodiac(time time.Time) string {
 	return zodiacs[(time.Year()-4)%12]
 }
-
-////NewLunar 取得月历
-//// 默认返回当前时间月历
-//func NewLunar(calendar Calendar) *Lunar {
-//	t := time.Now()
-//	if calendar != nil {
-//		if calendar.Lunar() != nil {
-//			return calendar.Lunar()
-//		}
-//		if calendar.Solar() != nil {
-//			t = calendar.Solar().time
-//		}
-//	}
-//	return CalculateLunar(t.Format(DateFormat))
-//}
 
 func yearDay(y int) int {
 	i, sum := 348, 348
@@ -167,6 +157,7 @@ func lunarInput(date string) time.Time {
 	return input
 }
 
+// CalculateLunar ...
 func CalculateLunar(date string) *Lunar {
 	input := lunarInput(date)
 	lunar := Lunar{
@@ -227,6 +218,8 @@ func Solar2Lunar(time time.Time) string {
 	result += GetChineseDay(lunar.day)
 	return result
 }
+
+// Date ...
 func (lunar *Lunar) Date() string {
 	result := StemBranchYear(lunar.year) + "年"
 	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
