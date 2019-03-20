@@ -4,17 +4,20 @@ import (
 	"time"
 )
 
+// DateFormat ...
 const DateFormat = "2006/01/02 15:04"
 
 type calendar struct {
 	time time.Time
 }
 
+// Calendar ...
 type Calendar interface {
 	Lunar() *Lunar
 	Solar() *Solar
 }
 
+// CalendarData ...
 type CalendarData interface {
 	Type() string
 	Calendar() Calendar
@@ -48,14 +51,17 @@ func formatDate(s string) Calendar {
 	}
 }
 
+// Lunar ...
 func (c *calendar) Lunar() *Lunar {
 	return CalculateLunar(c.time.Format(DateFormat))
 }
 
+// Solar ...
 func (c *calendar) Solar() *Solar {
 	return &Solar{time: c.time}
 }
 
+// LunarDate ...
 func (c *calendar) LunarDate() string {
 	return c.Lunar().Date()
 }
