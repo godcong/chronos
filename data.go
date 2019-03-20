@@ -128,10 +128,13 @@ var termInfoList = []string{
 
 var number = []string{`一`, `二`, `三`, `四`, `五`, `六`, `七`, `八`, `九`, `十`, `十一`, `十二`}
 var ten = []string{`初`, `十`, `廿`, `卅`}
+
 //月历月份
 var chineseNumber = []string{`正`, `二`, `三`, `四`, `五`, `六`, `七`, `八`, `九`, `十`, `十一`, `腊`}
+
 //公历每个月份的天数
 var monthDay = []int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+
 //12星座
 var constellation = []string{
 	`魔羯`, `水瓶`, `双鱼`, `白羊`, `金牛`, `双子`, `巨蟹`, `狮子`, `处女`, `天秤`, `天蝎`, `射手`,
@@ -150,6 +153,7 @@ func GetLunarInfo(y int) int {
 	return lunarInfoList[y]
 }
 
+// GetTermInfo ...
 func GetTermInfo(y, n int) int {
 	y = fixSuffix(y)
 	if y < 0 || y > len(termInfoList) {
@@ -223,7 +227,7 @@ func stemBranchIndex(y, m, d int) int {
 		return 0
 	}
 	if m < 3 {
-		y --
+		y--
 	}
 	m = (m - 1) % 12
 	return (yearNumber[y] + monthNumber[m] + d - 1) % 60

@@ -20,8 +20,10 @@ type CalendarData interface {
 	Calendar() Calendar
 }
 
-//New can input two type of time to create the calendar
-//"2006/01/02 03:04" format string or time.Time value
+//New can input three type of time to create the calendar
+//"2006/01/02 03:04" format string
+// time.Time value
+// or nil to create a new time.Now() value
 func New(v ...interface{}) Calendar {
 	var c Calendar
 	if v == nil {
@@ -29,14 +31,14 @@ func New(v ...interface{}) Calendar {
 	}
 	switch vv := v[0].(type) {
 	case string:
-		c = formatString(vv)
+		c = formatDate(vv)
 	case time.Time:
 		c = &calendar{vv}
 	}
 	return c
 }
 
-func formatString(s string) Calendar {
+func formatDate(s string) Calendar {
 	t, err := time.Parse(DateFormat, s)
 	if err != nil {
 		t = time.Now()
@@ -44,36 +46,7 @@ func formatString(s string) Calendar {
 	return &calendar{
 		time: t,
 	}
-
 }
-
-//func NewCalendar(c CalendarData) Calendar {
-//	if c != nil {
-//		return c.Calendar()
-//	}
-//	return &calendar{
-//		lunar: NewLunar(nil),
-//		solar: NewSolar(nil),
-//	}
-//}
-
-//func CalendarFromLunar(y, m, d int) Calendar {
-//	return &calendar{
-//		lunar: &Lunar{
-//			year:  y,
-//			month: m,
-//			day:   d,
-//		},
-//	}
-//}
-
-//func CalendarFromSolar(time time.Time) Calendar {
-//	return &calendar{
-//		solar: &Solar{
-//			time: time,
-//		},
-//	}
-//}
 
 func (c *calendar) Lunar() *Lunar {
 	return CalculateLunar(c.time.Format(DateFormat))
