@@ -6,6 +6,7 @@ import (
 
 // DateFormat ...
 const DateFormat = "2006/01/02 15:04"
+const LunarDateFormat = "2006/01/02"
 
 type calendar struct {
 	time time.Time

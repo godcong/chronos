@@ -153,8 +153,14 @@ func lunarInput(date string) time.Time {
 	input, err := time.ParseInLocation(DateFormat, date, loc)
 	if err != nil {
 		fmt.Println(err.Error())
+		return time.Time{}
 	}
-	return input
+	newInput, err := time.ParseInLocation(LunarDateFormat, input.Format(LunarDateFormat), loc)
+	if err != nil {
+		fmt.Println(err.Error())
+		return time.Time{}
+	}
+	return newInput
 }
 
 // CalculateLunar ...
