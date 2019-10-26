@@ -39,7 +39,8 @@ func TestGetTerm(t *testing.T) {
 
 // TestGetZodiac ...
 func TestGetZodiac(t *testing.T) {
-	log.Println(chronos.GetZodiac(time.Now()))
+	t.Log(chronos.GetZodiac(chronos.New("2020/01/24 18:40").Lunar()) == "猪")
+	t.Log(chronos.GetZodiac(chronos.New("2020/01/25 18:40").Lunar()) == "鼠")
 }
 
 // TestStemBranchYear ...
@@ -80,9 +81,9 @@ func TestNewLunar(t *testing.T) {
 // TestCalculateLunar ...
 func TestCalculateLunar(t *testing.T) {
 	//log.Print("now: ", chronos.Solar2Lunar(time.Parse()))
-	log.Print(chronos.New("1989/01/07 18:40").Lunar().EightCharacter())
-	log.Print(chronos.New("1989/01/07 0:40").LunarDate())
+	log.Print(chronos.New("2020/01/24 18:40").Lunar().EightCharacter())
+	log.Print(chronos.New("2020/01/24 0:40").LunarDate())
 
-	log.Print(chronos.New("2019/06/01 0:40").LunarDate())
+	log.Print(chronos.New("2020/01/25 0:40").LunarDate())
 	log.Print(chronos.New(time.Now()).LunarDate())
 }

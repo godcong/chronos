@@ -56,13 +56,13 @@ func (lunar *Lunar) YueZhu() []string {
 
 //NianZhu 年柱
 func (lunar *Lunar) NianZhu() []string {
-	return strings.Split(StemBranchYear(lunar.Year()), "")
+	return strings.Split(StemBranchYear(lunar.year), "")
 }
 
 // GetZodiac ...
 func GetZodiac(lunar *Lunar) string {
 	for idx, v := range earthyBranch {
-		if v == lunar.NianZhu()[0] {
+		if strings.Compare(v, lunar.NianZhu()[1]) == 0 {
 			return zodiacs[idx]
 		}
 	}
