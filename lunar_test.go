@@ -41,6 +41,8 @@ func TestGetTerm(t *testing.T) {
 func TestGetZodiac(t *testing.T) {
 	t.Log(chronos.GetZodiac(chronos.New("2020/01/24 18:40").Lunar()) == "猪")
 	t.Log(chronos.GetZodiac(chronos.New("2020/01/25 18:40").Lunar()) == "鼠")
+	t.Log(chronos.GetZodiac(chronos.New("2021/02/11 18:40").Lunar()) == "鼠")
+	t.Log(chronos.GetZodiac(chronos.New("2021/02/12 18:40").Lunar()) == "牛")
 }
 
 // TestStemBranchYear ...
