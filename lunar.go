@@ -60,8 +60,13 @@ func (lunar *Lunar) NianZhu() []string {
 }
 
 // GetZodiac ...
-func GetZodiac(time time.Time) string {
-	return zodiacs[(time.Year()-4)%12]
+func GetZodiac(lunar *Lunar) string {
+	for idx, v := range earthyBranch {
+		if v == lunar.NianZhu()[0] {
+			return zodiacs[idx]
+		}
+	}
+	return ""
 }
 
 func yearDay(y int) int {
@@ -238,10 +243,6 @@ func (lunar *Lunar) Date() string {
 
 const yearMin = 1900
 const yearMax = 2100
-
-var zodiacs = []string{
-	`鼠`, `牛`, `虎`, `兔`, `龙`, `蛇`, `马`, `羊`, `猴`, `鸡`, `狗`, `猪`,
-}
 
 var solarTerms = []string{
 	`小寒`, `大寒`, `立春`, `雨水`, `惊蛰`, `春分`, `清明`, `谷雨`, `立夏`, `小满`, `芒种`, `夏至`, `小暑`, `大暑`, `立秋`, `处暑`, `白露`, `秋分`, `寒露`, `霜降`, `立冬`, `小雪`, `大雪`, `冬至`,
