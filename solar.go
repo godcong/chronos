@@ -9,5 +9,9 @@ type Solar struct {
 
 // NewSolar ...
 func NewSolar(calendar Calendar) *Solar {
-	return nil
+	return calendar.Solar()
+}
+
+func (s *Solar) Time() time.Time {
+	return s.time
 }
