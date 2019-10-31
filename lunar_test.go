@@ -67,7 +67,7 @@ func TestStemBranchHour(t *testing.T) {
 	log.Print(12, chronos.StemBranchDay(2018, 1, 12), "日")
 	for i := 0; i <= 23; i++ {
 
-		log.Println(i, chronos.StemBranchHour(2019, 11, 01, i))
+		log.Println(i, chronos.StemBranchHour(2019, 11, 2, i))
 
 	}
 	log.Print(13, chronos.StemBranchHour(2018, 1, 13, 8), "日")
@@ -96,5 +96,13 @@ func TestCalculateLunar(t *testing.T) {
 	log.Print(chronos.New("1989/01/07 0:40").LunarDate())
 
 	log.Print(chronos.New("2019/06/01 0:40").LunarDate())
+
+}
+
+func TestLunar_EightCharacter(t *testing.T) {
+	//output 己 亥 甲 戌 庚 子 丁 丑
+	log.Println(chronos.New("2019/10/30 01:30").Lunar().EightCharacter())
+	//output 己 亥 甲 戌 庚 子 丙 子
+	log.Println(chronos.New("2019/10/30 23:30").Lunar().EightCharacter())
 
 }
