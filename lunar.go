@@ -2,6 +2,7 @@ package chronos
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"time"
 )
@@ -15,6 +16,12 @@ type Lunar struct {
 	hour      int
 	leapMonth int
 	isLeap    bool
+}
+
+var loc *time.Location
+
+func init() {
+	loc, _ = time.LoadLocation("Local")
 }
 
 // Type ...
@@ -41,6 +48,7 @@ func (lunar *Lunar) EightCharacter() []string {
 
 //ShiZhu 时柱
 func (lunar *Lunar) ShiZhu() []string {
+	log.Println("month", lunar.Month(), "day", lunar.Day(), "hour", lunar.Hour())
 	return strings.Split(StemBranchHour(lunar.Year(), int(lunar.Month()), lunar.Day(), lunar.Hour()), "")
 }
 
@@ -154,18 +162,18 @@ func lunarStart() time.Time {
 }
 
 func lunarInput(date string) time.Time {
-	loc, _ := time.LoadLocation("Local")
+
 	input, err := time.ParseInLocation(DateFormat, date, loc)
 	if err != nil {
 		fmt.Println(err.Error())
 		return time.Time{}
 	}
-	newInput, err := time.ParseInLocation(LunarDateFormat, input.Format(LunarDateFormat), loc)
-	if err != nil {
-		fmt.Println(err.Error())
-		return time.Time{}
-	}
-	return newInput
+	//newInput, err := time.ParseInLocation(LunarDateFormat, input.Format(LunarDateFormat), loc)
+	//if err != nil {
+	//	fmt.Println(err.Error())
+	//	return time.Time{}
+	//}
+	return input
 }
 
 // CalculateLunar ...
@@ -214,7 +222,12 @@ func CalculateLunar(date string) *Lunar {
 
 //betweenDay 计算两个时间差的天数
 func betweenDay(d time.Time, s time.Time) int {
-	subValue := float64(d.Unix()-s.Unix())/86400.0 + 0.5
+	newInput, err := time.ParseInLocation(LunarDateFormat, d.Format(LunarDateFormat), loc)
+	if err != nil {
+		return 0
+	}
+
+	subValue := float64(newInput.Unix()-s.Unix())/86400.0 + 0.5
 	return int(subValue)
 }
 
@@ -237,6 +250,7 @@ func (lunar *Lunar) Date() string {
 		result += "闰"
 	}
 	result += GetChineseMonth(lunar.month)
+	log.Println("day", lunar.Day(), lunar.day)
 	result += GetChineseDay(lunar.day)
 	return result
 }
