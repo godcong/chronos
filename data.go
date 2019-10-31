@@ -221,7 +221,7 @@ func GetStemBranch(y int) string {
 //`壬子`, `癸丑`, `甲寅`, `乙卯`, `丙辰`, `丁巳`, `戊午`, `己未`, `庚申`, `辛酉`, `壬戌`, `癸亥`, //戊或癸日
 func StemBranchHour(y, m, d, h int) string {
 	i := stemBranchIndex(y, m, d) % 5 * 12
-	h = h / 2 % 12
+	h = (h + 1) / 2 % 12
 	return stemBranchTable[i+h]
 }
 
