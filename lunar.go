@@ -2,7 +2,6 @@ package chronos
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 )
@@ -48,7 +47,6 @@ func (lunar *Lunar) EightCharacter() []string {
 
 //ShiZhu 时柱
 func (lunar *Lunar) ShiZhu() []string {
-	log.Println("month", lunar.Month(), "day", lunar.Day(), "hour", lunar.Hour())
 	return strings.Split(StemBranchHour(lunar.Year(), int(lunar.Month()), lunar.Day(), lunar.Hour()), "")
 }
 
@@ -250,7 +248,6 @@ func (lunar *Lunar) Date() string {
 		result += "闰"
 	}
 	result += GetChineseMonth(lunar.month)
-	log.Println("day", lunar.Day(), lunar.day)
 	result += GetChineseDay(lunar.day)
 	return result
 }
