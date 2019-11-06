@@ -62,6 +62,7 @@ func (lunar *Lunar) YueZhu() []string {
 
 //NianZhu 年柱
 func (lunar *Lunar) NianZhu() []string {
+	//TODO：(立春)
 	return strings.Split(StemBranchYear(lunar.year), "")
 }
 
