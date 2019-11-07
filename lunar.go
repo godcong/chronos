@@ -14,13 +14,20 @@ type Lunar struct {
 	day       int
 	hour      int
 	leapMonth int
-	isLeap    bool
+	leap      bool
 }
 
 var loc *time.Location
 
 func init() {
 	loc, _ = time.LoadLocation("Local")
+}
+
+func (lunar *Lunar) isLeap() bool {
+	if lunar.leap && (lunar.month == lunar.leapMonth) {
+		return true
+	}
+	return false
 }
 
 // Type ...
@@ -179,8 +186,8 @@ func lunarInput(date string) time.Time {
 func CalculateLunar(date string) *Lunar {
 	input := lunarInput(date)
 	lunar := Lunar{
-		Time:   input,
-		isLeap: false,
+		Time: input,
+		leap: false,
 	}
 
 	i, day := 0, 0
@@ -200,7 +207,7 @@ func CalculateLunar(date string) *Lunar {
 		if i == lunar.leapMonth+1 && isLeapYear {
 			day = leapDay(year)
 			isLeapYear = false
-			lunar.isLeap = true
+			lunar.leap = true
 			i--
 		} else {
 			day = monthDays(year, i)
@@ -234,22 +241,22 @@ func betweenDay(d time.Time, s time.Time) int {
 func Solar2Lunar(time time.Time) string {
 	lunar := CalculateLunar(time.Format(DateFormat))
 	result := StemBranchYear(lunar.year) + "年"
-	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
+	if lunar.leap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
 	}
-	result += GetChineseMonth(lunar.month)
-	result += GetChineseDay(lunar.day)
+	result += getChineseMonth(lunar.month)
+	result += getChineseDay(lunar.day)
 	return result
 }
 
 // Date ...
 func (lunar *Lunar) Date() string {
-	result := StemBranchYear(lunar.year) + "年"
-	if lunar.isLeap && (lunar.month == lunar.leapMonth) {
+	result := getChineseYear(lunar.year)
+	if lunar.isLeap() {
 		result += "闰"
 	}
-	result += GetChineseMonth(lunar.month)
-	result += GetChineseDay(lunar.day)
+	result += getChineseMonth(lunar.month)
+	result += getChineseDay(lunar.day)
 	return result
 }
 

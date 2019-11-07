@@ -175,16 +175,20 @@ func GetTermInfo(y, n int) int {
 	return i
 }
 
-//GetChineseMonth 取得月历月
-func GetChineseMonth(m int) string {
+func getChineseYear(year int) string {
+	return StemBranchYear(year) + "年"
+}
+
+//getChineseMonth 取得月历月
+func getChineseMonth(m int) string {
 	if m > 12 || m < 1 {
 		return "?月"
 	}
 	return chineseNumber[m-1] + "月" //加上月字
 }
 
-//GetChineseDay 取得月历日
-func GetChineseDay(d int) string {
+//getChineseDay 取得月历日
+func getChineseDay(d int) string {
 	if d < 0 || d > 31 {
 		return "?日"
 	}
