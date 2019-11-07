@@ -4,6 +4,15 @@ import (
 	"strconv"
 )
 
+const (
+	cvalue21 = iota
+	cvalue22
+)
+
+var ctable = []float64{
+	cvalue21: 3.87,
+	cvalue22: 4.15,
+}
 var heavenlyStem = []string{
 	`甲`, `乙`, `丙`, `丁`, `戊`, `己`, `庚`, `辛`, `壬`, `癸`,
 }
@@ -275,4 +284,14 @@ func StemBranchMonth(y, m, d int) string {
 func StemBranchYear(y int) string {
 	num := y - 4
 	return heavenlyStem[num%10] + earthyBranch[num%12]
+}
+
+func centuryCValue(y int) float64 {
+	switch {
+	case y >= 2001 && y <= 2100:
+		return ctable[cvalue21]
+	case y >= 2101 && y <= 2200:
+		return ctable[cvalue22]
+	}
+	panic("not supported")
 }
