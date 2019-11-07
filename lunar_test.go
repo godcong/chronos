@@ -83,7 +83,10 @@ func TestNewLunar(t *testing.T) {
 // TestCalculateLunar ...
 func TestCalculateLunar(t *testing.T) {
 	//log.Print("now: ", chronos.Solar2Lunar(time.Parse()))
-	log.Print(chronos.New("2019/11/01 02:13").Lunar().EightCharacter())
+	log.Print(chronos.New("2019/10/31 23:13").Lunar().EightCharacter())
+	log.Print(chronos.New("2019/11/01 0:13").Lunar().EightCharacter())
+	log.Print(chronos.New("2019/11/01 1:13").Lunar().EightCharacter())
+
 	log.Print(chronos.New("2020/01/24 0:40").LunarDate())
 
 	log.Print(chronos.New("2020/01/25 0:40").LunarDate())
