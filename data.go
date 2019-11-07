@@ -270,7 +270,6 @@ func StemBranchDay(y, m, d int) string {
 func StemBranchMonth(y, m, d int) string {
 	//月柱 1900年1月小寒以前为 丙子月(60进制12)
 	fir := GetTermInfo(y, m*2-1) //返回当月「节」为几日开始
-	//sec := GetTermInfo(y, m*2)   //返回当月「节」为几日开始
 
 	//依据12节气修正干支月
 	var sb = GetStemBranch(fixSuffix(y)*12 + m + 11)
