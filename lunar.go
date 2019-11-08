@@ -43,8 +43,12 @@ func (lunar *Lunar) Calendar() Calendar {
 }
 
 // EightCharacter ...
-func (lunar *Lunar) EightCharacter() []string {
-	rlt := lunar.nianZhu() + lunar.yueZhu() + lunar.riZhu() + lunar.shiZhu()
+func (lunar *Lunar) EightCharacter(fix ...int) []string {
+	rlt := lunar.nianZhu(0)
+	if fix != nil {
+		rlt = lunar.nianZhu(fix[0])
+	}
+	rlt += lunar.yueZhu() + lunar.riZhu() + lunar.shiZhu()
 	return strings.Split(rlt, "")
 }
 
@@ -64,10 +68,10 @@ func (lunar *Lunar) yueZhu() string {
 }
 
 //nianZhu 年柱
-func (lunar *Lunar) nianZhu() string {
+func (lunar *Lunar) nianZhu(fix int) string {
 	//log.Println("year", lunar.Year(), "nyear", lunar.year, "month", lunar.Month(), "day", lunar.Day(), "lichun", getLiChunDay(lunar.Year()))
 	if lunar.Month() > 2 || (lunar.Month() == 2 && lunar.Day() >= getLiChunDay(lunar.Year())) {
-		return StemBranchYear(lunar.Year())
+		return StemBranchYear(lunar.Year() + fix)
 	}
 	return StemBranchYear(lunar.Year() - 1)
 }
