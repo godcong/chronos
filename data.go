@@ -290,6 +290,8 @@ func StemBranchYear(y int) string {
 
 func centuryCValue(y int) float64 {
 	switch {
+	case y > 1901 && y <= 2000:
+		return ctable[cvalue20]
 	case y >= 2001 && y <= 2100:
 		return ctable[cvalue21]
 	case y >= 2101 && y <= 2200:
