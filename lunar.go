@@ -15,6 +15,7 @@ type Lunar struct {
 	hour      int
 	leapMonth int
 	leap      bool
+	fixLiChun int //立春当天如果未到时辰：-1
 }
 
 var loc *time.Location
@@ -35,6 +36,10 @@ func (lunar *Lunar) Type() string {
 	return "lunar"
 }
 
+func (lunar *Lunar) FixLiChun(fix int) {
+	lunar.fixLiChun = fix
+}
+
 // Calendar ...
 func (lunar *Lunar) Calendar() Calendar {
 	t := time.Time{}
@@ -43,12 +48,8 @@ func (lunar *Lunar) Calendar() Calendar {
 }
 
 // EightCharacter ...
-func (lunar *Lunar) EightCharacter(fix ...int) []string {
-	rlt := lunar.nianZhu(0)
-	if fix != nil {
-		rlt = lunar.nianZhu(fix[0])
-	}
-	rlt += lunar.yueZhu() + lunar.riZhu() + lunar.shiZhu()
+func (lunar *Lunar) EightCharacter() []string {
+	rlt := lunar.nianZhu(lunar.fixLiChun) + lunar.yueZhu() + lunar.riZhu() + lunar.shiZhu()
 	return strings.Split(rlt, "")
 }
 
@@ -78,7 +79,7 @@ func (lunar *Lunar) nianZhu(fix int) string {
 
 // GetZodiac ...
 func GetZodiac(lunar *Lunar) string {
-	s := string([]rune(lunar.nianZhu())[1])
+	s := string([]rune(lunar.nianZhu(lunar.fixLiChun))[1])
 	for idx, v := range earthyBranch {
 		if strings.Compare(v, s) == 0 {
 			return zodiacs[idx]
