@@ -2,7 +2,6 @@ package chronos
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 )
@@ -66,8 +65,8 @@ func (lunar *Lunar) yueZhu() string {
 
 //nianZhu 年柱
 func (lunar *Lunar) nianZhu() string {
-	log.Println("year", lunar.Year(), "month", lunar.Month(), "day", lunar.Day(), "lichun", getLiChunDay(lunar.Year()))
-	if lunar.Month() > 2 && lunar.Day() >= getLiChunDay(lunar.Year()) {
+	//log.Println("year", lunar.Year(), "nyear", lunar.year, "month", lunar.Month(), "day", lunar.Day(), "lichun", getLiChunDay(lunar.Year()))
+	if lunar.Month() > 2 || (lunar.Month() == 2 && lunar.Day() >= getLiChunDay(lunar.Year())) {
 		return StemBranchYear(lunar.Year())
 	}
 	return StemBranchYear(lunar.Year() - 1)
