@@ -1,15 +1,18 @@
 package chronos
 
 import (
+	"fmt"
 	"strconv"
 )
 
 const (
-	cvalue21 = iota
+	cvalue20 = iota
+	cvalue21
 	cvalue22
 )
 
 var ctable = []float64{
+	cvalue20: 4.6295,
 	cvalue21: 3.87,
 	cvalue22: 4.15,
 }
@@ -292,7 +295,7 @@ func centuryCValue(y int) float64 {
 	case y >= 2101 && y <= 2200:
 		return ctable[cvalue22]
 	}
-	panic("not supported")
+	panic(fmt.Sprintf("not supported(%d)", y))
 }
 
 func getLiChunDay(year int) int {
