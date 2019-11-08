@@ -83,9 +83,15 @@ func TestNewLunar(t *testing.T) {
 // TestCalculateLunar ...
 func TestCalculateLunar(t *testing.T) {
 	//log.Print("now: ", chronos.Solar2Lunar(time.Parse()))
+	//检查日柱是否正确
 	log.Print(chronos.New("2019/10/31 23:13").Lunar().EightCharacter())
 	log.Print(chronos.New("2019/11/01 0:13").Lunar().EightCharacter())
 	log.Print(chronos.New("2019/11/01 1:13").Lunar().EightCharacter())
+
+	//检查立春是否有效
+	log.Print(chronos.New("2020/02/03 23:13").Lunar().EightCharacter())
+	log.Print(chronos.New("2020/02/04 1:13").Lunar().EightCharacter())
+	log.Print(chronos.New("2020/02/04 18:13").Lunar().EightCharacter())
 
 	log.Print(chronos.New("2020/01/24 0:40").LunarDate())
 
