@@ -294,3 +294,11 @@ func centuryCValue(y int) float64 {
 	}
 	panic("not supported")
 }
+
+func getLiChunDay(year int) int {
+	c := centuryCValue(year)
+	y := float64(year % 100)
+	l := int((y - 1) / 4)
+	return int((y*0.2422+c)/1 - float64(l))
+
+}
