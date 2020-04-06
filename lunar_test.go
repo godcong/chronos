@@ -112,6 +112,7 @@ func TestLunar_EightCharacter(t *testing.T) {
 	//output 己 亥 甲 戌 庚 子 丁 丑
 	log.Println(chronos.New("2019/10/30 01:30").Lunar().EightCharacter())
 	//output 己 亥 甲 戌 庚 子 丙 子
-	log.Println(chronos.New("2019/10/30 23:30").Lunar().EightCharacter())
+	log.Println(chronos.New("2019/10/30 23:00").Lunar().EightCharacter())
+	log.Println(chronos.New("2019/10/31 00:30").Lunar().EightCharacter())
 
 }

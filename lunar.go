@@ -60,6 +60,9 @@ func (lunar *Lunar) shiZhu() string {
 
 //riZhu 日柱
 func (lunar *Lunar) riZhu() string {
+	if lunar.Hour() >= 23 {
+		return StemBranchDay(lunar.Year(), int(lunar.Month()), lunar.Day()+1)
+	}
 	return StemBranchDay(lunar.Year(), int(lunar.Month()), lunar.Day())
 }
 
