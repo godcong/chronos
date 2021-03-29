@@ -39,6 +39,12 @@ func (lunar *Lunar) Type() string {
 func (lunar *Lunar) FixLiChun(fix int) {
 	lunar.fixLiChun = fix
 }
+func (lunar *Lunar) ChineseMonth() int {
+	return lunar.month
+}
+func (lunar *Lunar) ChineseDay() int {
+	return lunar.day
+}
 
 // Calendar ...
 func (lunar *Lunar) Calendar() Calendar {

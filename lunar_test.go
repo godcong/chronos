@@ -106,6 +106,8 @@ func TestCalculateLunar(t *testing.T) {
 
 	log.Print(chronos.New("2019/06/01 0:40").LunarDate())
 
+	log.Println(chronos.New(time.Now()).Lunar().ChineseDay())
+	log.Println(chronos.New(time.Now()).Lunar().ChineseMonth())
 }
 
 func TestLunar_EightCharacter(t *testing.T) {
