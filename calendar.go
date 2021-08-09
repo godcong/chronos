@@ -19,12 +19,6 @@ type Calendar interface {
 	LunarDate() string
 }
 
-// CalendarData ...
-type CalendarData interface {
-	Type() string
-	Calendar() Calendar
-}
-
 //New can input three type of time to create the calendar
 //"2006/01/02 03:04" format string
 // time.Time value
@@ -35,6 +29,8 @@ func New(v ...interface{}) Calendar {
 		return &calendar{time.Now()}
 	}
 	switch vv := v[0].(type) {
+	case nil:
+		c = &calendar{time.Now()}
 	case string:
 		c = formatDate(vv)
 	case time.Time:
