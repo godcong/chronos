@@ -177,7 +177,7 @@ func lunarStart() time.Time {
 
 func lunarInput(date string) time.Time {
 
-	input, err := time.ParseInLocation(DateFormat, date, loc)
+	input, err := time.ParseInLocation(DefaultDateFormat, date, loc)
 	if err != nil {
 		fmt.Println(err.Error())
 		return time.Time{}
@@ -247,7 +247,7 @@ func betweenDay(d time.Time, s time.Time) int {
 
 //Solar2Lunar 输入日历输出月历
 func Solar2Lunar(time time.Time) string {
-	lunar := CalculateLunar(time.Format(DateFormat))
+	lunar := CalculateLunar(time.Format(DefaultDateFormat))
 	result := StemBranchYear(lunar.year) + "年"
 	if lunar.leap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
