@@ -1,0 +1,27 @@
+package chronos
+
+var ruleTable = map[string]string{
+	"lunar_year":          "农历年",
+	"lunar_month":         "农历月",
+	"lunar_day":           "农历日",
+	"lunar_hour":          "农历时",
+	"lunar_year_chinese":  "(汉字)农历年",
+	"lunar_month_chinese": "(汉字)农历月",
+	"lunar_day_chinese":   "(汉字)农历日",
+	"lunar_hour_chinese":  "(汉字)农历时辰",
+	"ganzhi_year":         "(干支)年柱",
+	"ganzhi_month":        "(干支)月柱",
+	"ganzhi_day":          "(干支)日柱",
+	"ganzhi_hour":         "(干支)时柱",
+	"zodiac":              "生肖",
+	"term":                "节气",
+	"is_leap":             "是否为闰月",
+	"gregorian_year":      "公历年",
+	"gregorian_month":     "公历月",
+	"gregorian_day":       "公历日",
+	"gregorian_hour":      "公历时",
+	"week_number":         "(数字)星期几",
+	"week_day":            "(汉字)星期几",
+	"is_today":            "是否为今天",
+	"constellation":       "星座",
+}

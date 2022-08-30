@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestNew(t *testing.T) {
+func TestNewSolarCalendar(t *testing.T) {
 	type args struct {
 		v []any
 	}
@@ -44,7 +44,7 @@ func TestNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := New(tt.args.v...); !reflect.DeepEqual(got.String(), tt.want) {
+			if got := NewSolarCalendar(tt.args.v...); !reflect.DeepEqual(got.String(), tt.want) {
 				t.Errorf("New() = %v, want %v", got, tt.want)
 			}
 		})

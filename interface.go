@@ -8,8 +8,6 @@ import (
 type Calendar interface {
 	Lunar() *Lunar
 	Solar() *Solar
-	Time() time.Time
-	//Bind(v any) error
-	//JSON() []byte
-	String() string
+	LocalTime() time.Time
+	ViewData() View
 }
