@@ -10,8 +10,18 @@ const DefaultDateFormat = "2006/01/02 15:04"
 const LunarDateFormat = "2006/01/02"
 
 type calendar struct {
-	loc  *time.Location
-	time time.Time
+	loc   *time.Location
+	time  time.Time
+	lunar *lunar
+	solar *solar
+}
+
+func (c *calendar) FormatTime() string {
+	return c.time.Format(DefaultDateFormat)
+}
+
+func (c *calendar) Time() time.Time {
+	return c.time
 }
 
 func (c *calendar) LocalTime() time.Time {
@@ -29,18 +39,19 @@ func (c *calendar) String() string {
 }
 
 // Lunar ...
-func (c *calendar) Lunar() *Lunar {
-	return CalculateLunar(c.time.Format(DefaultDateFormat))
+func (c *calendar) Lunar() Lunar {
+	return &lunar{}
 }
 
 // Solar ...
-func (c *calendar) Solar() *Solar {
-	return &Solar{time: c.time}
+func (c *calendar) Solar() Solar {
+	return &solar{}
 }
 
-// LunarDate ...
-func (c *calendar) LunarDate() string {
-	return c.Lunar().Date()
+func (c *calendar) initLunarAndSolar() *calendar {
+	c.solar = &solar{}
+	c.lunar = &lunar{}
+	return c
 }
 
 //NewSolarCalendar can input three type of time to create the calendar
@@ -48,7 +59,7 @@ func (c *calendar) LunarDate() string {
 // time.Time value
 // or nil to create a new time.Now() value
 func NewSolarCalendar(v ...any) Calendar {
-	var c Calendar
+	var c *calendar
 	if len(v) == 0 {
 		return ParseTime(time.Now(), time.Local)
 	}
@@ -61,13 +72,14 @@ func NewSolarCalendar(v ...any) Calendar {
 	case string:
 		c = parseStringDate(vv, args...)
 	case time.Time:
-		c = ParseTime(vv, time.Local)
+		c = parseTime(vv, time.Local)
 	default:
-		c = ParseTime(time.Now(), time.Local)
+		c = parseTime(time.Now(), time.Local)
 	}
+	c.initLunarAndSolar()
 	return c
 }
 
 func NewLunarCalendar() Calendar {
-
+	return &calendar{}
 }

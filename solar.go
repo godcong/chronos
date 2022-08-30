@@ -1,17 +1,27 @@
 package chronos
 
-import "time"
-
-// Solar ...
-type Solar struct {
-	time time.Time
+// solar ...
+type solar struct {
 }
 
-// NewSolar ...
-func NewSolar(calendar Calendar) *Solar {
-	return calendar.Solar()
+func (s *solar) Year() int {
+	//TODO implement me
+	panic("implement me")
 }
 
-func (s *Solar) Time() time.Time {
-	return s.time
+func (s *solar) Month() int {
+	//TODO implement me
+	panic("implement me")
 }
+
+func (s *solar) Day() int {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (s *solar) Hour() int {
+	//TODO implement me
+	panic("implement me")
+}
+
+var _ Solar = &solar{}

@@ -44,7 +44,7 @@ func TestNewSolarCalendar(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewSolarCalendar(tt.args.v...); !reflect.DeepEqual(got.String(), tt.want) {
+			if got := NewSolarCalendar(tt.args.v...); !reflect.DeepEqual(got.FormatTime(), tt.want) {
 				t.Errorf("New() = %v, want %v", got, tt.want)
 			}
 		})

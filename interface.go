@@ -6,8 +6,24 @@ import (
 
 // Calendar ...
 type Calendar interface {
-	Lunar() *Lunar
-	Solar() *Solar
-	LocalTime() time.Time
+	Lunar() Lunar
+	Solar() Solar
+	FormatTime() string
+	Time() time.Time
 	ViewData() View
+}
+
+// Solar ...
+type Solar interface {
+	Year() int
+	Month() int
+	Day() int
+	Hour() int
+}
+
+type Lunar interface {
+	Year() int
+	Month() int
+	Day() int
+	Hour() int
 }
