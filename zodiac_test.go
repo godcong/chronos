@@ -100,7 +100,7 @@ func TestZodiacChinese(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				zodiac: ZodiacCat,
+				zodiac: 12,
 			},
 			want: "猫",
 		},

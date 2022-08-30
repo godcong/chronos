@@ -8,6 +8,10 @@ type solar struct {
 	hour  int
 }
 
+func (s *solar) IsLeapYear() bool {
+	return s.year%4 == 0 && (s.year%100 != 0 || s.year%400 == 0)
+}
+
 func (s *solar) Year() int {
 	return s.year
 }
