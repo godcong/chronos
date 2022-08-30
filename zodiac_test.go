@@ -111,10 +111,17 @@ func TestZodiacChinese(t *testing.T) {
 			},
 			want: "猫",
 		},
+		{
+			name: "",
+			args: args{
+				zodiac: 14,
+			},
+			want: "猫",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := ZodiacChinese(tt.args.zodiac); got != tt.want {
+			if got := ZodiacChineseV2(tt.args.zodiac); got != tt.want {
 				t.Errorf("ZodiacChinese() = %v, want %v", got, tt.want)
 			}
 		})

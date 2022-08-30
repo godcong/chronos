@@ -2,29 +2,35 @@ package chronos
 
 import (
 	"errors"
+
+	"github.com/godcong/chronos/v2/runes"
 )
 
-var zodiacs = []rune("鼠牛虎兔龙蛇马羊猴鸡狗猪猫")
+const defaultZodiac = "猫"
+
+var zodiacs = runes.Runes("鼠牛虎兔龙蛇马羊猴鸡狗猪猫")
 
 // ErrWrongZodiacTypes returns an error
-var ErrWrongZodiacTypes = errors.New("error wrong zodiac types")
+var ErrWrongZodiacTypes = errors.New("wrong zodiac type error")
 
 //Zodiac
 //ENUM(rat, cow, tiger, rabbit, dragon, snake, horse, sheep, monkey, chicken, dog, pig, cat)
 type Zodiac uint32
 
-func ZodiacChinese(zodiac Zodiac) string {
-	if zodiac >= ZodiacCat {
-		zodiac = ZodiacCat
+func ZodiacChineseV2(zodiac Zodiac) string {
+	readString, err := zodiacs.ReadString(int(zodiac), 1)
+	if err != nil {
+		return defaultZodiac
 	}
-	return string(zodiacs[int(zodiac)])
+	return readString
 }
 
-func ZodiacChineseV2(zodiac Zodiac) (string, error) {
-	if zodiac >= ZodiacCat {
+func ZodiacChinese(zodiac Zodiac) (string, error) {
+	readString, err := zodiacs.ReadString(int(zodiac), 1)
+	if err != nil {
 		return "", ErrWrongZodiacTypes
 	}
-	return string(zodiacs[int(zodiac)]), nil
+	return readString, nil
 }
 
 // GetZodiac ...
