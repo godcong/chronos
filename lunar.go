@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-// Lunar ...
-type Lunar struct {
+// lunar ...
+type lunar struct {
 	time.Time
 	year      int
 	month     int
@@ -24,71 +24,64 @@ func init() {
 	loc, _ = time.LoadLocation("Local")
 }
 
-func (lunar *Lunar) isLeap() bool {
-	if lunar.leap && (lunar.month == lunar.leapMonth) {
+func (l *lunar) isLeap() bool {
+	if l.leap && (l.month == l.leapMonth) {
 		return true
 	}
 	return false
 }
 
-// Type ...
-func (lunar *Lunar) Type() string {
-	return "lunar"
+func (l *lunar) Month() int {
+	return l.month
 }
 
-func (lunar *Lunar) FixLiChun(fix int) {
-	lunar.fixLiChun = fix
+// Type ...
+func (l *lunar) Type() string {
+	return "l"
+}
+
+func (l *lunar) FixLiChun(fix int) {
+	l.fixLiChun = fix
 }
 
 // Calendar ...
-func (lunar *Lunar) Calendar() Calendar {
+func (l *lunar) Calendar() Calendar {
 	t := time.Time{}
-	t.AddDate(lunar.year, lunar.month, lunar.day)
+	t.AddDate(l.year, l.month, l.day)
 	return NewSolarCalendar(t)
 }
 
 // EightCharacter ...
-func (lunar *Lunar) EightCharacter() []string {
-	rlt := lunar.nianZhu(lunar.fixLiChun) + lunar.yueZhu() + lunar.riZhu() + lunar.shiZhu()
+func (l *lunar) EightCharacter() []string {
+	rlt := l.nianZhu(l.fixLiChun) + l.yueZhu() + l.riZhu() + l.shiZhu()
 	return strings.Split(rlt, "")
 }
 
 //shiZhu 时柱
-func (lunar *Lunar) shiZhu() string {
-	return StemBranchHour(lunar.Year(), int(lunar.Month()), lunar.Day(), lunar.Hour())
+func (l *lunar) shiZhu() string {
+	return StemBranchHour(l.Year(), int(l.Month()), l.Day(), l.Hour())
 }
 
 //riZhu 日柱
-func (lunar *Lunar) riZhu() string {
-	if lunar.Hour() >= 23 {
-		return StemBranchDay(lunar.Year(), int(lunar.Month()), lunar.Day()+1)
+func (l *lunar) riZhu() string {
+	if l.Hour() >= 23 {
+		return StemBranchDay(l.Year(), int(l.Month()), l.Day()+1)
 	}
-	return StemBranchDay(lunar.Year(), int(lunar.Month()), lunar.Day())
+	return StemBranchDay(l.Year(), int(l.Month()), l.Day())
 }
 
 //yueZhu 月柱
-func (lunar *Lunar) yueZhu() string {
-	return StemBranchMonth(lunar.Year(), int(lunar.Month()), lunar.Day())
+func (l *lunar) yueZhu() string {
+	return StemBranchMonth(l.Year(), int(l.Month()), l.Day())
 }
 
 //nianZhu 年柱
-func (lunar *Lunar) nianZhu(fix int) string {
-	//log.Println("year", lunar.Year(), "nyear", lunar.year, "month", lunar.Month(), "day", lunar.Day(), "lichun", getLiChunDay(lunar.Year()))
-	if lunar.Month() > 2 || (lunar.Month() == 2 && lunar.Day() >= getLiChunDay(lunar.Year())) {
-		return StemBranchYear(lunar.Year() + fix)
+func (l *lunar) nianZhu(fix int) string {
+	//log.Println("year", l.Year(), "nyear", l.year, "month", l.Month(), "day", l.Day(), "lichun", getLiChunDay(l.Year()))
+	if l.Month() > 2 || (l.Month() == 2 && l.Day() >= getLiChunDay(l.Year())) {
+		return StemBranchYear(l.Year() + fix)
 	}
-	return StemBranchYear(lunar.Year() - 1)
-}
-
-// GetZodiac ...
-func GetZodiac(lunar *Lunar) string {
-	s := string([]rune(lunar.nianZhu(lunar.fixLiChun))[1])
-	for idx, v := range earthyBranch {
-		if strings.Compare(v, s) == 0 {
-			return zodiacs[idx]
-		}
-	}
-	return ""
+	return StemBranchYear(l.Year() - 1)
 }
 
 func yearDay(y int) int {
@@ -191,9 +184,9 @@ func lunarInput(date string) time.Time {
 }
 
 // CalculateLunar ...
-func CalculateLunar(date string) *Lunar {
+func CalculateLunar(date string) *lunar {
 	input := lunarInput(date)
-	lunar := Lunar{
+	lunar := lunar{
 		Time: input,
 		leap: false,
 	}
@@ -258,13 +251,13 @@ func Solar2Lunar(time time.Time) string {
 }
 
 // Date ...
-func (lunar *Lunar) Date() string {
-	result := getChineseYear(lunar.year)
-	if lunar.isLeap() {
+func (l *lunar) Date() string {
+	result := getChineseYear(l.year)
+	if l.isLeap() {
 		result += "闰"
 	}
-	result += getChineseMonth(lunar.month)
-	result += getChineseDay(lunar.day)
+	result += getChineseMonth(l.month)
+	result += getChineseDay(l.day)
 	return result
 }
 
@@ -283,3 +276,5 @@ var solarTerms = []string{
 //	`壬寅`, `癸卯`, `甲辰`, `乙巳`, `丙午`, `丁未`, `戊申`, `己酉`, `庚戌`, `辛亥`, `壬子`, `癸丑`, //丁、壬
 //	`甲寅`, `乙卯`, `丙辰`, `丁巳`, `戊午`, `己未`, `庚申`, `辛酉`, `壬戌`, `癸亥`, `甲子`, `乙丑`, //戊、癸
 //}
+
+var _ Lunar = &lunar{}

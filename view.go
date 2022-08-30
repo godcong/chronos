@@ -7,11 +7,13 @@ type View struct {
 		Year  int `json:"year"`
 		Month int `json:"month"`
 		Day   int `json:"day"`
+		Hour  int `json:"hour"`
 	} `json:"solar"`
 	Lunar struct {
 		Year      int  `json:"year"`
 		Month     int  `json:"month"`
 		Day       int  `json:"day"`
+		Hour      int  `json:"hour"`
 		LeapMonth bool `json:"leap_month"`
 	} `json:"lunar"`
 	Ganzhi struct {

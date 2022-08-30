@@ -55,13 +55,18 @@ func parseStringDate(t string, vv ...any) *calendar {
 	return c
 }
 
+func parseTime(t time.Time, local *time.Location) *calendar {
+	c := &calendar{
+		loc:  local,
+		time: t,
+	}
+	return c
+}
+
 // ParseTime parse time.Time to Calendar
 // @param time.Time
 // @param *time.Location
 // @return Calendar
 func ParseTime(t time.Time, local *time.Location) Calendar {
-	return &calendar{
-		loc:  local,
-		time: t,
-	}
+	return parseTime(t, local).initLunarAndSolar()
 }
