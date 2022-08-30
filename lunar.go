@@ -44,7 +44,7 @@ func (lunar *Lunar) FixLiChun(fix int) {
 func (lunar *Lunar) Calendar() Calendar {
 	t := time.Time{}
 	t.AddDate(lunar.year, lunar.month, lunar.day)
-	return New(t)
+	return NewSolarCalendar(t)
 }
 
 // EightCharacter ...
