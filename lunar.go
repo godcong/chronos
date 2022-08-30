@@ -23,6 +23,14 @@ type lunar struct {
 	fixLiChun int //立春当天如果未到时辰：-1
 }
 
+func (l *lunar) IsLeapYear() bool {
+	return l.leap
+}
+
+func (l *lunar) IsLeapMonth() bool {
+	return l.month == l.leapMonth
+}
+
 func (l *lunar) Year() int {
 	return l.year
 }
@@ -159,7 +167,7 @@ func GetAstro(m, d int) string {
 	if idx {
 		index = m*2 - 2
 	}
-	return constellation[index] + "座"
+	return string(constellations[index]) + "座"
 }
 
 func lunarYear(offset int) (int, int) {

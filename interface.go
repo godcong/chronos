@@ -19,6 +19,7 @@ type Solar interface {
 	Month() int
 	Day() int
 	Hour() int
+	IsLeapYear() bool
 }
 
 type Lunar interface {
@@ -26,4 +27,6 @@ type Lunar interface {
 	Month() int
 	Day() int
 	Hour() int
+	IsLeapYear() bool
+	IsLeapMonth() bool
 }
