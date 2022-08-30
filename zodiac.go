@@ -1,6 +1,13 @@
 package chronos
 
+import (
+	"errors"
+)
+
 var zodiacs = []rune("鼠牛虎兔龙蛇马羊猴鸡狗猪猫")
+
+// ErrWrongZodiacTypes returns an error
+var ErrWrongZodiacTypes = errors.New("error wrong zodiac types")
 
 //Zodiac
 //ENUM(rat, cow, tiger, rabbit, dragon, snake, horse, sheep, monkey, chicken, dog, pig, cat)
@@ -11,6 +18,13 @@ func ZodiacChinese(zodiac Zodiac) string {
 		zodiac = ZodiacCat
 	}
 	return string(zodiacs[int(zodiac)])
+}
+
+func ZodiacChineseV2(zodiac Zodiac) (string, error) {
+	if zodiac >= ZodiacCat {
+		return "", ErrWrongZodiacTypes
+	}
+	return string(zodiacs[int(zodiac)]), nil
 }
 
 // GetZodiac ...
