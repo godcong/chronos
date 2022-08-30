@@ -2,26 +2,26 @@ package chronos
 
 // solar ...
 type solar struct {
+	year  int
+	month int
+	day   int
+	hour  int
 }
 
 func (s *solar) Year() int {
-	//TODO implement me
-	panic("implement me")
+	return s.year
 }
 
 func (s *solar) Month() int {
-	//TODO implement me
-	panic("implement me")
+	return s.month
 }
 
 func (s *solar) Day() int {
-	//TODO implement me
-	panic("implement me")
+	return s.day
 }
 
 func (s *solar) Hour() int {
-	//TODO implement me
-	panic("implement me")
+	return s.hour
 }
 
 var _ Solar = &solar{}
