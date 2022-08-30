@@ -35,11 +35,9 @@ const (
 	ZodiacDog
 	// ZodiacPig is a Zodiac of type Pig.
 	ZodiacPig
-	// ZodiacCat is a Zodiac of type Cat.
-	ZodiacCat
 )
 
-const _ZodiacName = "ratcowtigerrabbitdragonsnakehorsesheepmonkeychickendogpigcat"
+const _ZodiacName = "ratcowtigerrabbitdragonsnakehorsesheepmonkeychickendogpig"
 
 var _ZodiacMap = map[Zodiac]string{
 	ZodiacRat:     _ZodiacName[0:3],
@@ -54,7 +52,6 @@ var _ZodiacMap = map[Zodiac]string{
 	ZodiacChicken: _ZodiacName[44:51],
 	ZodiacDog:     _ZodiacName[51:54],
 	ZodiacPig:     _ZodiacName[54:57],
-	ZodiacCat:     _ZodiacName[57:60],
 }
 
 // String implements the Stringer interface.
@@ -78,7 +75,6 @@ var _ZodiacValue = map[string]Zodiac{
 	_ZodiacName[44:51]: ZodiacChicken,
 	_ZodiacName[51:54]: ZodiacDog,
 	_ZodiacName[54:57]: ZodiacPig,
-	_ZodiacName[57:60]: ZodiacCat,
 }
 
 // ParseZodiac attempts to convert a string to a Zodiac.

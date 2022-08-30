@@ -6,9 +6,14 @@ import (
 	"time"
 )
 
+// minLunarYear 最小可转换年
+const minLunarYear = 1900
+
+// maxLunarYear 最大可转换年
+const maxLunarYear = 2100
+
 // lunar ...
 type lunar struct {
-	time.Time
 	year      int
 	month     int
 	day       int
@@ -16,6 +21,18 @@ type lunar struct {
 	leapMonth int
 	leap      bool
 	fixLiChun int //立春当天如果未到时辰：-1
+}
+
+func (l *lunar) Year() int {
+	return l.year
+}
+
+func (l *lunar) Day() int {
+	return l.day
+}
+
+func (l *lunar) Hour() int {
+	return l.hour
 }
 
 var loc *time.Location
@@ -149,7 +166,7 @@ func lunarYear(offset int) (int, int) {
 	day := 0
 	i := 0
 	//求当年农历年天数
-	for i = yearMin; i <= yearMax; i++ {
+	for i = minLunarYear; i <= maxLunarYear; i++ {
 		day = yearDay(i)
 		if offset-day < 1 {
 			break
@@ -187,7 +204,6 @@ func lunarInput(date string) time.Time {
 func CalculateLunar(date string) *lunar {
 	input := lunarInput(date)
 	lunar := lunar{
-		Time: input,
 		leap: false,
 	}
 
@@ -260,9 +276,6 @@ func (l *lunar) Date() string {
 	result += getChineseDay(l.day)
 	return result
 }
-
-const yearMin = 1900
-const yearMax = 2100
 
 //一月	二月	三月	四月	五月	六月	七月	八月	九月	十月	十一月	十二月 :年份
 //var ChinesMonth = []string{
