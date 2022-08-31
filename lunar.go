@@ -84,29 +84,29 @@ func (l *lunar) EightCharacter() []string {
 
 //shiZhu 时柱
 func (l *lunar) shiZhu() string {
-	return StemBranchHour(l.Year(), int(l.Month()), l.Day(), l.Hour())
+	return ShiZhu(l.Year(), int(l.Month()), l.Day(), l.Hour())
 }
 
 //riZhu 日柱
 func (l *lunar) riZhu() string {
 	if l.Hour() >= 23 {
-		return StemBranchDay(l.Year(), int(l.Month()), l.Day()+1)
+		return RiZhu(l.Year(), int(l.Month()), l.Day()+1)
 	}
-	return StemBranchDay(l.Year(), int(l.Month()), l.Day())
+	return RiZhu(l.Year(), int(l.Month()), l.Day())
 }
 
 //yueZhu 月柱
 func (l *lunar) yueZhu() string {
-	return StemBranchMonth(l.Year(), int(l.Month()), l.Day())
+	return YueZhu(l.Year(), int(l.Month()), l.Day())
 }
 
 //nianZhu 年柱
 func (l *lunar) nianZhu(fix int) string {
 	//log.Println("year", l.Year(), "nyear", l.year, "month", l.Month(), "day", l.Day(), "lichun", getLiChunDay(l.Year()))
 	if l.Month() > 2 || (l.Month() == 2 && l.Day() >= getLiChunDay(l.Year())) {
-		return StemBranchYear(l.Year() + fix)
+		return NianZhu(l.Year() + fix)
 	}
-	return StemBranchYear(l.Year() - 1)
+	return NianZhu(l.Year() - 1)
 }
 
 func yearDay(y int) int {
@@ -265,7 +265,7 @@ func betweenDay(d time.Time, s time.Time) int {
 //Solar2Lunar 输入日历输出月历
 func Solar2Lunar(time time.Time) string {
 	lunar := CalculateLunar(time.Format(DefaultDateFormat))
-	result := StemBranchYear(lunar.year) + "年"
+	result := NianZhu(lunar.year) + "年"
 	if lunar.leap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
 	}
