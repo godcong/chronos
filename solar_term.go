@@ -14,6 +14,15 @@ var solarTerms = runes.Runes("小寒大寒立春雨水惊蛰春分清明谷雨�
 //ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi)
 type SolarTerm uint32
 
+// SolarTermDetail 24节气表
+type SolarTermDetail struct {
+	Index       int       `json:"index"`
+	SolarTerm   SolarTerm `json:"solar_term"`
+	Time        int64     `json:"time"`
+	SanHou      string    `json:"san_hou"`
+	Explanation string    `json:"explanation"`
+}
+
 // ErrWrongSolarTermIndex returns an error
 var ErrWrongSolarTermIndex = errors.New("wrong solar term index error")
 
