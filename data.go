@@ -16,21 +16,6 @@ var ctable = []float64{
 	cvalue21: 3.87,
 	cvalue22: 4.15,
 }
-var heavenlyStem = []string{
-	`甲`, `乙`, `丙`, `丁`, `戊`, `己`, `庚`, `辛`, `壬`, `癸`,
-}
-
-var earthyBranch = []string{
-	`子`, `丑`, `寅`, `卯`, `辰`, `巳`, `午`, `未`, `申`, `酉`, `戌`, `亥`,
-}
-
-var stemBranchTable = []string{
-	`甲子`, `乙丑`, `丙寅`, `丁卯`, `戊辰`, `己巳`, `庚午`, `辛未`, `壬申`, `癸酉`, `甲戌`, `乙亥`, //甲或己日
-	`丙子`, `丁丑`, `戊寅`, `己卯`, `庚辰`, `辛巳`, `壬午`, `癸未`, `甲申`, `乙酉`, `丙戌`, `丁亥`, //乙或庚日
-	`戊子`, `己丑`, `庚寅`, `辛卯`, `壬辰`, `癸巳`, `甲午`, `乙未`, `丙申`, `丁酉`, `戊戌`, `己亥`, //丙或辛日
-	`庚子`, `辛丑`, `壬寅`, `癸卯`, `甲辰`, `乙巳`, `丙午`, `丁未`, `戊申`, `己酉`, `庚戌`, `辛亥`, //丁或壬日
-	`壬子`, `癸丑`, `甲寅`, `乙卯`, `丙辰`, `丁巳`, `戊午`, `己未`, `庚申`, `辛酉`, `壬戌`, `癸亥`, //戊或癸日
-}
 
 var yearNumber = []int{
 	0x9, 0xE, 0x13, 0x18, 0x1E, 0x23, 0x28, 0x2D, 0x33, 0x38, //1900-1909
@@ -179,7 +164,7 @@ func GetTermInfo(y, n int) int {
 }
 
 func getChineseYear(year int) string {
-	return StemBranchYear(year) + "年"
+	return NianZhu(year) + "年"
 }
 
 //getChineseMonth 取得月历月
@@ -211,27 +196,6 @@ func getChineseDay(d int) string {
 
 }
 
-//GetStemBranch 取得干支
-func GetStemBranch(y int) string {
-	return heavenlyStem[y%10] + earthyBranch[y%12]
-}
-
-//StemBranchHour 获取时柱
-//　	子 　　丑 　　寅 　　卯 　　辰 　　己
-//　　　23-01：01-03：03-05 :05-07：07-09：09-11
-//　　　午 　　未 　　申 　　酉 　　戊 　　亥
-//　　　11-13：13-15：15-17：17-19：19-21：21-23
-//`甲子`, `乙丑`, `丙寅`, `丁卯`, `戊辰`, `己巳`, `庚午`, `辛未`, `壬申`, `癸酉`, `甲戌`, `乙亥`, //甲或己日
-//`丙子`, `丁丑`, `戊寅`, `己卯`, `庚辰`, `辛巳`, `壬午`, `癸未`, `甲申`, `乙酉`, `丙戌`, `丁亥`, //乙或庚日
-//`戊子`, `己丑`, `庚寅`, `辛卯`, `壬辰`, `癸巳`, `甲午`, `乙未`, `丙申`, `丁酉`, `戊戌`, `己亥`, //丙或辛日
-//`庚子`, `辛丑`, `壬寅`, `癸卯`, `甲辰`, `乙巳`, `丙午`, `丁未`, `戊申`, `己酉`, `庚戌`, `辛亥`, //丁或壬日
-//`壬子`, `癸丑`, `甲寅`, `乙卯`, `丙辰`, `丁巳`, `戊午`, `己未`, `庚申`, `辛酉`, `壬戌`, `癸亥`, //戊或癸日
-func StemBranchHour(y, m, d, h int) string {
-	i := stemBranchIndex(y, m, d) % 5 * 12
-	idx := (h + 1) / 2 % 12
-	return stemBranchTable[fixDayNext(i, idx, h)]
-}
-
 //待优化
 func fixDayNext(row int, idx int, hour int) int {
 	if hour >= 23 {
@@ -253,30 +217,6 @@ func stemBranchIndex(y, m, d int) int {
 	}
 	m = (m - 1) % 12
 	return (yearNumber[y] + monthNumber[m] + d - 1) % 60
-}
-
-// StemBranchDay 获取日柱
-func StemBranchDay(y, m, d int) string {
-	return stemBranchTable[stemBranchIndex(y, m, d)]
-}
-
-//StemBranchMonth 获取月柱
-func StemBranchMonth(y, m, d int) string {
-	//月柱 1900年1月小寒以前为 丙子月(60进制12)
-	fir := GetTermInfo(y, m*2-1) //返回当月「节」为几日开始
-
-	//依据12节气修正干支月
-	var sb = GetStemBranch(fixSuffix(y)*12 + m + 11)
-	if d >= fir {
-		sb = GetStemBranch(fixSuffix(y)*12 + m + 12)
-	}
-	return sb
-}
-
-//StemBranchYear 获取年柱
-func StemBranchYear(y int) string {
-	num := y - 4
-	return heavenlyStem[num%10] + earthyBranch[num%12]
 }
 
 func centuryCValue(y int) float64 {
