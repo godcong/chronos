@@ -74,15 +74,18 @@ func main() {
 			j, ok := m[istr]
 			if ok {
 
-				fmt.Printf("%v:\"%v\",\n", istr, j.Year)
+				//fmt.Printf("%v:\"%v\",\n", istr, j.Year)
 				parse, err := time.ParseInLocation("2006-01-02 15:04:05", j.Year, time.UTC)
 				if err != nil {
 					fmt.Println("error parsing", "time", j.Year, "err", err)
 					continue
 				}
-				fmt.Printf("%v:\"%v\",\n", istr, parse.Format("2006-01-02 15:04:05"))
-				fmt.Printf("%v:\"%v\",\n", istr, uint64(parse.Unix()))
-				fmt.Printf("%v:\"%v\",\n", istr, time.Unix(int64(uint64(parse.Local().Unix())), 0).UTC().Format("2006-01-02 15:04:05"))
+				//fmt.Printf("%v:\"%v\",\n", istr, parse.Format("2006-01-02 15:04:05"))
+				//fmt.Printf("%v:\"%v\",\n", istr, uint64(parse.Unix()))
+				fi := strconv.FormatUint(uint64(parse.Unix()), 36)
+				fmt.Printf("%v", fi)
+
+				//fmt.Printf("%v:\"%v\",\n", istr, time.Unix(int64(uint64(parse.Local().Unix())), 0).UTC().Format("2006-01-02 15:04:05"))
 			}
 		}
 	}
