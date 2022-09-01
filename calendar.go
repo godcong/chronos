@@ -16,6 +16,10 @@ type calendar struct {
 	solar *solar
 }
 
+func (c *calendar) Value() CalendarValue {
+	return CalendarValue{}
+}
+
 func (c *calendar) FormatTime() string {
 	return c.time.Format(DefaultDateFormat)
 }
@@ -28,13 +32,8 @@ func (c *calendar) LocalTime() time.Time {
 	return c.time
 }
 
-func (c *calendar) ViewData() View {
-	//todo(parse view data)
-	return View{}
-}
-
 func (c *calendar) String() string {
-	vd, _ := json.Marshal(c.ViewData())
+	vd, _ := json.Marshal(c.Value())
 	return string(vd)
 }
 

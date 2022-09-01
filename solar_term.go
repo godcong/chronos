@@ -2,6 +2,9 @@ package chronos
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/godcong/chronos/v2/runes"
 )
@@ -41,8 +44,19 @@ func (x SolarTerm) detail() SolarTermDetail {
 
 func YearSolarTermDetail(year int, st SolarTerm) SolarTermDetail {
 	s := st.detail()
-	s.Time = solarTermTimes[year][st]
+	s.Time = solarTermTimes[year]
+
 	return s
+}
+
+func getSolarTermTime(year int, st SolarTerm) time.Time {
+	r := []rune(solarTermTimes[year])[st*13 : st*13+13]
+	parseUint, err := strconv.ParseUint(string(r), 36, 64)
+	if err != nil {
+		fmt.Println("err", err)
+		return time.Time{}
+	}
+	return time.Unix(int64(parseUint), 0)
 }
 
 func SolarTermChineseV2(st SolarTerm) string {

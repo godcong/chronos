@@ -1,6 +1,7 @@
 package chronos
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -113,6 +114,35 @@ func TestSolarTermChinese(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("SolarTermChinese() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_getSolarTermTime(t *testing.T) {
+	type args struct {
+		year int
+		st   SolarTerm
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		// TODO: Add test cases.
+		{
+			name: "",
+			args: args{
+				year: 1900,
+				st:   23,
+			},
+			want: "1900-01-20 19:32:25",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := getSolarTermTime(tt.args.year, tt.args.st); !reflect.DeepEqual(got.UTC().Format("2006-01-02 15:04:05"), tt.want) {
+				t.Errorf("getSolarTermTime() = %v, want %v", got, tt.want)
 			}
 		})
 	}
