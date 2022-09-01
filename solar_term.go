@@ -18,7 +18,7 @@ type SolarTerm uint32
 type SolarTermDetail struct {
 	Index       int       `json:"index"`
 	SolarTerm   SolarTerm `json:"solar_term"`
-	Time        int64     `json:"time"`
+	Time        string    `json:"time"`
 	SanHou      string    `json:"san_hou"`
 	Explanation string    `json:"explanation"`
 }
@@ -28,6 +28,21 @@ var ErrWrongSolarTermIndex = errors.New("wrong solar term index error")
 
 func (x SolarTerm) index() int {
 	return int(x * 2)
+}
+
+func (x SolarTerm) detail() SolarTermDetail {
+	return SolarTermDetail{
+		Index:       int(x),
+		SolarTerm:   x,
+		SanHou:      solarTermSanHous[x],
+		Explanation: solarTermExplanations[x],
+	}
+}
+
+func YearSolarTermDetail(year int, st SolarTerm) SolarTermDetail {
+	s := st.detail()
+	s.Time = solarTermTimes[year][st]
+	return s
 }
 
 func SolarTermChineseV2(st SolarTerm) string {
