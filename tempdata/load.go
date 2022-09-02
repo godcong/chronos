@@ -30,6 +30,7 @@ func ReadFile(path string) ([]map[string]jieqi, error) {
 }
 
 func main() {
+
 	file, err := ReadFile("1900.json")
 	if err != nil {
 		return
@@ -82,10 +83,10 @@ func main() {
 				}
 				//fmt.Printf("%v:\"%v\",\n", istr, parse.Format("2006-01-02 15:04:05"))
 				//fmt.Printf("%v:\"%v\",\n", istr, uint64(parse.Unix()))
-				fi := strconv.FormatUint(uint64(parse.Unix()), 36)
-				fmt.Printf("%v", fi)
+				//fi := strconv.FormatUint(uint64(parse.Unix()), 16)
+				fmt.Printf("0x%X,\n", uint64(parse.Unix()))
 
-				//fmt.Printf("%v:\"%v\",\n", istr, time.Unix(int64(uint64(parse.Local().Unix())), 0).UTC().Format("2006-01-02 15:04:05"))
+				//fmt.Printf("%v:\"%v\",\n", istr, time.Unix(int64(uint32(parse.Unix())), 0).UTC().Format("2006-01-02 15:04:05"))
 			}
 		}
 	}
