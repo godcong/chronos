@@ -15,11 +15,14 @@ type Calendar interface {
 
 // Solar ...
 type Solar interface {
+	Minute() int
+	Second() int
+	YearDay() int
+	IsLeapYear() bool
 	Year() int
-	Month() int
+	Month() time.Month
 	Day() int
 	Hour() int
-	IsLeapYear() bool
 }
 
 type Lunar interface {

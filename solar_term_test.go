@@ -230,7 +230,7 @@ func TestIsSolarTermDetailDay(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := IsSolarTermDay(tt.args.t); got != tt.want {
+			if _, got := CheckSolarTermDay(tt.args.t); got != tt.want {
 				t.Errorf("IsSolarTermDetailDay() = %v, want %v", got, tt.want)
 			}
 		})

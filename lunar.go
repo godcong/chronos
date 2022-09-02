@@ -23,6 +23,17 @@ type lunar struct {
 	fixLiChun int //立春当天如果未到时辰：-1
 }
 
+func (l *lunar) Date() LunarDate {
+	return LunarDate{
+		Year:        l.year,
+		Month:       l.month,
+		Day:         l.day,
+		Hour:        l.hour,
+		IsLeapMonth: l.IsLeapMonth(),
+		IsLeapYear:  l.IsLeapYear(),
+	}
+}
+
 func (l *lunar) IsLeapYear() bool {
 	return l.leap
 }
@@ -275,7 +286,7 @@ func Solar2Lunar(time time.Time) string {
 }
 
 // Date ...
-func (l *lunar) Date() string {
+func (l *lunar) Date2() string {
 	result := getChineseYear(l.year)
 	if l.isLeap() {
 		result += "闰"

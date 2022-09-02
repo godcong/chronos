@@ -88,3 +88,19 @@ func ParseConstellation(name string) (Constellation, error) {
 	}
 	return Constellation(0), fmt.Errorf("%s is not a valid Constellation", name)
 }
+
+// MarshalText implements the text marshaller method.
+func (x Constellation) MarshalText() ([]byte, error) {
+	return []byte(x.String()), nil
+}
+
+// UnmarshalText implements the text unmarshaller method.
+func (x *Constellation) UnmarshalText(text []byte) error {
+	name := string(text)
+	tmp, err := ParseConstellation(name)
+	if err != nil {
+		return err
+	}
+	*x = tmp
+	return nil
+}

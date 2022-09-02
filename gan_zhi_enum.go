@@ -89,6 +89,22 @@ func ParseDiZhi(name string) (DiZhi, error) {
 	return DiZhi(0), fmt.Errorf("%s is not a valid DiZhi", name)
 }
 
+// MarshalText implements the text marshaller method.
+func (x DiZhi) MarshalText() ([]byte, error) {
+	return []byte(x.String()), nil
+}
+
+// UnmarshalText implements the text unmarshaller method.
+func (x *DiZhi) UnmarshalText(text []byte) error {
+	name := string(text)
+	tmp, err := ParseDiZhi(name)
+	if err != nil {
+		return err
+	}
+	*x = tmp
+	return nil
+}
+
 const (
 	// GanZhiJiaZi is a GanZhi of type JiaZi.
 	GanZhiJiaZi GanZhi = iota
@@ -360,6 +376,22 @@ func ParseGanZhi(name string) (GanZhi, error) {
 	return GanZhi(0), fmt.Errorf("%s is not a valid GanZhi", name)
 }
 
+// MarshalText implements the text marshaller method.
+func (x GanZhi) MarshalText() ([]byte, error) {
+	return []byte(x.String()), nil
+}
+
+// UnmarshalText implements the text unmarshaller method.
+func (x *GanZhi) UnmarshalText(text []byte) error {
+	name := string(text)
+	tmp, err := ParseGanZhi(name)
+	if err != nil {
+		return err
+	}
+	*x = tmp
+	return nil
+}
+
 const (
 	// TianGanJia is a TianGan of type Jia.
 	TianGanJia TianGan = iota
@@ -429,4 +461,20 @@ func ParseTianGan(name string) (TianGan, error) {
 		return x, nil
 	}
 	return TianGan(0), fmt.Errorf("%s is not a valid TianGan", name)
+}
+
+// MarshalText implements the text marshaller method.
+func (x TianGan) MarshalText() ([]byte, error) {
+	return []byte(x.String()), nil
+}
+
+// UnmarshalText implements the text unmarshaller method.
+func (x *TianGan) UnmarshalText(text []byte) error {
+	name := string(text)
+	tmp, err := ParseTianGan(name)
+	if err != nil {
+		return err
+	}
+	*x = tmp
+	return nil
 }

@@ -84,3 +84,19 @@ func ParseZodiac(name string) (Zodiac, error) {
 	}
 	return Zodiac(0), fmt.Errorf("%s is not a valid Zodiac", name)
 }
+
+// MarshalText implements the text marshaller method.
+func (x Zodiac) MarshalText() ([]byte, error) {
+	return []byte(x.String()), nil
+}
+
+// UnmarshalText implements the text unmarshaller method.
+func (x *Zodiac) UnmarshalText(text []byte) error {
+	name := string(text)
+	tmp, err := ParseZodiac(name)
+	if err != nil {
+		return err
+	}
+	*x = tmp
+	return nil
+}

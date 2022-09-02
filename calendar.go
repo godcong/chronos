@@ -1,3 +1,7 @@
+//go:generate go-enum --marshal -f constellation.go
+//go:generate go-enum --marshal -f gan_zhi.go
+//go:generate go-enum --marshal -f solar_term.go
+//go:generate go-enum --marshal -f zodiac.go
 package chronos
 
 import (
@@ -11,14 +15,31 @@ const DefaultDateFormat = "2006/01/02 15:04:05"
 const LunarDateFormat = "2006/01/02"
 
 type calendar struct {
-	loc   *time.Location
-	time  time.Time
-	lunar *lunar
-	solar *solar
+	loc     *time.Location
+	time    time.Time
+	lunar   *lunar
+	solar   *solar
+	isToday bool
 }
 
 func (c *calendar) Date() CalendarDate {
-	return CalendarDate{}
+	st, ok := CheckSolarTermDay(c.Time())
+	return CalendarDate{
+		IsToday: c.isToday,
+		Solar:   c.solar.Date(),
+		Lunar:   c.lunar.Date(),
+		//Ganzhi:         c.ganzhi.Info(),
+		Zodiac:         getZodiac(c.solar.year),
+		Constellation:  getConstellation(c.time.Date()),
+		IsSolarTermDay: ok,
+		SolarTerm:      st,
+	}
+}
+
+func isToday(t time.Time, now time.Time) bool {
+	y, m, d := t.Date()
+	ny, nm, nd := now.Date()
+	return y == ny && m == nm && d == nd
 }
 
 func (c *calendar) FormatTime() string {
@@ -40,16 +61,20 @@ func (c *calendar) String() string {
 
 // Lunar ...
 func (c *calendar) Lunar() Lunar {
-	return &lunar{}
+	return c.lunar
 }
 
 // Solar ...
 func (c *calendar) Solar() Solar {
-	return &solar{}
+	return c.solar
 }
 
-func (c *calendar) initLunarAndSolar() *calendar {
-	c.solar = &solar{}
+func (c *calendar) initializeCalendarDate() *calendar {
+	if err := checkYearSupport(c.time.Year()); err != nil {
+		panic(err)
+	}
+	c.isToday = isToday(c.time, time.Now())
+	c.solar = solarByTime(c.time)
 	c.lunar = &lunar{}
 	return c
 }
@@ -76,21 +101,24 @@ func NewSolarCalendar(v ...any) Calendar {
 	default:
 		c = parseTime(time.Now(), time.Local)
 	}
-	c.initLunarAndSolar()
-	return c
+	return c.initializeCalendarDate()
 }
 
 func ParseSolarString(s string, format ...string) Calendar {
-	return parseStringDateFormat(s, format...)
+	return parseStringDateFormat(s, format...).initializeCalendarDate()
 }
 
 func ParseSolarDate(year, month, day, hour, minute, second int) Calendar {
 	date := time.Date(year, time.Month(month), day, hour, minute, second, 0, time.Local)
-	return parseTime(date, time.Local)
+	return parseTime(date, time.Local).initializeCalendarDate()
+}
+
+func ParseSolarNow() Calendar {
+	return parseTime(time.Now(), time.Local).initializeCalendarDate()
 }
 
 func ParseSolarTime(t time.Time) Calendar {
-	return parseTime(t, time.Local)
+	return parseTime(t, time.Local).initializeCalendarDate()
 }
 
 func NewLunarCalendar() Calendar {

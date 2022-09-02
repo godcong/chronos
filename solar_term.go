@@ -116,19 +116,19 @@ func yearLiChunDay(year int) (day int) {
 	return
 }
 
-func IsSolarTermDay(t time.Time) bool {
+func CheckSolarTermDay(t time.Time) (SolarTerm, bool) {
 	if err := checkYearSupport(t.Year()); err != nil {
-		return false
+		return SolarTermMax, false
 	}
 
 	var tmpT time.Time
 	for i := range solarTermTimes[t.Year()] {
 		tmpT = getYearSolarTermTime(t.Year(), SolarTerm(i))
 		if tmpT.Month() == t.Month() && tmpT.Day() == t.Day() {
-			return true
+			return SolarTerm(i), true
 		}
 	}
-	return false
+	return SolarTermMax, false
 }
 
 func getYearSolarTermTime(year int, st SolarTerm) time.Time {

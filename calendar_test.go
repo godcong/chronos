@@ -50,3 +50,53 @@ func TestNewSolarCalendar(t *testing.T) {
 		})
 	}
 }
+
+func Test_isToday(t *testing.T) {
+	type args struct {
+		t   time.Time
+		now time.Time
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "",
+			args: args{
+				t:   yearDate(1900),
+				now: time.Now(),
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := isToday(tt.args.t, tt.args.now); got != tt.want {
+				t.Errorf("isToday() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestParseSolarNow(t *testing.T) {
+	tests := []struct {
+		name string
+		want Calendar
+	}{
+		{
+			name: "",
+			want: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := ParseSolarNow()
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ParseSolarNow() = %v, want %v", got, tt.want)
+			}
+			date := got.Date()
+			t.Log("date:", date)
+		})
+	}
+}
