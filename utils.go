@@ -87,5 +87,5 @@ func parseTime(t time.Time, local *time.Location) *calendar {
 // @param *time.Location
 // @return Calendar
 func ParseTime(t time.Time, local *time.Location) Calendar {
-	return parseTime(t, local).initLunarAndSolar()
+	return parseTime(t, local).initializeCalendarDate()
 }
