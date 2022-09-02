@@ -15,7 +15,7 @@ var zodiacs = runes.Runes("鼠牛虎兔龙蛇马羊猴鸡狗猪")
 var ErrWrongZodiacTypes = errors.New("[chronos] wrong zodiac types")
 
 //Zodiac
-//ENUM(rat, cow, tiger, rabbit, dragon, snake, horse, sheep, monkey, chicken, dog, pig)
+//ENUM(Rat, Cow, Tiger, Rabbit, Dragon, Snake, Horse, Sheep, Monkey, Chicken, Dog, Pig, Max)
 type Zodiac uint32
 
 func (x Zodiac) Chinese() string {
