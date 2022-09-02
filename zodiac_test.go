@@ -143,7 +143,7 @@ func Test_getZodiac(t *testing.T) {
 			args: args{
 				year: 1899,
 			},
-			want: 11,
+			want: 12,
 		},
 		{
 			name: "",
@@ -190,13 +190,13 @@ func TestGetYearZodiac(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := GetYearZodiac(tt.args.t)
+			got, err := YearZodiac(tt.args.t)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("GetYearZodiac() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("YearZodiac() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if got != tt.want {
-				t.Errorf("GetYearZodiac() got = %v, want %v", got, tt.want)
+				t.Errorf("YearZodiac() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

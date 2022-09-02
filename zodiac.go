@@ -18,11 +18,15 @@ var ErrWrongZodiacTypes = errors.New("[chronos] wrong zodiac types")
 //ENUM(rat, cow, tiger, rabbit, dragon, snake, horse, sheep, monkey, chicken, dog, pig)
 type Zodiac uint32
 
-// GetYearZodiac returns the zodiac of year.(pa: this will auto fix zodiac with lichun )
+func (x Zodiac) Chinese() string {
+	return ZodiacChineseV2(x)
+}
+
+// YearZodiac returns the zodiac of year.(pa: this will auto fix zodiac with LiChun )
 // @param time.Time
 // @return Zodiac
 // @return error
-func GetYearZodiac(t time.Time) (Zodiac, error) {
+func YearZodiac(t time.Time) (Zodiac, error) {
 	if err := checkYearSupport(t.Year()); err != nil {
 		return 0, err
 	}
@@ -32,7 +36,7 @@ func GetYearZodiac(t time.Time) (Zodiac, error) {
 	return getZodiac(t.Year() - 1), nil
 }
 
-// GetZodiac returns the zodiac of year.(ps: this is not support lichun day fix)
+// GetZodiac returns the zodiac of year.(ps: this is not support LiChun day fix)
 // @param int
 // @return Zodiac
 func GetZodiac(year int) Zodiac {
@@ -43,14 +47,17 @@ func getZodiac(year int) Zodiac {
 	return Zodiac(year%12 - 4)
 }
 
+// ZodiacChineseV2 returns the chinese Zodiac string
+// @param Zodiac
+// @return string
 func ZodiacChineseV2(zodiac Zodiac) string {
-	readString, err := zodiacs.ReadString(int(zodiac), 1)
-	if err != nil {
-		return defaultZodiac
-	}
-	return readString
+	return zodiacs.MustReadString(int(zodiac), 1)
 }
 
+// ZodiacChinese returns the chinese Zodiac string
+// @param Zodiac
+// @return string
+// @return error
 func ZodiacChinese(zodiac Zodiac) (string, error) {
 	readString, err := zodiacs.ReadString(int(zodiac), 1)
 	if err != nil {
@@ -69,3 +76,5 @@ func ZodiacChinese(zodiac Zodiac) (string, error) {
 //	}
 //	return ""
 //}
+
+var _ ChineseSupport = Zodiac(0)
