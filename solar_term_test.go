@@ -142,8 +142,8 @@ func Test_getSolarTermTime(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := getSolarTermTime(tt.args.year, tt.args.st); !reflect.DeepEqual(got.Format("2006-01-02 15:04:05"), tt.want) {
-				t.Errorf("getSolarTermTime() = %v, want %v", got, tt.want)
+			if got := getYearSolarTermTime(tt.args.year, tt.args.st); !reflect.DeepEqual(got.Format("2006-01-02 15:04:05"), tt.want) {
+				t.Errorf("getYearSolarTermTime() = %v, want %v", got, tt.want)
 			}
 		})
 	}

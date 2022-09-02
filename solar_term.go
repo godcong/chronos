@@ -19,7 +19,7 @@ var (
 )
 
 // SolarTerm
-//ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi)
+//ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,Max)
 type SolarTerm uint32
 
 // SolarTermDetail 24节气表
@@ -59,33 +59,61 @@ func solarTermDetail(st SolarTerm, time string) SolarTermDetail {
 }
 
 func (x SolarTerm) GetYearDate(year int) (month time.Month, day int) {
-	_, month, day = getSolarTermTime(year, x).Date()
+	_, month, day = getYearSolarTermTime(year, x).Date()
 	return
 }
 
 // YearSolarTermDetail get the details of year solar term
-// @param int
+// @param time.Time
 // @param SolarTerm
 // @return SolarTermDetail
 // @return error
-func YearSolarTermDetail(year int, st SolarTerm) (SolarTermDetail, error) {
+func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error) {
 	if st >= 24 {
 		return SolarTermDetail{}, ErrSolarTermFormat
 	}
-	if err := checkYearSupport(year); err != nil {
+	if err := checkYearSupport(t.Year()); err != nil {
 		return SolarTermDetail{}, err
 	}
-	t := getSolarTermTimeStr(year, st)
-	return solarTermDetail(st, t), nil
+	ts := getYearSolarTermTimeStr(t.Year(), st)
+	return solarTermDetail(st, ts), nil
 }
 
-func IsSolarTermDetailDay(t time.Time) bool {
+// YearSolarTermDate returns the year month day of the solar term
+// @param time.Time
+// @param SolarTerm
+// @return month
+// @return day
+func YearSolarTermDate(t time.Time, st SolarTerm) (month time.Month, day int) {
+	_, month, day = getYearSolarTermTime(t.Year(), st).Date()
+	return
+}
+
+// YearSolarTermMonth returns the year month  of the solar term
+// @param time.Time
+// @param SolarTerm
+// @return month
+func YearSolarTermMonth(t time.Time, st SolarTerm) (month time.Month) {
+	_, month, _ = getYearSolarTermTime(t.Year(), st).Date()
+	return
+}
+
+// YearSolarTermDay returns the year day of the solar term
+// @param time.Time
+// @param SolarTerm
+// @return day
+func YearSolarTermDay(t time.Time, st SolarTerm) (day int) {
+	_, _, day = getYearSolarTermTime(t.Year(), st).Date()
+	return
+}
+
+func IsSolarTermDay(t time.Time) bool {
 	if _, ok := solarTermTimes[t.Year()]; !ok {
 		return false
 	}
 	var tmpT time.Time
 	for i := range solarTermTimes[t.Year()] {
-		tmpT = getSolarTermTime(t.Year(), SolarTerm(i))
+		tmpT = getYearSolarTermTime(t.Year(), SolarTerm(i))
 		if tmpT.Month() == t.Month() && tmpT.Day() == t.Day() {
 			return true
 		}
@@ -93,11 +121,11 @@ func IsSolarTermDetailDay(t time.Time) bool {
 	return false
 }
 
-func getSolarTermTime(year int, st SolarTerm) time.Time {
+func getYearSolarTermTime(year int, st SolarTerm) time.Time {
 	return time.Unix(int64(solarTermTimes[year][st]), 0).UTC()
 }
 
-func getSolarTermTimeStr(year int, st SolarTerm) string {
+func getYearSolarTermTimeStr(year int, st SolarTerm) string {
 	return time.Unix(int64(solarTermTimes[year][st]), 0).UTC().Format(DefaultDateFormat)
 }
 
