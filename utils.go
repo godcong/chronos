@@ -38,6 +38,25 @@ func parseStringTime(v any) string {
 	return t
 }
 
+func parseStringDateFormat(t string, vv ...string) *calendar {
+	c := &calendar{
+		loc:  time.Local,
+		time: time.Now(),
+	}
+	if t == "" {
+		return c
+	}
+	f := DefaultDateFormat
+	if len(vv) > 0 {
+		f = vv[0]
+	}
+	tt, err := time.Parse(f, t)
+	if err == nil {
+		c.time = tt
+	}
+	return c
+}
+
 func parseStringDate(t string, vv ...any) *calendar {
 	c := &calendar{
 		loc:  time.Local,
