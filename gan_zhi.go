@@ -72,38 +72,33 @@ func (x GanZhi) index() int {
 	return int(x * 2)
 }
 
-// YearGanZhiChineseV2 returns the year of ganzhi string
-// @param int
-// @return string
-func YearGanZhiChineseV2(t time.Time) string {
-	return nianZhuChinese(t.Year())
-}
-
-// MonthGanZhiChineseV2 returns the year of ganzhi string
-// @param int
-// @return string
-func MonthGanZhiChineseV2(t time.Time) string {
-	return monthGanZhiChinese(t.Date())
+func nianZhu(year int) GanZhi {
+	return GanZhi((year - 4) % 60)
 }
 
 func nianZhuChinese(year int) string {
-	return ganZhiChinese(year - 4)
+	return nianZhu(year).Chinese()
+	//return ganZhiChinese(year - 4)
 }
 
 func ganZhiChinese(gz int) string {
-	return yearTianGan(gz).Chinese() + yearDiZhi(gz).Chinese()
+	return getTianGan(gz).Chinese() + getDiZhi(gz).Chinese()
 }
 
-func yearGanZhi(year int) (TianGan, DiZhi) {
-	return yearTianGan(year), yearDiZhi(year)
+func getGanZhi(v int) GanZhi {
+	return GanZhi(v)
 }
 
-func yearTianGan(year int) TianGan {
-	return TianGan(year % 10)
+func getGanAndZhi(year int) (TianGan, DiZhi) {
+	return getTianGan(year), getDiZhi(year)
 }
 
-func yearDiZhi(year int) DiZhi {
-	return DiZhi(year % 12)
+func getTianGan(v int) TianGan {
+	return TianGan(v % 10)
+}
+
+func getDiZhi(v int) DiZhi {
+	return DiZhi(v % 12)
 }
 
 func ganZhiStr(tiangan TianGan, dizhi DiZhi) string {
@@ -114,11 +109,21 @@ func ganChineseStr(tiangan TianGan, dizhi DiZhi) string {
 	return tiangan.Chinese() + dizhi.Chinese()
 }
 
+func splitGanZhi(gz GanZhi) (TianGan, DiZhi) {
+	return TianGan(gz % 10), DiZhi(gz % 12)
+}
+
 func parseGanZhi(tiangan TianGan, dizhi DiZhi) (GanZhi, error) {
+	t := int(tiangan)*12 + int(tiangan)
+	d := dizhi*10 + dizhi
+
 	gz := _TianGanDiZhiGanZhiTable[tiangan][dizhi]
 	if gz >= GanZhiMax {
 		return 0, ErrWrongGanZhiTypes
 	}
+	//todo: check
+	v := int(tiangan)*12 + int(dizhi)*10 - (int(tiangan) + int(dizhi))
+	fmt.Println((int(t)+int(d))%60, (v+120)%60, int(gz))
 	return gz, nil
 }
 
@@ -208,7 +213,6 @@ func GanZhiChinese(ganzhi GanZhi) (string, error) {
 func ShiZhu(y, m, d, h int) string {
 	i := stemBranchIndex(y, m, d) % 5 * 12
 	idx := (h + 1) / 2 % 12
-
 	return GanZhi(fixDayNext(i, idx, h)).Chinese()
 }
 
@@ -222,18 +226,35 @@ func RiZhu(y, m, d int) string {
 // @return string
 func YueZhuChineseV2(t time.Time) string {
 	//月柱 1900年1月小寒以前为 丙子月(60进制12)
-	return monthGanZhiChinese(t.Date())
+	return yueZhu(t.Date()).Chinese()
 }
 
-func monthGanZhiChinese(y int, m time.Month, d int) string {
-	fir := GetTermInfo(y, int(m)*2-1) //返回当月「节」为几日开始
-	fmt.Println("fir", fir)
-	//依据12节气修正干支月
-	var sb = ganZhiChinese(fixYearIndex(y)*12 + int(m) + 11)
-	if d >= fir {
-		sb = ganZhiChinese(fixYearIndex(y)*12 + int(m) + 12)
+func YueZhu(t time.Time) GanZhi {
+	return yueZhu(t.Date())
+}
+
+func getSolarTermDay(year int, month time.Month) (min, max int) {
+	days := yearSolarTermDay[year]
+	idx := (month - 1) * 2
+	return int(days[idx]), int(days[idx+1])
+}
+
+func yueZhu(y int, m time.Month, d int) GanZhi {
+	//todo(use getSolarTermDay)
+	min := GetTermInfo(y, int(m)*2-1)
+	gz := yearOffset(y+1)*12 + int(m)
+	if d < min {
+		gz -= 1
 	}
-	return sb
+	gz %= 60
+	return GanZhi(gz)
+}
+
+// NianZhu returns a GanZhi of year
+// @param time.Time
+// @return string
+func NianZhu(t time.Time) GanZhi {
+	return nianZhu(t.Year())
 }
 
 // NianZhuChineseV2 returns the chinese NianZhu string
@@ -243,7 +264,7 @@ func NianZhuChineseV2(t time.Time) string {
 	return nianZhuChinese(t.Year())
 }
 
-func fixYearIndex(y int) int {
+func yearOffset(y int) int {
 	return y - 1900
 }
 

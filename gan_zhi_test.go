@@ -101,6 +101,112 @@ func TestGanZhiChinese(t *testing.T) {
 	}
 }
 
+func TestYueZhu(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "",
+			args: args{
+				t: yearMonthDayDate(1900, 1, 1),
+			},
+			want: "丙子",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := YueZhuChineseV2(tt.args.t); got != tt.want {
+				t.Errorf("YueZhuChineseV2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_monthGanZhi(t *testing.T) {
+	type args struct {
+		year  int
+		month time.Month
+		day   int
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "",
+			args: args{
+				year:  1900,
+				month: 1,
+				day:   1,
+			},
+			want: "丙子",
+		},
+		{
+			name: "",
+			args: args{
+				year:  1900,
+				month: 11,
+				day:   3,
+			},
+			want: "丙戌",
+		},
+		{
+			name: "",
+			args: args{
+				year:  2099,
+				month: 11,
+				day:   3,
+			},
+			want: "甲戌",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := yueZhu(tt.args.year, tt.args.month, tt.args.day); got.Chinese() != tt.want {
+				t.Errorf("yueZhu() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_splitGanZhi(t *testing.T) {
+	type args struct {
+		gz GanZhi
+	}
+	tests := []struct {
+		name  string
+		args  args
+		want  TianGan
+		want1 DiZhi
+	}{
+		{
+			name: "",
+			args: args{
+				gz: GanZhiJiaWu,
+			},
+			want:  TianGanJia,
+			want1: DiZhiWu,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1 := splitGanZhi(tt.args.gz)
+			if got != tt.want {
+				t.Errorf("splitGanZhi() got = %v, want %v", got, tt.want)
+			}
+			if got1 != tt.want1 {
+				t.Errorf("splitGanZhi() got1 = %v, want %v", got1, tt.want1)
+			}
+		})
+	}
+}
+
 func Test_parseGanZhi(t *testing.T) {
 	type args struct {
 		tiangan TianGan
@@ -172,32 +278,6 @@ func Test_parseGanZhi(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("parseGanZhi() got = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestYueZhu(t *testing.T) {
-	type args struct {
-		t time.Time
-	}
-	tests := []struct {
-		name string
-		args args
-		want string
-	}{
-		{
-			name: "",
-			args: args{
-				t: yearMonthDayDate(1900, 1, 1),
-			},
-			want: "丙子",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := YueZhuChineseV2(tt.args.t); got != tt.want {
-				t.Errorf("YueZhuChineseV2() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -20,7 +20,7 @@ func TestConstellationChinese(t *testing.T) {
 			args: args{
 				c: 0,
 			},
-			want:    "魔羯",
+			want:    "摩羯",
 			wantErr: false,
 		},
 	}
