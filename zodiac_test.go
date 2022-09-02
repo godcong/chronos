@@ -2,6 +2,7 @@ package chronos
 
 import (
 	"testing"
+	"time"
 )
 
 func TestZodiacChinese(t *testing.T) {
@@ -123,6 +124,79 @@ func TestZodiacChinese(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := ZodiacChineseV2(tt.args.zodiac); got != tt.want {
 				t.Errorf("ZodiacChinese() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_getZodiac(t *testing.T) {
+	type args struct {
+		year int
+	}
+	tests := []struct {
+		name string
+		args args
+		want Zodiac
+	}{
+		{
+			name: "",
+			args: args{
+				year: 1899,
+			},
+			want: 11,
+		},
+		{
+			name: "",
+			args: args{
+				year: 1900,
+			},
+			want: 0,
+		},
+		{
+			name: "",
+			args: args{
+				year: 1901,
+			},
+			want: 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := getZodiac(tt.args.year); got != tt.want {
+				t.Errorf("getZodiac() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGetYearZodiac(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    Zodiac
+		wantErr bool
+	}{
+		{
+			name: "",
+			args: args{
+				t: time.Date(),
+			},
+			want:    0,
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := GetYearZodiac(tt.args.t)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetYearZodiac() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("GetYearZodiac() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

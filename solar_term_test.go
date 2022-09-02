@@ -3,6 +3,7 @@ package chronos
 import (
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestSolarTermChinese(t *testing.T) {
@@ -143,6 +144,94 @@ func Test_getSolarTermTime(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := getSolarTermTime(tt.args.year, tt.args.st); !reflect.DeepEqual(got.Format("2006-01-02 15:04:05"), tt.want) {
 				t.Errorf("getSolarTermTime() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestYearSolarTermDetail(t *testing.T) {
+	type args struct {
+		year int
+		st   SolarTerm
+	}
+	tests := []struct {
+		name string
+		args args
+		want SolarTermDetail
+	}{
+		{
+			name: "",
+			args: args{
+				year: 1900,
+				st:   0,
+			},
+			want: SolarTermDetail{
+				Index:       0,
+				SolarTerm:   0,
+				Time:        "1900/02/04 13:51:31",
+				SanHou:      "",
+				Explanation: "",
+			},
+		},
+		{
+			name: "",
+			args: args{
+				year: 1900,
+				st:   23,
+			},
+			want: SolarTermDetail{
+				Index:       0,
+				SolarTerm:   0,
+				Time:        "1900/01/20 19:32:25",
+				SanHou:      "",
+				Explanation: "",
+			},
+		},
+		{
+			name: "",
+			args: args{
+				year: 1900,
+				st:   24,
+			},
+			want: SolarTermDetail{
+				Index:       0,
+				SolarTerm:   0,
+				Time:        "1900/01/20 19:32:25",
+				SanHou:      "",
+				Explanation: "",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got, _ := YearSolarTermDetail(tt.args.year, tt.args.st); !reflect.DeepEqual(got.Time, tt.want.Time) {
+				t.Errorf("YearSolarTermDetail() = %v, want %v", got.Time, tt.want.Time)
+			}
+		})
+	}
+}
+
+func TestIsSolarTermDetailDay(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "",
+			args: args{
+				t: time.Date(1900, 01, 20, 19, 32, 25, 0, time.UTC),
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsSolarTermDetailDay(tt.args.t); got != tt.want {
+				t.Errorf("IsSolarTermDetailDay() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type CalendarValue struct {
+type CalendarDate struct {
 	IsToday bool `json:"is_today"`
 	Solar   struct {
 		Year    int          `json:"year"`
@@ -27,7 +27,8 @@ type CalendarValue struct {
 		Rizhu   string `json:"ri_zhu"`
 		ShiZhu  string `json:"shi_zhu"`
 	}
-	Zodiac        Zodiac        `json:"zodiac"`
-	SolarTerm     SolarTerm     `json:"solar_term"`
-	Constellation Constellation `json:"constellation"`
+	Zodiac         Zodiac        `json:"zodiac"`
+	Constellation  Constellation `json:"constellation"`
+	IsSolarTermDay bool          `json:"is_solar_day"`
+	SolarTerm      SolarTerm     `json:"solar_term"`
 }

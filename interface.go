@@ -10,7 +10,7 @@ type Calendar interface {
 	Solar() Solar
 	FormatTime() string
 	Time() time.Time
-	Value() CalendarValue
+	Date() CalendarDate
 }
 
 // Solar ...
