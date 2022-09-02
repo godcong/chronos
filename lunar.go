@@ -108,7 +108,7 @@ func (l *lunar) riZhu() string {
 
 //yueZhu 月柱
 func (l *lunar) yueZhu() string {
-	return monthGanZhiChinese(l.Year(), time.Month(l.Month()), l.Day())
+	return yueZhu(l.Year(), time.Month(l.Month()), l.Day()).Chinese()
 }
 
 //nianZhu 年柱

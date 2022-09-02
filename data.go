@@ -1,7 +1,6 @@
 package chronos
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -134,7 +133,7 @@ var monthDay = []int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
 
 //GetLunarInfo 取得月历信息
 func GetLunarInfo(y int) int {
-	y = fixYearIndex(y)
+	y = yearOffset(y)
 	if y < 0 || y > len(lunarInfoList) {
 		return 0
 	}
@@ -143,7 +142,7 @@ func GetLunarInfo(y int) int {
 
 // GetTermInfo ...
 func GetTermInfo(y, n int) int {
-	y = fixYearIndex(y)
+	y = yearOffset(y)
 	if y < 0 || y > len(termInfoList) {
 		return -1
 	}
@@ -153,9 +152,7 @@ func GetTermInfo(y, n int) int {
 	i := (n - 1) / 4 * 5
 	n = (n - 1) % 4
 	idx, _ := strconv.ParseInt(termInfoList[y][i:i+5], 16, 64)
-	fmt.Println("term info:", "index", idx)
 	a := strconv.FormatInt(idx, 10)
-	fmt.Println("term info:", "index", a)
 	day := []string{a[0:1], a[1:3], a[3:4], a[4:6]}
 	i, _ = strconv.Atoi(day[n])
 	return i
@@ -206,7 +203,7 @@ func fixDayNext(row int, idx int, hour int) int {
 }
 
 func stemBranchIndex(y, m, d int) int {
-	y = fixYearIndex(y)
+	y = yearOffset(y)
 	if y < 0 || y > len(yearNumber) {
 		return 0
 	}

@@ -30,7 +30,6 @@ func ReadFile(path string) ([]map[string]jieqi, error) {
 }
 
 func main() {
-
 	file, err := ReadFile("1900.json")
 	if err != nil {
 		return
@@ -70,6 +69,7 @@ func main() {
 	fmt.Println("start time:", time.Time{}.UTC().String())
 
 	for _, m := range file {
+		jieqi := make([]byte, 24)
 		for i := 0; i < 24; i++ {
 			istr := strconv.Itoa(i)
 			j, ok := m[istr]
@@ -81,14 +81,32 @@ func main() {
 					fmt.Println("error parsing", "time", j.Year, "err", err)
 					continue
 				}
+				s := makeSolarTerTable(jieqi, parse.Month(), parse.Day())
 				//fmt.Printf("%v:\"%v\",\n", istr, parse.Format("2006-01-02 15:04:05"))
 				//fmt.Printf("%v:\"%v\",\n", istr, uint64(parse.Unix()))
 				//fi := strconv.FormatUint(uint64(parse.Unix()), 16)
-				fmt.Printf("0x%X,\n", uint64(parse.Unix()))
-
+				//fmt.Printf("0x%X,\n", uint64(parse.Unix()))
+				fmt.Println("generated:", s)
 				//fmt.Printf("%v:\"%v\",\n", istr, time.Unix(int64(uint32(parse.Unix())), 0).UTC().Format("2006-01-02 15:04:05"))
 			}
 		}
+		fmt.Printf("generated: 0x%x", jieqi)
 	}
 
+}
+
+func makeSolarTerTable(b []byte, month time.Month, day int) []byte {
+	idx := (month - 1) * 2
+	if day > 10 {
+		idx++
+	}
+	//runes := []rune(strconv.Itoa(day))
+	//if len(runes) > 0 {
+	b[idx] = byte(day)
+	//}
+	//idx++
+	//if len(runes) > 1 {
+	//	b[idx] = runes[1]
+	//}
+	return b
 }
