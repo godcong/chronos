@@ -97,13 +97,13 @@ func (l *lunar) riZhu() string {
 
 //yueZhu 月柱
 func (l *lunar) yueZhu() string {
-	return yueZhuChinese(l.Year(), time.Month(l.Month()), l.Day())
+	return monthGanZhiChinese(l.Year(), time.Month(l.Month()), l.Day())
 }
 
 //nianZhu 年柱
 func (l *lunar) nianZhu(fix int) string {
 	//log.Println("year", l.Year(), "nyear", l.year, "month", l.Month(), "day", l.Day(), "lichun", getLiChunDay(l.Year()))
-	if l.Month() > 2 || (l.Month() == 2 && l.Day() >= getLiChunDay(l.Year())) {
+	if l.Month() > 2 || (l.Month() == 2 && l.Day() >= yearLiChunDay(l.Year())) {
 		return nianZhuChinese(l.Year() + fix)
 	}
 	return nianZhuChinese(l.Year() - 1)
