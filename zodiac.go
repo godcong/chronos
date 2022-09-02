@@ -22,7 +22,7 @@ func (x Zodiac) Chinese() string {
 	return ZodiacChineseV2(x)
 }
 
-// YearZodiac returns the zodiac of year.(pa: this will auto fix zodiac with LiChun )
+// YearZodiac returns the zodiac of year.(pa: this will auto fix zodiac with LiChun check stopped at seconds)
 // @param time.Time
 // @return Zodiac
 // @return error
@@ -30,21 +30,37 @@ func YearZodiac(t time.Time) (Zodiac, error) {
 	if err := checkYearSupport(t.Year()); err != nil {
 		return 0, err
 	}
-	if t.UTC().Unix() > getYearSolarTermTime(t.Year(), SolarTermLiChun).Unix() {
+	if t.UTC().Unix() >= getYearSolarTermTime(t.Year(), SolarTermLiChun).Unix() {
 		return getZodiac(t.Year()), nil
 	}
 	return getZodiac(t.Year() - 1), nil
 }
 
-// GetZodiac returns the zodiac of year.(ps: this is not support LiChun day fix)
+// YearZodiacDay returns the zodiac of year.(pa: this will auto fix zodiac with LiChun check stopped at day)
+// @param time.Time
+// @return Zodiac
+// @return error
+func YearZodiacDay(t time.Time) (Zodiac, error) {
+	if err := checkYearSupport(t.Year()); err != nil {
+		return 0, err
+	}
+	_, m, d := t.UTC().Date()
+	_, sm, sd := getYearSolarTermTime(t.Year(), SolarTermLiChun).Date()
+	if m >= sm && d >= sd {
+		return getZodiac(t.Year()), nil
+	}
+	return getZodiac(t.Year() - 1), nil
+}
+
+// YearZodiacNoFix returns the zodiac of year.(ps: this is not support LiChun day fix)
 // @param int
 // @return Zodiac
-func GetZodiac(year int) Zodiac {
+func YearZodiacNoFix(year int) Zodiac {
 	return getZodiac(year)
 }
 
 func getZodiac(year int) Zodiac {
-	return Zodiac(year%12 - 4)
+	return Zodiac((year - 4) % 12)
 }
 
 // ZodiacChineseV2 returns the chinese Zodiac string
@@ -66,8 +82,8 @@ func ZodiacChinese(zodiac Zodiac) (string, error) {
 	return readString, nil
 }
 
-// GetZodiac ...
-//func GetZodiac(lunar *lunar) string {
+// YearZodiacNoFix ...
+//func YearZodiacNoFix(lunar *lunar) string {
 //	s := string([]rune(lunar.nianZhu(lunar.fixLiChun))[1])
 //	for idx, v := range _DiZhiTable {
 //		if strings.Compare(v, s) == 0 {

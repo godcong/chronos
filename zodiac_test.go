@@ -10,9 +10,10 @@ func TestZodiacChinese(t *testing.T) {
 		zodiac Zodiac
 	}
 	tests := []struct {
-		name string
-		args args
-		want string
+		name    string
+		args    args
+		want    string
+		wantErr bool
 	}{
 		{
 			name: "",
@@ -103,26 +104,29 @@ func TestZodiacChinese(t *testing.T) {
 			args: args{
 				zodiac: 12,
 			},
-			want: "猫",
+			want:    "猫",
+			wantErr: true,
 		},
 		{
 			name: "",
 			args: args{
 				zodiac: 13,
 			},
-			want: "猫",
+			want:    "猫",
+			wantErr: true,
 		},
 		{
 			name: "",
 			args: args{
 				zodiac: 14,
 			},
-			want: "猫",
+			want:    "猫",
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := ZodiacChineseV2(tt.args.zodiac); got != tt.want {
+			if got, err := ZodiacChinese(tt.args.zodiac); (err != nil) != tt.wantErr && got != tt.want {
 				t.Errorf("ZodiacChinese() = %v, want %v", got, tt.want)
 			}
 		})
@@ -134,16 +138,17 @@ func Test_getZodiac(t *testing.T) {
 		year int
 	}
 	tests := []struct {
-		name string
-		args args
-		want Zodiac
+		name    string
+		args    args
+		want    Zodiac
+		wantErr bool
 	}{
 		{
 			name: "",
 			args: args{
 				year: 1899,
 			},
-			want: 12,
+			want: 11,
 		},
 		{
 			name: "",
@@ -182,9 +187,41 @@ func TestGetYearZodiac(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				//t: time.Date(),
+				t: yearDate(1900),
 			},
-			want:    0,
+			want:    ZodiacPig,
+			wantErr: false,
+		},
+		{
+			name: "",
+			args: args{
+				t: yearMonthDayDate(1900, 2, 3),
+			},
+			want:    ZodiacPig,
+			wantErr: false,
+		},
+		{
+			name: "",
+			args: args{
+				t: time.Date(1900, 2, 4, 13, 51, 30, 0, time.UTC),
+			},
+			want:    ZodiacPig,
+			wantErr: false,
+		},
+		{
+			name: "",
+			args: args{
+				t: time.Date(1900, 2, 4, 13, 51, 31, 1, time.UTC),
+			},
+			want:    ZodiacRat,
+			wantErr: false,
+		},
+		{
+			name: "",
+			args: args{
+				t: yearMonthDayDate(1900, 2, 5),
+			},
+			want:    ZodiacRat,
 			wantErr: false,
 		},
 	}
@@ -197,6 +234,71 @@ func TestGetYearZodiac(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("YearZodiac() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestYearZodiacDay(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    Zodiac
+		wantErr bool
+	}{
+		{
+			name: "",
+			args: args{
+				t: yearDate(1900),
+			},
+			want:    ZodiacPig,
+			wantErr: false,
+		},
+		{
+			name: "",
+			args: args{
+				t: yearMonthDayDate(1900, 2, 3),
+			},
+			want:    ZodiacPig,
+			wantErr: false,
+		},
+		{
+			name: "",
+			args: args{
+				t: time.Date(1900, 2, 4, 13, 51, 30, 0, time.UTC),
+			},
+			want:    ZodiacRat,
+			wantErr: false,
+		},
+		{
+			name: "",
+			args: args{
+				t: time.Date(1900, 2, 4, 13, 51, 31, 1, time.UTC),
+			},
+			want:    ZodiacRat,
+			wantErr: false,
+		},
+		{
+			name: "",
+			args: args{
+				t: yearMonthDayDate(1900, 2, 5),
+			},
+			want:    ZodiacRat,
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := YearZodiacDay(tt.args.t)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("YearZodiacDay() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("YearZodiacDay() got = %v, want %v", got, tt.want)
 			}
 		})
 	}
