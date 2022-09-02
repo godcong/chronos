@@ -2,11 +2,12 @@ package chronos
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
 // DefaultDateFormat ...
-const DefaultDateFormat = "2006/01/02 15:04"
+const DefaultDateFormat = "2006/01/02 15:04:05"
 const LunarDateFormat = "2006/01/02"
 
 type calendar struct {
@@ -16,8 +17,8 @@ type calendar struct {
 	solar *solar
 }
 
-func (c *calendar) Value() CalendarValue {
-	return CalendarValue{}
+func (c *calendar) Date() CalendarDate {
+	return CalendarDate{}
 }
 
 func (c *calendar) FormatTime() string {
@@ -33,7 +34,7 @@ func (c *calendar) LocalTime() time.Time {
 }
 
 func (c *calendar) String() string {
-	vd, _ := json.Marshal(c.Value())
+	vd, _ := json.Marshal(c.Date())
 	return string(vd)
 }
 
@@ -81,4 +82,11 @@ func NewSolarCalendar(v ...any) Calendar {
 
 func NewLunarCalendar() Calendar {
 	return &calendar{}
+}
+
+func checkYearSupport(year int) error {
+	if _, ok := solarTermTimes[year]; !ok {
+		return fmt.Errorf("[chronos] year %d not supported", year)
+	}
+	return nil
 }
