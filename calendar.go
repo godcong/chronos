@@ -80,6 +80,10 @@ func NewSolarCalendar(v ...any) Calendar {
 	return c
 }
 
+func ParseSolarString(s string, format ...string) Calendar {
+	return parseStringDateFormat(s, format...)
+}
+
 func ParseSolarDate(year, month, day, hour, minute, second int) Calendar {
 	date := time.Date(year, time.Month(month), day, hour, minute, second, 0, time.Local)
 	return parseTime(date, time.Local)
