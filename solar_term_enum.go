@@ -11,12 +11,8 @@ import (
 )
 
 const (
-	// SolarTermXiaoHan is a SolarTerm of type XiaoHan.
-	SolarTermXiaoHan SolarTerm = iota
-	// SolarTermDaHan is a SolarTerm of type DaHan.
-	SolarTermDaHan
 	// SolarTermLiChun is a SolarTerm of type LiChun.
-	SolarTermLiChun
+	SolarTermLiChun SolarTerm = iota
 	// SolarTermYuShui is a SolarTerm of type YuShui.
 	SolarTermYuShui
 	// SolarTermJingZhe is a SolarTerm of type JingZhe.
@@ -59,35 +55,42 @@ const (
 	SolarTermDaXue
 	// SolarTermDongZhi is a SolarTerm of type DongZhi.
 	SolarTermDongZhi
+	// SolarTermXiaoHan is a SolarTerm of type XiaoHan.
+	SolarTermXiaoHan
+	// SolarTermDaHan is a SolarTerm of type DaHan.
+	SolarTermDaHan
+	// SolarTermMax is a SolarTerm of type Max.
+	SolarTermMax
 )
 
-const _SolarTermName = "XiaoHanDaHanLiChunYuShuiJingZheChunFenQingMingGuYuLiXiaXiaoManMangZhongXiaZhiXiaoShuDaShuLiQiuChuShuBaiLuQiuFenHanLuShuangJiangLiDongXiaoXueDaXueDongZhi"
+const _SolarTermName = "LiChunYuShuiJingZheChunFenQingMingGuYuLiXiaXiaoManMangZhongXiaZhiXiaoShuDaShuLiQiuChuShuBaiLuQiuFenHanLuShuangJiangLiDongXiaoXueDaXueDongZhiXiaoHanDaHanMax"
 
 var _SolarTermMap = map[SolarTerm]string{
-	SolarTermXiaoHan:     _SolarTermName[0:7],
-	SolarTermDaHan:       _SolarTermName[7:12],
-	SolarTermLiChun:      _SolarTermName[12:18],
-	SolarTermYuShui:      _SolarTermName[18:24],
-	SolarTermJingZhe:     _SolarTermName[24:31],
-	SolarTermChunFen:     _SolarTermName[31:38],
-	SolarTermQingMing:    _SolarTermName[38:46],
-	SolarTermGuYu:        _SolarTermName[46:50],
-	SolarTermLiXia:       _SolarTermName[50:55],
-	SolarTermXiaoMan:     _SolarTermName[55:62],
-	SolarTermMangZhong:   _SolarTermName[62:71],
-	SolarTermXiaZhi:      _SolarTermName[71:77],
-	SolarTermXiaoShu:     _SolarTermName[77:84],
-	SolarTermDaShu:       _SolarTermName[84:89],
-	SolarTermLiQiu:       _SolarTermName[89:94],
-	SolarTermChuShu:      _SolarTermName[94:100],
-	SolarTermBaiLu:       _SolarTermName[100:105],
-	SolarTermQiuFen:      _SolarTermName[105:111],
-	SolarTermHanLu:       _SolarTermName[111:116],
-	SolarTermShuangJiang: _SolarTermName[116:127],
-	SolarTermLiDong:      _SolarTermName[127:133],
-	SolarTermXiaoXue:     _SolarTermName[133:140],
-	SolarTermDaXue:       _SolarTermName[140:145],
-	SolarTermDongZhi:     _SolarTermName[145:152],
+	SolarTermLiChun:      _SolarTermName[0:6],
+	SolarTermYuShui:      _SolarTermName[6:12],
+	SolarTermJingZhe:     _SolarTermName[12:19],
+	SolarTermChunFen:     _SolarTermName[19:26],
+	SolarTermQingMing:    _SolarTermName[26:34],
+	SolarTermGuYu:        _SolarTermName[34:38],
+	SolarTermLiXia:       _SolarTermName[38:43],
+	SolarTermXiaoMan:     _SolarTermName[43:50],
+	SolarTermMangZhong:   _SolarTermName[50:59],
+	SolarTermXiaZhi:      _SolarTermName[59:65],
+	SolarTermXiaoShu:     _SolarTermName[65:72],
+	SolarTermDaShu:       _SolarTermName[72:77],
+	SolarTermLiQiu:       _SolarTermName[77:82],
+	SolarTermChuShu:      _SolarTermName[82:88],
+	SolarTermBaiLu:       _SolarTermName[88:93],
+	SolarTermQiuFen:      _SolarTermName[93:99],
+	SolarTermHanLu:       _SolarTermName[99:104],
+	SolarTermShuangJiang: _SolarTermName[104:115],
+	SolarTermLiDong:      _SolarTermName[115:121],
+	SolarTermXiaoXue:     _SolarTermName[121:128],
+	SolarTermDaXue:       _SolarTermName[128:133],
+	SolarTermDongZhi:     _SolarTermName[133:140],
+	SolarTermXiaoHan:     _SolarTermName[140:147],
+	SolarTermDaHan:       _SolarTermName[147:152],
+	SolarTermMax:         _SolarTermName[152:155],
 }
 
 // String implements the Stringer interface.
@@ -99,30 +102,31 @@ func (x SolarTerm) String() string {
 }
 
 var _SolarTermValue = map[string]SolarTerm{
-	_SolarTermName[0:7]:     SolarTermXiaoHan,
-	_SolarTermName[7:12]:    SolarTermDaHan,
-	_SolarTermName[12:18]:   SolarTermLiChun,
-	_SolarTermName[18:24]:   SolarTermYuShui,
-	_SolarTermName[24:31]:   SolarTermJingZhe,
-	_SolarTermName[31:38]:   SolarTermChunFen,
-	_SolarTermName[38:46]:   SolarTermQingMing,
-	_SolarTermName[46:50]:   SolarTermGuYu,
-	_SolarTermName[50:55]:   SolarTermLiXia,
-	_SolarTermName[55:62]:   SolarTermXiaoMan,
-	_SolarTermName[62:71]:   SolarTermMangZhong,
-	_SolarTermName[71:77]:   SolarTermXiaZhi,
-	_SolarTermName[77:84]:   SolarTermXiaoShu,
-	_SolarTermName[84:89]:   SolarTermDaShu,
-	_SolarTermName[89:94]:   SolarTermLiQiu,
-	_SolarTermName[94:100]:  SolarTermChuShu,
-	_SolarTermName[100:105]: SolarTermBaiLu,
-	_SolarTermName[105:111]: SolarTermQiuFen,
-	_SolarTermName[111:116]: SolarTermHanLu,
-	_SolarTermName[116:127]: SolarTermShuangJiang,
-	_SolarTermName[127:133]: SolarTermLiDong,
-	_SolarTermName[133:140]: SolarTermXiaoXue,
-	_SolarTermName[140:145]: SolarTermDaXue,
-	_SolarTermName[145:152]: SolarTermDongZhi,
+	_SolarTermName[0:6]:     SolarTermLiChun,
+	_SolarTermName[6:12]:    SolarTermYuShui,
+	_SolarTermName[12:19]:   SolarTermJingZhe,
+	_SolarTermName[19:26]:   SolarTermChunFen,
+	_SolarTermName[26:34]:   SolarTermQingMing,
+	_SolarTermName[34:38]:   SolarTermGuYu,
+	_SolarTermName[38:43]:   SolarTermLiXia,
+	_SolarTermName[43:50]:   SolarTermXiaoMan,
+	_SolarTermName[50:59]:   SolarTermMangZhong,
+	_SolarTermName[59:65]:   SolarTermXiaZhi,
+	_SolarTermName[65:72]:   SolarTermXiaoShu,
+	_SolarTermName[72:77]:   SolarTermDaShu,
+	_SolarTermName[77:82]:   SolarTermLiQiu,
+	_SolarTermName[82:88]:   SolarTermChuShu,
+	_SolarTermName[88:93]:   SolarTermBaiLu,
+	_SolarTermName[93:99]:   SolarTermQiuFen,
+	_SolarTermName[99:104]:  SolarTermHanLu,
+	_SolarTermName[104:115]: SolarTermShuangJiang,
+	_SolarTermName[115:121]: SolarTermLiDong,
+	_SolarTermName[121:128]: SolarTermXiaoXue,
+	_SolarTermName[128:133]: SolarTermDaXue,
+	_SolarTermName[133:140]: SolarTermDongZhi,
+	_SolarTermName[140:147]: SolarTermXiaoHan,
+	_SolarTermName[147:152]: SolarTermDaHan,
+	_SolarTermName[152:155]: SolarTermMax,
 }
 
 // ParseSolarTerm attempts to convert a string to a SolarTerm.

@@ -133,23 +133,15 @@ func Test_parseGanZhi(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				tiangan: 0,
-				dizhi:   1,
+				tiangan: TianGanJia,
+				dizhi:   DiZhiChou,
 			},
-			want: 1,
+			wantErr: true,
 		},
 		{
 			name: "",
 			args: args{
-				tiangan: 1,
-				dizhi:   DiZhiHai,
-			},
-			want: GanZhiYiHai,
-		},
-		{
-			name: "",
-			args: args{
-				tiangan: 6,
+				tiangan: TianGanYi,
 				dizhi:   DiZhiHai,
 			},
 			want: GanZhiYiHai,
@@ -160,7 +152,15 @@ func Test_parseGanZhi(t *testing.T) {
 				tiangan: TianGanGeng,
 				dizhi:   DiZhiHai,
 			},
-			//want: GanZhiGengHai,
+			wantErr: true,
+		},
+		{
+			name: "",
+			args: args{
+				tiangan: TianGanGeng,
+				dizhi:   DiZhiHai,
+			},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
