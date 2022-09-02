@@ -27,6 +27,9 @@ type DiZhi uint32
 //RenZi,GuiChou,JiaYin,YiMao,BingChen,DingSi,WuWu,JiWei,GengShen,XinYou,RenXu,GuiHai,Max)
 type GanZhi uint32
 
+//StemBranch is an alias name for GanZhi
+type StemBranch = GanZhi
+
 var _TianGanTable = runes.Runes(`甲乙丙丁戊己庚辛壬癸`)
 
 // ErrWrongTianGanTypes returns an error
@@ -50,7 +53,7 @@ var ErrWrongGanZhiTypes = errors.New("[chronos] wrong ganzhi types")
 // PillarHour is an alias name of ShiZhu
 var PillarHour = ShiZhu
 var PillarDay = RiZhu
-var PillarMonty = YueZhu
+var PillarMonty = YueZhuChineseV2
 var PillarYear = NianZhuChineseV2
 
 func (x TianGan) Chinese() string {
@@ -214,32 +217,21 @@ func RiZhu(y, m, d int) string {
 	return GanZhi(stemBranchIndex(y, m, d)).Chinese()
 }
 
-// YueZhu returns the chinese YueZhu string
+// YueZhuChineseV2 returns the chinese YueZhuChineseV2 string
 // @param time.Time
 // @return string
-func YueZhu(t time.Time) string {
+func YueZhuChineseV2(t time.Time) string {
 	//月柱 1900年1月小寒以前为 丙子月(60进制12)
-	return yueZhuChinese(t.Date())
+	return monthGanZhiChinese(t.Date())
 }
 
 func monthGanZhiChinese(y int, m time.Month, d int) string {
 	fir := GetTermInfo(y, int(m)*2-1) //返回当月「节」为几日开始
 	fmt.Println("fir", fir)
 	//依据12节气修正干支月
-	var sb = nianZhuChinese(fixSuffix(y)*12 + int(m) + 11)
+	var sb = ganZhiChinese(fixYearIndex(y)*12 + int(m) + 11)
 	if d >= fir {
-		sb = nianZhuChinese(fixSuffix(y)*12 + int(m) + 12)
-	}
-	return sb
-}
-
-func yueZhuChinese(y int, m time.Month, d int) string {
-	fir := GetTermInfo(y, int(m)*2-1) //返回当月「节」为几日开始
-	fmt.Println("fir", fir)
-	//依据12节气修正干支月
-	var sb = ganZhiChinese(fixSuffix(y)*12 + int(m) + 11)
-	if d >= fir {
-		sb = ganZhiChinese(fixSuffix(y)*12 + int(m) + 12)
+		sb = ganZhiChinese(fixYearIndex(y)*12 + int(m) + 12)
 	}
 	return sb
 }
@@ -251,9 +243,9 @@ func NianZhuChineseV2(t time.Time) string {
 	return nianZhuChinese(t.Year())
 }
 
-//func nianZhuChinese(year int) string {
-//	return nianZhuChinese(year - 4)
-//}
+func fixYearIndex(y int) int {
+	return y - 1900
+}
 
 var _ ChineseSupport = TianGan(0)
 var _ ChineseSupport = DiZhi(0)

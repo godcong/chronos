@@ -53,8 +53,7 @@ var solarTermExplanations = []string{
 	23: "太阳黄经为300°。大寒就是天气寒冷到了极点的意思。大寒前后是一年中最冷的季节。大寒正值三九刚过，四九之初。谚云：“三九四九冰上走”。",
 }
 
-var solarTermTimes = map[int][24]uint64{
-	//1900: "ffffffff7c831763ffffffff7c96a7eaffffffff7caa5720ffffffff7cbe2fb5ffffffff7cd231a9ffffffff7ce662aaffffffff7cfabc60ffffffff7d0f3ec7ffffffff7d23dd5fffffffff7d389321ffffffff7d4d4fd0ffffffff7d620b77ffffffff7d76b65affffffff7d8b4895ffffffff7d9fb716ffffffff7db3fcfbffffffff7dc81635ffffffff7ddc02b4ffffffff7defc590ffffffff7e0363c6ffffffff7e16e5d6ffffffff7e2a549effffffff7c5c360dffffffff7c6fa0c9",
+var solarTermTimes = map[int][SolarTermMax]uint64{
 	1900: {
 		0xFFFFFFFF7C831763,
 		0xFFFFFFFF7C96A7EA,

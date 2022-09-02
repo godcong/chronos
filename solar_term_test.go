@@ -236,3 +236,29 @@ func TestIsSolarTermDetailDay(t *testing.T) {
 		})
 	}
 }
+
+func Test_yearLiChunDay(t *testing.T) {
+	type args struct {
+		year int
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantDay int
+	}{
+		{
+			name: "",
+			args: args{
+				year: 1900,
+			},
+			wantDay: 4,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotDay := yearLiChunDay(tt.args.year); gotDay != tt.wantDay {
+				t.Errorf("yearLiChunDay() = %v, want %v", gotDay, tt.wantDay)
+			}
+		})
+	}
+}

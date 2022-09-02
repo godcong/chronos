@@ -35,9 +35,11 @@ const (
 	ConstellationScorpio
 	// ConstellationSagittarius is a Constellation of type Sagittarius.
 	ConstellationSagittarius
+	// ConstellationMax is a Constellation of type Max.
+	ConstellationMax
 )
 
-const _ConstellationName = "CapricornAquariusPiscesAriesTaurusGeminiCancerLeoVirgoLibraScorpioSagittarius"
+const _ConstellationName = "CapricornAquariusPiscesAriesTaurusGeminiCancerLeoVirgoLibraScorpioSagittariusMax"
 
 var _ConstellationMap = map[Constellation]string{
 	ConstellationCapricorn:   _ConstellationName[0:9],
@@ -52,6 +54,7 @@ var _ConstellationMap = map[Constellation]string{
 	ConstellationLibra:       _ConstellationName[54:59],
 	ConstellationScorpio:     _ConstellationName[59:66],
 	ConstellationSagittarius: _ConstellationName[66:77],
+	ConstellationMax:         _ConstellationName[77:80],
 }
 
 // String implements the Stringer interface.
@@ -75,6 +78,7 @@ var _ConstellationValue = map[string]Constellation{
 	_ConstellationName[54:59]: ConstellationLibra,
 	_ConstellationName[59:66]: ConstellationScorpio,
 	_ConstellationName[66:77]: ConstellationSagittarius,
+	_ConstellationName[77:80]: ConstellationMax,
 }
 
 // ParseConstellation attempts to convert a string to a Constellation.

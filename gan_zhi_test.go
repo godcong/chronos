@@ -196,8 +196,8 @@ func TestYueZhu(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := YueZhu(tt.args.t); got != tt.want {
-				t.Errorf("YueZhu() = %v, want %v", got, tt.want)
+			if got := YueZhuChineseV2(tt.args.t); got != tt.want {
+				t.Errorf("YueZhuChineseV2() = %v, want %v", got, tt.want)
 			}
 		})
 	}

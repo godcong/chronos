@@ -132,13 +132,9 @@ var chineseNumber = []string{`正`, `二`, `三`, `四`, `五`, `六`, `七`, `�
 //公历每个月份的天数
 var monthDay = []int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
 
-func fixSuffix(y int) int {
-	return y - 1900
-}
-
 //GetLunarInfo 取得月历信息
 func GetLunarInfo(y int) int {
-	y = fixSuffix(y)
+	y = fixYearIndex(y)
 	if y < 0 || y > len(lunarInfoList) {
 		return 0
 	}
@@ -147,7 +143,7 @@ func GetLunarInfo(y int) int {
 
 // GetTermInfo ...
 func GetTermInfo(y, n int) int {
-	y = fixSuffix(y)
+	y = fixYearIndex(y)
 	if y < 0 || y > len(termInfoList) {
 		return -1
 	}
@@ -157,7 +153,9 @@ func GetTermInfo(y, n int) int {
 	i := (n - 1) / 4 * 5
 	n = (n - 1) % 4
 	idx, _ := strconv.ParseInt(termInfoList[y][i:i+5], 16, 64)
+	fmt.Println("term info:", "index", idx)
 	a := strconv.FormatInt(idx, 10)
+	fmt.Println("term info:", "index", a)
 	day := []string{a[0:1], a[1:3], a[3:4], a[4:6]}
 	i, _ = strconv.Atoi(day[n])
 	return i
@@ -208,7 +206,7 @@ func fixDayNext(row int, idx int, hour int) int {
 }
 
 func stemBranchIndex(y, m, d int) int {
-	y = fixSuffix(y)
+	y = fixYearIndex(y)
 	if y < 0 || y > len(yearNumber) {
 		return 0
 	}
@@ -217,24 +215,4 @@ func stemBranchIndex(y, m, d int) int {
 	}
 	m = (m - 1) % 12
 	return (yearNumber[y] + monthNumber[m] + d - 1) % 60
-}
-
-func centuryCValue(y int) float64 {
-	switch {
-	case y > 1901 && y <= 2000:
-		return ctable[cvalue20]
-	case y >= 2001 && y <= 2100:
-		return ctable[cvalue21]
-	case y >= 2101 && y <= 2200:
-		return ctable[cvalue22]
-	}
-	panic(fmt.Sprintf("not supported(%d)", y))
-}
-
-func getLiChunDay(year int) int {
-	c := centuryCValue(year)
-	y := float64(year % 100)
-	l := int((y - 1) / 4)
-	return int((y*0.2422+c)/1 - float64(l))
-
 }

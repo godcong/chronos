@@ -9,44 +9,47 @@ import (
 
 const defaultConstellation = "星座"
 
-var constellations = runes.Runes("魔羯水瓶双鱼白羊金牛双子巨蟹狮子处女天秤天蝎射手")
-var constellationDays = [...]int{20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22}
+var constellations = runes.Runes("摩羯水瓶双鱼白羊金牛双子巨蟹狮子处女天秤天蝎射手")
+var constellationDays = [ConstellationMax]int{20, 19, 21, 20, 21, 22, 23, 23, 23, 24, 23, 22}
 
-// ErrWrongConstellationIndex returns an error
-var ErrWrongConstellationIndex = errors.New("wrong constellation index")
-var ErrWrongConstellationMonth = errors.New("wrong constellation month")
+// ErrWrongConstellationTypes returns an error
+var ErrWrongConstellationTypes = errors.New("[chronos] wrong constellation types")
+
+//var ErrWrongConstellationMonth = errors.New("wrong constellation month")
 
 //Constellation
-// ENUM(Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpio,Sagittarius)
+// ENUM(Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpio,Sagittarius,Max)
 type Constellation int
 
 func (x Constellation) index() int {
 	return int(x * 2)
 }
 
+func (x Constellation) Chinese() string {
+	return ConstellationChineseV2(x)
+}
+
 func ConstellationChinese(c Constellation) (string, error) {
 	readString, err := constellations.ReadString(c.index(), 2)
 	if err != nil {
-		return "", ErrWrongConstellationIndex
+		return "", ErrWrongConstellationTypes
 	}
 	return readString, nil
 }
 
 func ConstellationChineseV2(c Constellation) string {
-	readString, err := constellations.ReadString(c.index(), 2)
-	if err != nil {
-		return defaultConstellation
-	}
-	return readString
+	return constellations.MustReadString(c.index(), 2)
 }
 
 //GetConstellation 取得星座
-func GetConstellation(month time.Month, day int) (Constellation, error) {
-	if time.January <= month && month <= time.December {
-		if day < constellationDays[month-1] {
-			month -= month
-		}
-		return Constellation(month), nil
+func GetConstellation(t time.Time) Constellation {
+	return getConstellation(t.Date())
+}
+
+func getConstellation(_ int, month time.Month, day int) Constellation {
+	if day < constellationDays[month-1] {
+		month -= 1
 	}
-	return Constellation(-1), ErrWrongConstellationMonth
+	month %= 12
+	return Constellation(month)
 }
