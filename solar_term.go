@@ -35,6 +35,10 @@ func (x SolarTerm) index() int {
 	return int(x * 2)
 }
 
+func (x SolarTerm) Chinese() string {
+	return SolarTermChineseV2(x)
+}
+
 //func (x SolarTerm) detail() SolarTermDetail {
 //	return SolarTermDetail{
 //		Index:       int(x),
@@ -108,9 +112,10 @@ func YearSolarTermDay(t time.Time, st SolarTerm) (day int) {
 }
 
 func IsSolarTermDay(t time.Time) bool {
-	if _, ok := solarTermTimes[t.Year()]; !ok {
+	if err := checkYearSupport(t.Year()); err != nil {
 		return false
 	}
+
 	var tmpT time.Time
 	for i := range solarTermTimes[t.Year()] {
 		tmpT = getYearSolarTermTime(t.Year(), SolarTerm(i))
@@ -130,11 +135,7 @@ func getYearSolarTermTimeStr(year int, st SolarTerm) string {
 }
 
 func SolarTermChineseV2(st SolarTerm) string {
-	readString, err := solarTerms.ReadString(st.index(), 2)
-	if err != nil {
-		return defaultSolarTerm
-	}
-	return readString
+	return solarTerms.MustReadString(st.index(), 2)
 }
 
 func SolarTermChinese(st SolarTerm) (string, error) {
@@ -144,3 +145,5 @@ func SolarTermChinese(st SolarTerm) (string, error) {
 	}
 	return readString, nil
 }
+
+var _ ChineseSupport = SolarTerm(0)

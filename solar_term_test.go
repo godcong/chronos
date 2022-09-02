@@ -78,7 +78,7 @@ func TestSolarTermChinese(t *testing.T) {
 			args: args{
 				i: 7,
 			},
-			want:    "谷 雨",
+			want:    "谷雨",
 			wantErr: false,
 		},
 		{
@@ -151,7 +151,7 @@ func Test_getSolarTermTime(t *testing.T) {
 
 func TestYearSolarTermDetail(t *testing.T) {
 	type args struct {
-		year int
+		year time.Time
 		st   SolarTerm
 	}
 	tests := []struct {
@@ -162,7 +162,7 @@ func TestYearSolarTermDetail(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				year: 1900,
+				year: yearDate(1900),
 				st:   0,
 			},
 			want: SolarTermDetail{
@@ -176,7 +176,7 @@ func TestYearSolarTermDetail(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				year: 1900,
+				year: yearDate(1900),
 				st:   23,
 			},
 			want: SolarTermDetail{
@@ -190,13 +190,13 @@ func TestYearSolarTermDetail(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				year: 1900,
+				year: yearDate(1900),
 				st:   24,
 			},
 			want: SolarTermDetail{
 				Index:       0,
 				SolarTerm:   0,
-				Time:        "1900/01/20 19:32:25",
+				Time:        "",
 				SanHou:      "",
 				Explanation: "",
 			},
@@ -230,7 +230,7 @@ func TestIsSolarTermDetailDay(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := IsSolarTermDetailDay(tt.args.t); got != tt.want {
+			if got := IsSolarTermDay(tt.args.t); got != tt.want {
 				t.Errorf("IsSolarTermDetailDay() = %v, want %v", got, tt.want)
 			}
 		})

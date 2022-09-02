@@ -30,3 +30,7 @@ type Lunar interface {
 	IsLeapYear() bool
 	IsLeapMonth() bool
 }
+
+type ChineseSupport interface {
+	Chinese() string
+}
