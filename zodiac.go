@@ -12,7 +12,7 @@ const defaultZodiac = "猫"
 var zodiacs = runes.Runes("鼠牛虎兔龙蛇马羊猴鸡狗猪")
 
 // ErrWrongZodiacTypes returns an error
-var ErrWrongZodiacTypes = errors.New("wrong zodiac type error")
+var ErrWrongZodiacTypes = errors.New("[chronos] wrong zodiac types")
 
 //Zodiac
 //ENUM(rat, cow, tiger, rabbit, dragon, snake, horse, sheep, monkey, chicken, dog, pig)
@@ -26,7 +26,7 @@ func GetYearZodiac(t time.Time) (Zodiac, error) {
 	if err := checkYearSupport(t.Year()); err != nil {
 		return 0, err
 	}
-	if t.UTC().Unix() > getSolarTermTime(t.Year(), SolarTermLiChun).Unix() {
+	if t.UTC().Unix() > getYearSolarTermTime(t.Year(), SolarTermLiChun).Unix() {
 		return getZodiac(t.Year()), nil
 	}
 	return getZodiac(t.Year() - 1), nil

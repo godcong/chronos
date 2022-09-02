@@ -182,7 +182,7 @@ func TestGetYearZodiac(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: time.Date(),
+				//t: time.Date(),
 			},
 			want:    0,
 			wantErr: false,

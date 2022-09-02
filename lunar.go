@@ -104,9 +104,9 @@ func (l *lunar) yueZhu() string {
 func (l *lunar) nianZhu(fix int) string {
 	//log.Println("year", l.Year(), "nyear", l.year, "month", l.Month(), "day", l.Day(), "lichun", getLiChunDay(l.Year()))
 	if l.Month() > 2 || (l.Month() == 2 && l.Day() >= getLiChunDay(l.Year())) {
-		return NianZhu(l.Year() + fix)
+		return NianZhuChineseV2(l.Year() + fix)
 	}
-	return NianZhu(l.Year() - 1)
+	return NianZhuChineseV2(l.Year() - 1)
 }
 
 func yearDay(y int) int {
@@ -265,7 +265,7 @@ func betweenDay(d time.Time, s time.Time) int {
 //Solar2Lunar 输入日历输出月历
 func Solar2Lunar(time time.Time) string {
 	lunar := CalculateLunar(time.Format(DefaultDateFormat))
-	result := NianZhu(lunar.year) + "年"
+	result := NianZhuChineseV2(lunar.year) + "年"
 	if lunar.leap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
 	}

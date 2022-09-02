@@ -164,7 +164,7 @@ func GetTermInfo(y, n int) int {
 }
 
 func getChineseYear(year int) string {
-	return NianZhu(year) + "年"
+	return NianZhuChineseV2(year) + "年"
 }
 
 //getChineseMonth 取得月历月
