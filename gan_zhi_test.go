@@ -1,11 +1,8 @@
 package chronos
 
 import (
-	"fmt"
 	"testing"
 	"time"
-
-	"github.com/godcong/chronos/v2/utils"
 )
 
 func TestNianZhuChineseV2(t *testing.T) {
@@ -278,16 +275,16 @@ func Test_parseGanZhi(t *testing.T) {
 			if got != tt.want {
 				t.Errorf("parseGanZhiV2() got = %v, want %v", got, tt.want)
 			}
-			got = parseGanZhi(tt.args.tiangan, tt.args.dizhi)
-			if got != tt.want {
-				t.Errorf("parseGanZhiV2() got = %v, want %v", got, tt.want)
-			}
+			//got = parseGanZhi(tt.args.tiangan, tt.args.dizhi)
+			//if got != tt.want {
+			//	t.Errorf("parseGanZhiV2() got = %v, want %v", got, tt.want)
+			//}
 		})
 	}
-	tm, err := time.Parse(DefaultDateFormat, "2000/01/01 00:00:00")
-	fmt.Printf("time:%X,%v\n", uint64(tm.UTC().Unix()), err)
+	//tm, err := time.Parse(DefaultDateFormat, "2000/01/01 00:00:00")
+	//fmt.Printf("time:%X,%v\n", uint64(tm.UTC().Unix()), err)
 
-	fmt.Println("diff day:", utils.DateDiffDay(tm, startTime))
+	//fmt.Println("diff day:", utils.DateDiffDay(tm, startTime))
 }
 
 func TestShiZhu(t *testing.T) {
