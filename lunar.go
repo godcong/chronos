@@ -95,17 +95,12 @@ func (l *lunar) EightCharacter() []string {
 
 //shiZhu 时柱
 func (l *lunar) shiZhu() string {
-	//return ShiZhu(l.Year(), int(l.Month()), l.Day(), l.Hour())
-	return ""
+	return shiZhu(l.year, time.Month(l.month), l.Day(), l.Hour()).Chinese()
 }
 
 //riZhu 日柱
 func (l *lunar) riZhu() string {
-	//if l.Hour() >= 23 {
-	//	return RiZhu(l.Year(), int(l.Month()), l.Day()+1)
-	//}
-	//return RiZhu().Chinese()
-	return ""
+	return riZhu(l.year, time.Month(l.month), l.Day()).Chinese()
 }
 
 //yueZhu 月柱
@@ -115,7 +110,6 @@ func (l *lunar) yueZhu() string {
 
 //nianZhu 年柱
 func (l *lunar) nianZhu() string {
-	//log.Println("year", l.Year(), "nyear", l.year, "month", l.Month(), "day", l.Day(), "lichun", getLiChunDay(l.Year()))
 	if l.Month() > 2 || (l.Month() == 2 && l.Day() >= yearLiChunDay(l.Year())) {
 		return nianZhuChinese(l.Year())
 	}
