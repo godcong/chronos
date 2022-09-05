@@ -2,28 +2,27 @@ package chronos
 
 import (
 	_ "embed"
-	"errors"
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
 )
 
 //go:embed data/DataSolarTerm
-var DataSolarTerm []byte
+var dataSolarTerm []byte
 
 //go:embed data/DataLeapMonth
-var DataLeapMonth []byte
+var dataLeapMonth []byte
 
 const (
+	// LeapMonthSmall returns lunar small month
 	LeapMonthSmall = 1
-	LeapMonthBig   = 2
+	// LeapMonthBig returns lunar big month
+	LeapMonthBig = 2
 )
 
-const SolarTermDataOffset = 8 * 24
+const solarTermDataOffset = 8 * 24
 
-var (
-	ErrYearNotHaveLeapMonth = errors.New("year not have leap month")
-)
+var ()
 
 var yearNumber = []int{
 	0x9, 0xE, 0x13, 0x18, 0x1E, 0x23, 0x28, 0x2D, 0x33, 0x38, //1900-1909
@@ -87,7 +86,7 @@ var lunarInfoList = []int{
 	0x0d520, //2100
 }
 
-//decrypted use DataSolarTerm
+//decrypted use dataSolarTerm
 //var termInfoList = []string{
 //	`9778397bd097c36b0b6fc9274c91aa`, `97b6b97bd19801ec9210c965cc920e`, `97bcf97c3598082c95f8c965cc920f`, `97bd0b06bdb0722c965ce1cfcc920f`, `b027097bd097c36b0b6fc9274c91aa`,
 //	`97b6b97bd19801ec9210c965cc920e`, `97bcf97c359801ec95f8c965cc920f`, `97bd0b06bdb0722c965ce1cfcc920f`, `b027097bd097c36b0b6fc9274c91aa`, `97b6b97bd19801ec9210c965cc920e`,
@@ -141,8 +140,8 @@ var chineseNumber = runes.Runes(`正二三四五六七八九十十一腊`)
 //公历每个月份的天数
 var monthDay = []int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
 
-//GetLunarInfo 取得月历信息
-func GetLunarInfo(y int) int {
+//getLunarInfo 取得月历信息
+func getLunarInfo(y int) int {
 	y = yearOffset(y)
 	if y < 0 || y > len(lunarInfoList) {
 		return 0
@@ -152,12 +151,12 @@ func GetLunarInfo(y int) int {
 
 func yearLeapMonth(year int) int {
 	offset := yearOffset(year)
-	return int(DataLeapMonth[offset*2])
+	return int(dataLeapMonth[offset*2])
 }
 
 func yearLeapMonthBS(year int) int {
 	offset := yearOffset(year)
-	return int(DataLeapMonth[offset*2+1])
+	return int(dataLeapMonth[offset*2+1])
 }
 
 // LeapMonthBS returns the leap month of big month or small month

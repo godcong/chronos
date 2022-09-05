@@ -136,3 +136,19 @@ func ParseSolarTerm(name string) (SolarTerm, error) {
 	}
 	return SolarTerm(0), fmt.Errorf("%s is not a valid SolarTerm", name)
 }
+
+// MarshalText implements the text marshaller method.
+func (x SolarTerm) MarshalText() ([]byte, error) {
+	return []byte(x.String()), nil
+}
+
+// UnmarshalText implements the text unmarshaller method.
+func (x *SolarTerm) UnmarshalText(text []byte) error {
+	name := string(text)
+	tmp, err := ParseSolarTerm(name)
+	if err != nil {
+		return err
+	}
+	*x = tmp
+	return nil
+}

@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Calendar ...
+// Calendar returns a calendar
 type Calendar interface {
 	Lunar() Lunar
 	Solar() Solar
@@ -13,7 +13,7 @@ type Calendar interface {
 	Date() CalendarDate
 }
 
-// Solar ...
+// Solar returns the solar time
 type Solar interface {
 	Minute() int
 	Second() int
@@ -25,6 +25,7 @@ type Solar interface {
 	Hour() int
 }
 
+// Lunar returns the lunar time
 type Lunar interface {
 	Year() int
 	Month() int
@@ -34,6 +35,7 @@ type Lunar interface {
 	IsLeapMonth() bool
 }
 
+// ChineseSupport implements the interface, if support chinese language output
 type ChineseSupport interface {
 	Chinese() string
 }
