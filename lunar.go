@@ -119,7 +119,7 @@ func (l *lunar) nianZhu() string {
 func yearDay(y int) int {
 	i, sum := 348, 348
 	for i = 0x8000; i > 0x8; i >>= 1 {
-		if (GetLunarInfo(y) & i) != 0 {
+		if (getLunarInfo(y) & i) != 0 {
 			sum++
 		}
 	}
@@ -141,7 +141,7 @@ func monthDays(y int, m int) int {
 	if m > 12 || m < 1 {
 		return -1
 	}
-	if GetLunarInfo(y)&(0x10000>>uint32(m)) != 0 {
+	if getLunarInfo(y)&(0x10000>>uint32(m)) != 0 {
 		return 30
 	}
 	return 29
@@ -213,8 +213,8 @@ func lunarInput(date string) time.Time {
 	return input
 }
 
-// CalculateLunar ...
-func CalculateLunar(date string) *lunar {
+// calculateLunar ...
+func calculateLunar(date string) *lunar {
 	input := lunarInput(date)
 	lunar := lunar{
 		leap: false,
@@ -267,9 +267,9 @@ func betweenDay(d time.Time, s time.Time) int {
 	return int(subValue)
 }
 
-//Solar2Lunar 输入日历输出月历
-func Solar2Lunar(time time.Time) string {
-	lunar := CalculateLunar(time.Format(DefaultDateFormat))
+//solar2Lunar 输入日历输出月历
+func solar2Lunar(time time.Time) string {
+	lunar := calculateLunar(time.Format(DefaultDateFormat))
 	result := nianZhuChinese(lunar.year) + "年"
 	if lunar.leap && (lunar.month == lunar.leapMonth) {
 		result += "闰"

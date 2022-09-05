@@ -113,25 +113,38 @@ func NewSolarCalendar(v ...any) Calendar {
 	return c.initializeCalendarDate()
 }
 
+// ParseSolarString returns Calendar parse from string(value,format?)
+// @param string
+// @param ...string
+// @return Calendar
 func ParseSolarString(s string, format ...string) Calendar {
 	return parseStringDateFormat(s, format...).initializeCalendarDate()
 }
 
+// ParseSolarDate returns Calendar parse from date(year, month, day, hour, minute, second)
+// @param int
+// @param int
+// @param int
+// @param int
+// @param int
+// @param int
+// @return Calendar
 func ParseSolarDate(year, month, day, hour, minute, second int) Calendar {
 	date := time.Date(year, time.Month(month), day, hour, minute, second, 0, time.Local)
 	return parseTime(date, time.Local).initializeCalendarDate()
 }
 
+// ParseSolarNow returns Calendar parse from solar time now(time.Now())
+// @return Calendar
 func ParseSolarNow() Calendar {
 	return parseTime(time.Now(), time.Local).initializeCalendarDate()
 }
 
+// ParseSolarTime returns Calendar parse from solar time
+// @param time.Time
+// @return Calendar
 func ParseSolarTime(t time.Time) Calendar {
 	return parseTime(t, time.Local).initializeCalendarDate()
-}
-
-func NewLunarCalendar() Calendar {
-	return &calendar{}
 }
 
 const minYear = 1900

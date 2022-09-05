@@ -1,7 +1,6 @@
 package chronos
 
 import (
-	"errors"
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
@@ -19,7 +18,7 @@ type TianGan uint32
 //ENUM(Zi , Chou , Yin , Mao , Chen , Si , Wu , Wei , Shen , You , Xu , Hai , Max)
 type DiZhi uint32
 
-// GanZhi
+// GanZhi returns the GanZhi enum
 //ENUM(JiaZi,YiChou,BingYin,DingMao,WuChen,JiSi,GengWu,XinWei,RenShen,GuiYou,JiaXu,YiHai,
 //BingZi,DingChou,WuYin,JiMao,GengChen,XinSi,RenWu,GuiWei,JiaShen,YiYou,BingXu,DingHai,
 //WuZi,JiChou,GengYin,XinMao,RenChen,GuiSi,JiaWu,YiWei,BingShen,DingYou,WuXu,JiHai,
@@ -32,13 +31,9 @@ type StemBranch = GanZhi
 
 var _TianGanTable = runes.Runes(`甲乙丙丁戊己庚辛壬癸`)
 
-// ErrWrongTianGanTypes returns an error
-var ErrWrongTianGanTypes = errors.New("[chronos] wrong tiangan types")
-
 var _DiZhiTable = runes.Runes(`子丑寅卯辰巳午未申酉戌亥`)
 
-// ErrWrongDiZhiTypes returns an error
-var ErrWrongDiZhiTypes = errors.New("[chronos] wrong dizhi types")
+var ()
 
 var _GanZhiTable = runes.Runes(
 	"甲子乙丑丙寅丁卯戊辰己巳庚午辛未壬申癸酉甲戌乙亥" +
@@ -47,14 +42,18 @@ var _GanZhiTable = runes.Runes(
 		"庚子辛丑壬寅癸卯甲辰乙巳丙午丁未戊申己酉庚戌辛亥" +
 		"壬子癸丑甲寅乙卯丙辰丁巳戊午己未庚申辛酉壬戌癸亥")
 
-// ErrWrongGanZhiTypes returns an error
-var ErrWrongGanZhiTypes = errors.New("[chronos] wrong ganzhi types")
+var ()
 
-// PillarHour is an alias name of ShiZhu
-var PillarHour = ShiZhu
-var PillarDay = RiZhu
-var PillarMonty = YueZhuChineseV2
-var PillarYear = NianZhuChineseV2
+var (
+	// PillarHour is an alias name of ShiZhu
+	PillarHour = ShiZhu
+	// PillarDay is an alias name of RiZhu
+	PillarDay = RiZhu
+	// PillarMonty is an alias name of YueZhu
+	PillarMonty = YueZhu
+	// PillarYear is an alias name of NianZhu
+	PillarYear = NianZhu
+)
 
 func (x TianGan) Chinese() string {
 	return TianGanChineseV2(x)

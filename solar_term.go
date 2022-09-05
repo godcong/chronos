@@ -1,7 +1,6 @@
 package chronos
 
 import (
-	"errors"
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
@@ -12,12 +11,7 @@ const defaultSolarTerm = "节气"
 
 var solarTerms = runes.Runes("小寒大寒立春雨水惊蛰春分清明谷雨立夏小满芒种夏至小暑大暑立秋处暑白露秋分寒露霜降立冬小雪大雪冬至")
 
-var (
-	// ErrSolarTermFormat returns an error
-	ErrSolarTermFormat = errors.New("[chronos] solar term format not supported")
-	// ErrWrongSolarTermIndex returns an error
-	ErrWrongSolarTermIndex = errors.New("[chronos] wrong solar term index error")
-)
+var ()
 
 // SolarTerm
 //ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,Max)
@@ -71,7 +65,7 @@ func (x SolarTerm) GetYearDate(year int) (month time.Month, day int) {
 // @return error
 func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error) {
 	if st >= 24 {
-		return SolarTermDetail{}, ErrSolarTermFormat
+		return SolarTermDetail{}, ErrWrongSolarTermFormat
 	}
 	if err := checkYearSupport(t.Year()); err != nil {
 		return SolarTermDetail{}, err
@@ -171,8 +165,8 @@ func readSolarTermTime(offset int, st SolarTerm) time.Time {
 }
 
 func readYearSolarTermData(offset int) []byte {
-	sta := offset * SolarTermDataOffset
-	return DataSolarTerm[sta : sta+SolarTermDataOffset]
+	sta := offset * solarTermDataOffset
+	return dataSolarTerm[sta : sta+solarTermDataOffset]
 }
 
 var _ ChineseSupport = SolarTerm(0)

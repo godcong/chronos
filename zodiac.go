@@ -1,7 +1,6 @@
 package chronos
 
 import (
-	"errors"
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
@@ -10,9 +9,6 @@ import (
 const defaultZodiac = "猫"
 
 var zodiacs = runes.Runes("鼠牛虎兔龙蛇马羊猴鸡狗猪")
-
-// ErrWrongZodiacTypes returns an error
-var ErrWrongZodiacTypes = errors.New("[chronos] wrong zodiac types")
 
 //Zodiac
 //ENUM(Rat, Cow, Tiger, Rabbit, Dragon, Snake, Horse, Sheep, Monkey, Chicken, Dog, Pig, Max)
