@@ -98,7 +98,7 @@ func ReadFile(path string) ([]map[string]jieqi, error) {
 //	}
 //}
 
-var filepath = "E:\\workspace\\project\\golang\\javscrape\\jieqi"
+var filepath = "jieqi"
 
 func main() {
 	fileSta := 1900
@@ -136,7 +136,8 @@ func ReadBytes(name string) ([]byte, error) {
 					fmt.Println("error parsing", "time", j.Year, "err", err)
 					continue
 				}
-				makeSolarTerTable(jieqi, parse.Month(), parse.Day(), parse.Unix())
+				jieqiIdx := (i + 2) % 24
+				makeSolarTerTable(jieqi, jieqiIdx, parse.Unix())
 			}
 		}
 		return jieqi, nil
@@ -144,11 +145,11 @@ func ReadBytes(name string) ([]byte, error) {
 	return nil, errors.New("not found")
 }
 
-func makeSolarTerTable(b []byte, month time.Month, day int, unix int64) []byte {
-	idx := int((month - 1) * 2 * 8)
-	if day > 10 {
-		idx += 8
-	}
+func makeSolarTerTable(b []byte, i int, unix int64) []byte {
+	idx := int((i) * 8)
+	//if day > 10 {
+	//	idx += 8
+	//}
 	//runes := []rune(strconv.Itoa(day))
 	//if len(runes) > 0 {
 	//b[idx] = byte(day)
