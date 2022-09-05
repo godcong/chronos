@@ -14,13 +14,13 @@ const maxLunarYear = 2100
 
 // lunar ...
 type lunar struct {
-	year      int
-	month     int
-	day       int
-	hour      int
-	leapMonth int
-	leap      bool
-	fixLiChun int //立春当天如果未到时辰：-1
+	year       int
+	month      int
+	day        int
+	hour       int
+	leapMonth  int
+	leap       bool
+	liChunMode int //立春当天如果未到时辰：-1
 }
 
 func (l *lunar) LeapMonth() int {
@@ -77,7 +77,7 @@ func (l *lunar) Type() string {
 }
 
 func (l *lunar) FixLiChun(fix int) {
-	l.fixLiChun = fix
+	l.liChunMode = fix
 }
 
 // Calendar ...
@@ -183,6 +183,19 @@ func lunarStart() time.Time {
 		fmt.Println(err.Error())
 	}
 	return start
+}
+
+func lunarByTime(t time.Time) *lunar {
+	//todo: use lunar time instead of solar time
+	return &lunar{
+		year:       t.Year(),
+		month:      int(t.Month()),
+		day:        t.Day(),
+		hour:       t.Hour(),
+		leapMonth:  yearLeapMonth(t.Year()),
+		leap:       int(t.Month()) == yearLeapMonth(t.Year()),
+		liChunMode: 0,
+	}
 }
 
 func lunarInput(date string) time.Time {

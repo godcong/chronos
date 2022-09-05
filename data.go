@@ -8,10 +8,10 @@ import (
 	"github.com/godcong/chronos/v2/runes"
 )
 
-//go:embed DataSolarTerm
+//go:embed data/DataSolarTerm
 var DataSolarTerm []byte
 
-//go:embed DataLeapMonth
+//go:embed data/DataLeapMonth
 var DataLeapMonth []byte
 
 const (

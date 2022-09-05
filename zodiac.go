@@ -84,7 +84,7 @@ func ZodiacChinese(zodiac Zodiac) (string, error) {
 
 // YearZodiacNoFix ...
 //func YearZodiacNoFix(lunar *lunar) string {
-//	s := string([]rune(lunar.nianZhu(lunar.fixLiChun))[1])
+//	s := string([]rune(lunar.nianZhu(lunar.liChunMode))[1])
 //	for idx, v := range _DiZhiTable {
 //		if strings.Compare(v, s) == 0 {
 //			return zodiacs[idx]
