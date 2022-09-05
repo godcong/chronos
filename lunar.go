@@ -23,6 +23,10 @@ type lunar struct {
 	fixLiChun int //立春当天如果未到时辰：-1
 }
 
+func (l *lunar) LeapMonth() int {
+	return yearLeapMonth(l.year)
+}
+
 func (l *lunar) Date() LunarDate {
 	return LunarDate{
 		Year:        l.year,
@@ -30,12 +34,8 @@ func (l *lunar) Date() LunarDate {
 		Day:         l.day,
 		Hour:        l.hour,
 		IsLeapMonth: l.IsLeapMonth(),
-		IsLeapYear:  l.IsLeapYear(),
+		LeapMonth:   l.LeapMonth(),
 	}
-}
-
-func (l *lunar) IsLeapYear() bool {
-	return l.leap
 }
 
 func (l *lunar) IsLeapMonth() bool {
@@ -127,17 +127,13 @@ func yearDay(y int) int {
 }
 
 func leapDay(y int) int {
-	if leapMonth(y) != 0 {
-		if (GetLunarInfo(y) & 0x10000) != 0 {
+	if yearLeapMonth(y) != 0 {
+		if yearLeapMonthBS(y) == LeapMonthBig {
 			return 30
 		}
 		return 29
 	}
 	return 0
-}
-
-func leapMonth(y int) int {
-	return GetLunarInfo(y) & 0xf
 }
 
 func monthDays(y int, m int) int {
@@ -164,17 +160,6 @@ func solarDays(y, m int) int {
 		return 28
 	}
 	return monthDay[idx]
-}
-
-//GetAstro 取得星座
-func GetAstro(m, d int) string {
-	arr := []int{20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22}
-	idx := d < arr[m-1]
-	index := m * 2
-	if idx {
-		index = m*2 - 2
-	}
-	return string(constellations[index]) + "座"
 }
 
 func lunarYear(offset int) (int, int) {
@@ -228,7 +213,7 @@ func CalculateLunar(date string) *lunar {
 	start := lunarStart()
 	offset := betweenDay(input, start)
 	year, offset := lunarYear(offset)
-	lunar.leapMonth = leapMonth(year) //计算该年闰哪个月
+	lunar.leapMonth = yearLeapMonth(year) //计算该年闰哪个月
 
 	//设定当年是否有闰月
 	if lunar.leapMonth > 0 {
