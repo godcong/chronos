@@ -89,21 +89,23 @@ func (l *lunar) Calendar() Calendar {
 
 // EightCharacter ...
 func (l *lunar) EightCharacter() []string {
-	rlt := l.nianZhu(l.fixLiChun) + l.yueZhu() + l.riZhu() + l.shiZhu()
+	rlt := l.nianZhu() + l.yueZhu() + l.riZhu() + l.shiZhu()
 	return strings.Split(rlt, "")
 }
 
 //shiZhu 时柱
 func (l *lunar) shiZhu() string {
-	return ShiZhu(l.Year(), int(l.Month()), l.Day(), l.Hour())
+	//return ShiZhu(l.Year(), int(l.Month()), l.Day(), l.Hour())
+	return ""
 }
 
 //riZhu 日柱
 func (l *lunar) riZhu() string {
-	if l.Hour() >= 23 {
-		return RiZhu(l.Year(), int(l.Month()), l.Day()+1)
-	}
-	return RiZhu(l.Year(), int(l.Month()), l.Day())
+	//if l.Hour() >= 23 {
+	//	return RiZhu(l.Year(), int(l.Month()), l.Day()+1)
+	//}
+	//return RiZhu().Chinese()
+	return ""
 }
 
 //yueZhu 月柱
@@ -112,10 +114,10 @@ func (l *lunar) yueZhu() string {
 }
 
 //nianZhu 年柱
-func (l *lunar) nianZhu(fix int) string {
+func (l *lunar) nianZhu() string {
 	//log.Println("year", l.Year(), "nyear", l.year, "month", l.Month(), "day", l.Day(), "lichun", getLiChunDay(l.Year()))
 	if l.Month() > 2 || (l.Month() == 2 && l.Day() >= yearLiChunDay(l.Year())) {
-		return nianZhuChinese(l.Year() + fix)
+		return nianZhuChinese(l.Year())
 	}
 	return nianZhuChinese(l.Year() - 1)
 }

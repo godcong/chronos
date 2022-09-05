@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
+	"github.com/godcong/chronos/v2/utils"
 )
 
 const defaultTianGan = "天干"
@@ -77,7 +78,6 @@ func nianZhu(year int) GanZhi {
 
 func nianZhuChinese(year int) string {
 	return nianZhu(year).Chinese()
-	//return ganZhiChinese(year - 4)
 }
 
 func ganZhiChinese(gz int) string {
@@ -121,14 +121,12 @@ func parseGanZhiV2(tiangan TianGan, dizhi DiZhi) GanZhi {
 // @return GanZhi
 // decrypted use parseGanZhiV2
 func parseGanZhi(tiangan TianGan, dizhi DiZhi) GanZhi {
-	for i := 0; i < 6; i++ {
-		for j := 0; j < 6; j++ {
-			if v := i*10 + int(tiangan); v == j*12+int(dizhi) {
-				return GanZhi(v)
-			}
-		}
+	gz := int(tiangan)*6 - int(dizhi)*5
+	if gz < 0 {
+		gz += 60
 	}
-	return GanZhiMax
+	gz %= 60
+	return GanZhi(gz)
 }
 
 // YearGanZhiChinese returns the year of the chinese GanZhi string
@@ -204,25 +202,43 @@ func GanZhiChinese(ganzhi GanZhi) (string, error) {
 	return readString, nil
 }
 
-//ShiZhu 获取时柱
-//　	子 　　丑 　　寅 　　卯 　　辰 　　己
-//　　　23-01：01-03：03-05 :05-07：07-09：09-11
-//　　　午 　　未 　　申 　　酉 　　戊 　　亥
-//　　　11-13：13-15：15-17：17-19：19-21：21-23
+// ShiZhu returns a GanZhi of hour
+// @param time.Time
+// @return GanZhi
+// @descriptions
+//子 　　丑 　　寅 　　卯 　　辰 　　己
+//23-01：01-03：03-05 :05-07：07-09：09-11
+//午 　　未 　　申 　　酉 　　戊 　　亥
+//11-13：13-15：15-17：17-19：19-21：21-23
 //`甲子`, `乙丑`, `丙寅`, `丁卯`, `戊辰`, `己巳`, `庚午`, `辛未`, `壬申`, `癸酉`, `甲戌`, `乙亥`, //甲或己日
 //`丙子`, `丁丑`, `戊寅`, `己卯`, `庚辰`, `辛巳`, `壬午`, `癸未`, `甲申`, `乙酉`, `丙戌`, `丁亥`, //乙或庚日
 //`戊子`, `己丑`, `庚寅`, `辛卯`, `壬辰`, `癸巳`, `甲午`, `乙未`, `丙申`, `丁酉`, `戊戌`, `己亥`, //丙或辛日
 //`庚子`, `辛丑`, `壬寅`, `癸卯`, `甲辰`, `乙巳`, `丙午`, `丁未`, `戊申`, `己酉`, `庚戌`, `辛亥`, //丁或壬日
 //`壬子`, `癸丑`, `甲寅`, `乙卯`, `丙辰`, `丁巳`, `戊午`, `己未`, `庚申`, `辛酉`, `壬戌`, `癸亥`, //戊或癸日
-func ShiZhu(y, m, d, h int) string {
-	i := stemBranchIndex(y, m, d) % 5 * 12
-	idx := (h + 1) / 2 % 12
-	return GanZhi(fixDayNext(i, idx, h)).Chinese()
+func ShiZhu(t time.Time) GanZhi {
+	return shiZhu(t.Year(), t.Month(), t.Day(), t.Hour())
 }
 
-// RiZhu 获取日柱
-func RiZhu(y, m, d int) string {
-	return GanZhi(stemBranchIndex(y, m, d)).Chinese()
+func shiZhu(y int, m time.Month, d int, h int) GanZhi {
+	days := utils.DateDiffDay(yearMonthDayDate(y, m, 1), startTime) + d + 9
+	zhi := ((h + 1) / 2) % 12
+	if h >= 23 {
+		days += 1
+	}
+	gan := (days%10%5)*2 + zhi
+	return parseGanZhi(getTianGan(gan), getDiZhi(zhi))
+}
+
+// RiZhu returns a GanZhi of day
+// @param time.Time
+// @return GanZhi
+func RiZhu(t time.Time) GanZhi {
+	return riZhu(t.Date())
+}
+
+func riZhu(y int, m time.Month, d int) GanZhi {
+	days := utils.DateDiffDay(yearMonthDayDate(y, m, 1), startTime) + d + 9
+	return parseGanZhi(getTianGan(days), getDiZhi(days))
 }
 
 // YueZhuChineseV2 returns the chinese YueZhuChineseV2 string
@@ -233,6 +249,9 @@ func YueZhuChineseV2(t time.Time) string {
 	return yueZhu(t.Date()).Chinese()
 }
 
+// YueZhu returns a GanZhi of month
+// @param time.Time
+// @return GanZhi
 func YueZhu(t time.Time) GanZhi {
 	return yueZhu(t.Date())
 }

@@ -1,8 +1,11 @@
 package chronos
 
 import (
+	"fmt"
 	"testing"
 	"time"
+
+	"github.com/godcong/chronos/v2/utils"
 )
 
 func TestNianZhuChineseV2(t *testing.T) {
@@ -274,6 +277,94 @@ func Test_parseGanZhi(t *testing.T) {
 			got := parseGanZhiV2(tt.args.tiangan, tt.args.dizhi)
 			if got != tt.want {
 				t.Errorf("parseGanZhiV2() got = %v, want %v", got, tt.want)
+			}
+			got = parseGanZhi(tt.args.tiangan, tt.args.dizhi)
+			if got != tt.want {
+				t.Errorf("parseGanZhiV2() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+	tm, err := time.Parse(DefaultDateFormat, "2000/01/01 00:00:00")
+	fmt.Printf("time:%X,%v\n", uint64(tm.UTC().Unix()), err)
+
+	fmt.Println("diff day:", utils.DateDiffDay(tm, startTime))
+}
+
+func TestShiZhu(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "",
+			args: args{
+				t: time.Date(2022, 9, 5, 14, 42, 30, 0, time.UTC),
+			},
+			want: "乙未",
+		},
+		{
+			name: "",
+			args: args{
+				t: time.Date(2022, 9, 5, 23, 42, 30, 0, time.UTC),
+			},
+			want: "庚子",
+		},
+		{
+			name: "",
+			args: args{
+				t: time.Date(2022, 9, 6, 0, 42, 30, 0, time.UTC),
+			},
+			want: "庚子",
+		},
+		{
+			name: "",
+			args: args{
+				t: time.Date(2022, 10, 1, 0, 42, 30, 0, time.UTC),
+			},
+			want: "庚子",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ShiZhu(tt.args.t); got.Chinese() != tt.want {
+				t.Errorf("ShiZhu() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestRiZhu(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "",
+			args: args{
+				t: yearMonthDayDate(2022, 9, 5),
+			},
+			want: "辛酉",
+		},
+		{
+			name: "",
+			args: args{
+				t: yearMonthDayDate(2099, 11, 4),
+			},
+			want: "乙巳",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := RiZhu(tt.args.t); got.Chinese() != tt.want {
+				t.Errorf("RiZhu() = %v, want %v", got, tt.want)
 			}
 		})
 	}

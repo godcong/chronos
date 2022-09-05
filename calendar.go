@@ -11,8 +11,17 @@ import (
 )
 
 // DefaultDateFormat ...
-const DefaultDateFormat = "2006/01/02 15:04:05"
-const LunarDateFormat = "2006/01/02"
+const (
+	DefaultDateFormat = "2006/01/02 15:04:05"
+	LunarDateFormat   = "2006/01/02"
+)
+
+var (
+	//startTimeUnix is 1900/01/01 00:00:00
+	//startTimeUnix = uint64(0xFFFFFFFF7C558180)
+	//startTime is 1900/01/01 00:00:00
+	startTime = yearMonthDayDate(1900, 1, 1)
+)
 
 type calendar struct {
 	loc     *time.Location
