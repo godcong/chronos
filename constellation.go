@@ -29,6 +29,10 @@ func (x Constellation) Chinese() string {
 	return ConstellationChineseV2(x)
 }
 
+// ConstellationChinese returns a constellation of the chinese
+// @param Constellation
+// @return string
+// @return error
 func ConstellationChinese(c Constellation) (string, error) {
 	readString, err := constellations.ReadString(c.index(), 2)
 	if err != nil {
@@ -37,11 +41,16 @@ func ConstellationChinese(c Constellation) (string, error) {
 	return readString, nil
 }
 
+// ConstellationChineseV2 returns a constellation of the chinese
+// @param Constellation
+// @return string
 func ConstellationChineseV2(c Constellation) string {
 	return constellations.MustReadString(c.index(), 2)
 }
 
-//GetConstellation 取得星座
+// GetConstellation get the constellation of date
+// @param time.Time
+// @return Constellation
 func GetConstellation(t time.Time) Constellation {
 	return getConstellation(t.Date())
 }

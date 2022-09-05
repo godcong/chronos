@@ -1,5 +1,9 @@
 package chronos
 
+import (
+	"github.com/godcong/chronos/v2/runes"
+)
+
 const (
 	cvalue20 = iota
 	cvalue21
@@ -119,11 +123,11 @@ var lunarInfoList = []int{
 //	`7f0e27f1487f531b0b0bb0b6fb0722`, //2100
 //}
 
-var number = []string{`一`, `二`, `三`, `四`, `五`, `六`, `七`, `八`, `九`, `十`, `十一`, `十二`}
-var ten = []string{`初`, `十`, `廿`, `卅`}
+var number = runes.Runes(`一二三四五六七八九十十一十二`)
+var ten = runes.Runes(`初十廿卅`)
 
 //月历月份
-var chineseNumber = []string{`正`, `二`, `三`, `四`, `五`, `六`, `七`, `八`, `九`, `十`, `十一`, `腊`}
+var chineseNumber = runes.Runes(`正二三四五六七八九十十一腊`)
 
 //公历每个月份的天数
 var monthDay = []int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
@@ -164,7 +168,7 @@ func getChineseMonth(m int) string {
 	if m > 12 || m < 1 {
 		return "?月"
 	}
-	return chineseNumber[m-1] + "月" //加上月字
+	return chineseNumber.MustReadString(m-1, 1) + "月" //加上月字
 }
 
 //getChineseDay 取得月历日
@@ -182,31 +186,31 @@ func getChineseDay(d int) string {
 		s = `三十`
 	default:
 		n := (d - 1) % 10
-		s = ten[d/10] + number[n]
+		s = ten.MustReadString(d/10, 1) + number.MustReadString(n, 1)
 	}
 	return s + "日"
 
 }
 
 //待优化
-func fixDayNext(row int, idx int, hour int) int {
-	if hour >= 23 {
-		idx += 12
-	}
-	if row+idx >= 60 {
-		return row + idx - 60
-	}
-	return row + idx
-}
+//func fixDayNext(row int, idx int, hour int) int {
+//	if hour >= 23 {
+//		idx += 12
+//	}
+//	if row+idx >= 60 {
+//		return row + idx - 60
+//	}
+//	return row + idx
+//}
 
-func stemBranchIndex(y, m, d int) int {
-	y = yearOffset(y)
-	if y < 0 || y > len(yearNumber) {
-		return 0
-	}
-	if m < 3 {
-		y--
-	}
-	m = (m - 1) % 12
-	return (yearNumber[y] + monthNumber[m] + d - 1) % 60
-}
+//func stemBranchIndex(y, m, d int) int {
+//	y = yearOffset(y)
+//	if y < 0 || y > len(yearNumber) {
+//		return 0
+//	}
+//	if m < 3 {
+//		y--
+//	}
+//	m = (m - 1) % 12
+//	return (yearNumber[y] + monthNumber[m] + d - 1) % 60
+//}
