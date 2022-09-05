@@ -24,6 +24,15 @@ func (r Runes) MustReadString(offset int, limit int) string {
 	return readString
 }
 
+func (r Runes) Index(rn rune) int {
+	for i := range r {
+		if rn == r[i] {
+			return i
+		}
+	}
+	return -1
+}
+
 func ReadString(runs []rune, offset int, limit int) (string, error) {
 	return Runes(runs).ReadString(offset, limit)
 }

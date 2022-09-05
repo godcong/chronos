@@ -57,11 +57,6 @@ var solarTermExplanations = []string{
 	23: "太阳黄经为300°。大寒就是天气寒冷到了极点的意思。大寒前后是一年中最冷的季节。大寒正值三九刚过，四九之初。谚云：“三九四九冰上走”。",
 }
 
-//go:embed SolarTerm.data
-var SolarTermData []byte
-
-const SolarTermDataOffset = 8 * 24
-
 //var solarTermDataBuffer = bytes.NewBuffer(solarTermData)
 
 //var yearSolarTermDay = map[int][]byte{
