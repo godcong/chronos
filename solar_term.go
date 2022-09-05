@@ -2,6 +2,7 @@ package chronos
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
@@ -20,7 +21,7 @@ var (
 )
 
 // SolarTerm
-//ENUM(LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,XiaoHan,DaHan,Max)
+//ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,Max)
 type SolarTerm uint32
 
 // SolarTermDetail 24节气表
@@ -113,6 +114,7 @@ func YearSolarTermDay(t time.Time, st SolarTerm) (day int) {
 }
 
 func yearLiChunDay(year int) (day int) {
+	fmt.Println("date", getYearSolarTermTime(year, SolarTermLiChun).Format(DefaultDateFormat))
 	_, _, day = getYearSolarTermTime(year, SolarTermLiChun).Date()
 	return
 }
@@ -122,10 +124,11 @@ func CheckSolarTermDay(t time.Time) (SolarTerm, bool) {
 		return SolarTermMax, false
 	}
 
-	var tmpT time.Time
-	for i := range solarTermTimes[t.Year()] {
-		tmpT = getYearSolarTermTime(t.Year(), SolarTerm(i))
-		if tmpT.Month() == t.Month() && tmpT.Day() == t.Day() {
+	var yst time.Time
+	offset := yearOffset(t.Year())
+	for i := 0; i < 24; i++ {
+		yst = readSolarTermTime(offset, SolarTerm(i))
+		if yst.Month() == t.Month() && yst.Day() == t.Day() {
 			return SolarTerm(i), true
 		}
 	}
@@ -133,11 +136,13 @@ func CheckSolarTermDay(t time.Time) (SolarTerm, bool) {
 }
 
 func getYearSolarTermTime(year int, st SolarTerm) time.Time {
-	return time.Unix(int64(solarTermTimes[year][st]), 0).UTC()
+	offset := yearOffset(year)
+	return readSolarTermTime(offset, st)
 }
 
 func getYearSolarTermTimeStr(year int, st SolarTerm) string {
-	return time.Unix(int64(solarTermTimes[year][st]), 0).UTC().Format(DefaultDateFormat)
+	offset := yearOffset(year)
+	return readSolarTermTime(offset, st).Format(DefaultDateFormat)
 }
 
 func SolarTermChineseV2(st SolarTerm) string {

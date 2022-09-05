@@ -135,7 +135,7 @@ func Test_getSolarTermTime(t *testing.T) {
 			name: "",
 			args: args{
 				year: 1900,
-				st:   23,
+				st:   SolarTermDaHan,
 			},
 			want: "1900-01-20 19:32:25",
 		},
@@ -168,7 +168,7 @@ func TestYearSolarTermDetail(t *testing.T) {
 			want: SolarTermDetail{
 				Index:       0,
 				SolarTerm:   0,
-				Time:        "1900/02/04 13:51:31",
+				Time:        "1900/01/06 02:03:57",
 				SanHou:      "",
 				Explanation: "",
 			},
@@ -177,7 +177,7 @@ func TestYearSolarTermDetail(t *testing.T) {
 			name: "",
 			args: args{
 				year: yearDate(1900),
-				st:   23,
+				st:   SolarTermDaHan,
 			},
 			want: SolarTermDetail{
 				Index:       0,
@@ -191,12 +191,12 @@ func TestYearSolarTermDetail(t *testing.T) {
 			name: "",
 			args: args{
 				year: yearDate(1900),
-				st:   24,
+				st:   SolarTermLiChun,
 			},
 			want: SolarTermDetail{
 				Index:       0,
 				SolarTerm:   0,
-				Time:        "",
+				Time:        "1900/02/04 13:51:31",
 				SanHou:      "",
 				Explanation: "",
 			},
