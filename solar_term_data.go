@@ -60,7 +60,7 @@ var solarTermExplanations = []string{
 //go:embed SolarTerm.data
 var SolarTermData []byte
 
-const SolarTermDataOffset = 9 * 24
+const SolarTermDataOffset = 8 * 24
 
 //var solarTermDataBuffer = bytes.NewBuffer(solarTermData)
 

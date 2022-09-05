@@ -98,7 +98,7 @@ func ReadFile(path string) ([]map[string]jieqi, error) {
 //	}
 //}
 
-var filepath = "jieqi"
+var filepath = "E:\\workspace\\project\\golang\\javscrape\\jieqi"
 
 func main() {
 	fileSta := 1900
@@ -117,7 +117,7 @@ func main() {
 }
 
 func yearOffset(year int) int64 {
-	return int64((year - 1900) * 24 * 9)
+	return int64((year - 1900) * 24 * 8)
 }
 
 func ReadBytes(name string) ([]byte, error) {
@@ -126,7 +126,7 @@ func ReadBytes(name string) ([]byte, error) {
 		return nil, err
 	}
 	for _, m := range file {
-		jieqi := make([]byte, 24*9)
+		jieqi := make([]byte, 24*8)
 		for i := 0; i < 24; i++ {
 			istr := strconv.Itoa(i)
 			j, ok := m[istr]
@@ -145,14 +145,14 @@ func ReadBytes(name string) ([]byte, error) {
 }
 
 func makeSolarTerTable(b []byte, month time.Month, day int, unix int64) []byte {
-	idx := int((month - 1) * 2 * 9)
+	idx := int((month - 1) * 2 * 8)
 	if day > 10 {
-		idx += 9
+		idx += 8
 	}
 	//runes := []rune(strconv.Itoa(day))
 	//if len(runes) > 0 {
-	b[idx] = byte(day)
-	idx++
+	//b[idx] = byte(day)
+	//idx++
 	//t := big.NewInt(unix).Bytes()
 	t := utils.Int64ToBytes(unix)
 	for i := range t {
@@ -177,7 +177,7 @@ func WriteByteToFile(name string, offset int64, b []byte) error {
 	if err != nil {
 		return err
 	}
-	if len(b) != 24*9 {
+	if len(b) != 24*8 {
 		return errors.New("wrong byte size")
 	}
 	_, err = file.Write(b)

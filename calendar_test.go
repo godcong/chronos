@@ -26,10 +26,10 @@ func TestNewSolarCalendar(t *testing.T) {
 			name: "",
 			args: args{
 				v: []any{
-					"2022/08/24 12:34",
+					"2022/08/24 12:34:00",
 				},
 			},
-			want: "2022/08/24 12:34",
+			want: "2022/08/24 12:34:00",
 		},
 		{
 			name: "",
@@ -39,13 +39,13 @@ func TestNewSolarCalendar(t *testing.T) {
 					"2006-01-02 15:04",
 				},
 			},
-			want: "2022/08/24 12:34",
+			want: "2022/08/24 12:34:00",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := NewSolarCalendar(tt.args.v...); !reflect.DeepEqual(got.FormatTime(), tt.want) {
-				t.Errorf("New() = %v, want %v", got, tt.want)
+				t.Errorf("New() = %v, want %v", got.FormatTime(), tt.want)
 			}
 		})
 	}
@@ -92,7 +92,7 @@ func TestParseSolarNow(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := ParseSolarNow()
-			if !reflect.DeepEqual(got, tt.want) {
+			if got == nil {
 				t.Errorf("ParseSolarNow() = %v, want %v", got, tt.want)
 			}
 			date := got.Date()
