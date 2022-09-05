@@ -242,7 +242,7 @@ func Test_parseGanZhi(t *testing.T) {
 				tiangan: TianGanJia,
 				dizhi:   DiZhiChou,
 			},
-			wantErr: true,
+			want: GanZhiMax,
 		},
 		{
 			name: "",
@@ -258,7 +258,7 @@ func Test_parseGanZhi(t *testing.T) {
 				tiangan: TianGanGeng,
 				dizhi:   DiZhiHai,
 			},
-			wantErr: true,
+			want: GanZhiMax,
 		},
 		{
 			name: "",
@@ -266,18 +266,14 @@ func Test_parseGanZhi(t *testing.T) {
 				tiangan: TianGanGeng,
 				dizhi:   DiZhiHai,
 			},
-			wantErr: true,
+			want: GanZhiMax,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := parseGanZhi(tt.args.tiangan, tt.args.dizhi)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("parseGanZhi() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
+			got := parseGanZhiV2(tt.args.tiangan, tt.args.dizhi)
 			if got != tt.want {
-				t.Errorf("parseGanZhi() got = %v, want %v", got, tt.want)
+				t.Errorf("parseGanZhiV2() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

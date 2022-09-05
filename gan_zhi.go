@@ -2,7 +2,6 @@ package chronos
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
@@ -113,18 +112,22 @@ func splitGanZhi(gz GanZhi) (TianGan, DiZhi) {
 	return TianGan(gz % 10), DiZhi(gz % 12)
 }
 
-func parseGanZhi(tiangan TianGan, dizhi DiZhi) (GanZhi, error) {
-	t := int(tiangan)*12 + int(tiangan)
-	d := dizhi*10 + dizhi
-
-	gz := _TianGanDiZhiGanZhiTable[tiangan][dizhi]
-	if gz >= GanZhiMax {
-		return 0, ErrWrongGanZhiTypes
+func parseGanZhiV2(tiangan TianGan, dizhi DiZhi) GanZhi {
+	if tiangan >= TianGanMax || dizhi >= DiZhiMax {
+		return GanZhiMax
 	}
-	//todo: check
-	v := int(tiangan)*12 + int(dizhi)*10 - (int(tiangan) + int(dizhi))
-	fmt.Println((int(t)+int(d))%60, (v+120)%60, int(gz))
-	return gz, nil
+	return _TianGanDiZhiGanZhiTable[tiangan][dizhi]
+}
+
+func parseGanZhi(tiangan TianGan, dizhi DiZhi) GanZhi {
+	for i := 0; i < 6; i++ {
+		for j := 0; j < 6; j++ {
+			if v := i*10 + int(tiangan); v == j*12+int(dizhi) {
+				return GanZhi(v)
+			}
+		}
+	}
+	return GanZhiMax
 }
 
 // YearGanZhiChinese returns the year of the chinese GanZhi string
