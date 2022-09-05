@@ -50,15 +50,11 @@ func (x SolarTerm) Chinese() string {
 //	}
 //}
 
-func solarTermIndex(st SolarTerm) int {
-	return int(st * 2)
-}
-
-func solarTermDetail(st SolarTerm, time string) SolarTermDetail {
+func solarTermDetail(st SolarTerm, time time.Time) SolarTermDetail {
 	return SolarTermDetail{
 		Index:       int(st),
 		SolarTerm:   st,
-		Time:        time,
+		Time:        time.Format(DefaultDateFormat),
 		SanHou:      solarTermSanHous[st],
 		Explanation: solarTermExplanations[st],
 	}
@@ -81,7 +77,7 @@ func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error) {
 	if err := checkYearSupport(t.Year()); err != nil {
 		return SolarTermDetail{}, err
 	}
-	ts := getYearSolarTermTimeStr(t.Year(), st)
+	ts := getYearSolarTermTime(t.Year(), st)
 	return solarTermDetail(st, ts), nil
 }
 
