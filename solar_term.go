@@ -160,12 +160,11 @@ func getSolarTermDay(year int, month time.Month) (min, max int) {
 }
 
 func readSolarTermDay(offset int, st SolarTerm) int {
-	sta := int(st) * 9
-	return int(readYearSolarTermData(offset)[sta])
+	return readSolarTermTime(offset, st).Day()
 }
 
 func readSolarTermTime(offset int, st SolarTerm) time.Time {
-	sta := int(st)*9 + 1
+	sta := int(st) * 8
 	return utils.BytesToTime(readYearSolarTermData(offset)[sta : sta+8])
 }
 
