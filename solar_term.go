@@ -169,7 +169,7 @@ func readSolarTermTime(offset int, st SolarTerm) time.Time {
 }
 
 func readYearSolarTermData(offset int) []byte {
-	sta := offset * 9 * 24
+	sta := offset * SolarTermDataOffset
 	return SolarTermData[sta : sta+SolarTermDataOffset]
 }
 
