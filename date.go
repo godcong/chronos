@@ -20,7 +20,7 @@ type LunarDate struct {
 	Day         int  `json:"day"`
 	Hour        int  `json:"hour"`
 	IsLeapMonth bool `json:"is_leap_month"`
-	IsLeapYear  bool `json:"is_leap_year"`
+	LeapMonth   int  `json:"leap_month"`
 }
 
 type EightCharacter struct {

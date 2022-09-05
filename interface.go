@@ -30,7 +30,7 @@ type Lunar interface {
 	Month() int
 	Day() int
 	Hour() int
-	IsLeapYear() bool
+	LeapMonth() int
 	IsLeapMonth() bool
 }
 

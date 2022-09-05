@@ -2,6 +2,8 @@ package chronos
 
 import (
 	_ "embed"
+	"errors"
+	"time"
 
 	"github.com/godcong/chronos/v2/runes"
 )
@@ -12,7 +14,16 @@ var DataSolarTerm []byte
 //go:embed DataLeapMonth
 var DataLeapMonth []byte
 
+const (
+	LeapMonthSmall = 1
+	LeapMonthBig   = 2
+)
+
 const SolarTermDataOffset = 8 * 24
+
+var (
+	ErrYearNotHaveLeapMonth = errors.New("year not have leap month")
+)
 
 var yearNumber = []int{
 	0x9, 0xE, 0x13, 0x18, 0x1E, 0x23, 0x28, 0x2D, 0x33, 0x38, //1900-1909
@@ -141,7 +152,40 @@ func GetLunarInfo(y int) int {
 
 func yearLeapMonth(year int) int {
 	offset := yearOffset(year)
-	return int(DataLeapMonth[offset])
+	return int(DataLeapMonth[offset*2])
+}
+
+func yearLeapMonthBS(year int) int {
+	offset := yearOffset(year)
+	return int(DataLeapMonth[offset*2+1])
+}
+
+// LeapMonthBS returns the leap month of big month or small month
+// @param time.Time
+// @return int
+// @return error
+func LeapMonthBS(t time.Time) (int, error) {
+	if err := checkYearSupport(t.Year()); err != nil {
+		return -1, err
+	}
+	if lm := yearLeapMonthBS(t.Year()); lm != 0 {
+		return lm, nil
+	}
+	return 0, ErrYearNotHaveLeapMonth
+}
+
+// LeapMonth returns the leap month if leap month is exists in the year
+// @param time.Time
+// @return int
+// @return error
+func LeapMonth(t time.Time) (int, error) {
+	if err := checkYearSupport(t.Year()); err != nil {
+		return -1, err
+	}
+	if lm := yearLeapMonth(t.Year()); lm != 0 {
+		return lm, nil
+	}
+	return 0, ErrYearNotHaveLeapMonth
 }
 
 // GetTermInfo ...

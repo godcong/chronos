@@ -22,16 +22,18 @@ func main() {
 	sta := 1900
 	//stop := 3000
 	//idx := 0
-	date := make([]byte, 3000-1900+1)
+	date := make([]byte, (3000-1900+1)*2)
 	//for i := sta; i <= stop; i++ {
 	for _, s := range file {
 		//s, ok := file[i]
 		//if ok {
-		year, month, _, err := decodeStr(s)
+		year, month, sb, err := decodeStr(s)
 		if err != nil {
 			panic(err)
 		}
-		date[year-sta] = byte(month)
+		idx := (year - sta) * 2
+		date[idx] = byte(month)
+		date[idx+1] = byte(sb)
 		//	if year == i {
 		//		date[i-1900] = byte(month)
 		//	}
@@ -41,7 +43,7 @@ func main() {
 
 	//}
 	fmt.Printf("leap year:%x", date)
-	err = WriteByteToFile("LeapMonth.data", date)
+	err = WriteByteToFile("DataLeapMonth", date)
 	if err != nil {
 		panic(err)
 	}
@@ -69,21 +71,21 @@ func ReadFile(path string) (map[int]string, error) {
 	return ret, nil
 }
 
-func decodeStr(str string) (year int, month int, sb bool, err error) {
+func decodeStr(str string) (year int, month int, sb int, err error) {
 	y := str[0:4]
 	fmt.Println("decode year", y)
 	year, err = strconv.Atoi(y)
 	if err != nil {
-		return 0, 0, false, err
+		return 0, 0, 0, err
 	}
 	r := []rune(str[4:])
 	month = chineseMonthToInt(r[1])
 	//if err != nil {
 	//	return 0, 0, false, err
 	//}
-	sb = true
+	sb = 2
 	if r[3] == rune('小') {
-		sb = false
+		sb = 1
 	}
 	return
 }
