@@ -61,13 +61,14 @@ func (s *solar) Date() SolarDate {
 }
 
 func solarByTime(t time.Time) *solar {
-	s := &solar{}
+	s := &solar{
+		hour:    t.Hour(),
+		minute:  t.Minute(),
+		second:  t.Second(),
+		yearDay: t.YearDay(),
+		weekDay: t.Weekday(),
+	}
 	s.year, s.month, s.day = t.Date()
-	s.hour = t.Hour()
-	s.minute = t.Minute()
-	s.second = t.Second()
-	s.yearDay = t.YearDay()
-	s.weekDay = t.Weekday()
 	return s
 }
 
