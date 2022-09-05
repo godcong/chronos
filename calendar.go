@@ -84,7 +84,7 @@ func (c *calendar) initializeCalendarDate() *calendar {
 	}
 	c.isToday = isToday(c.time, time.Now())
 	c.solar = solarByTime(c.time)
-	c.lunar = &lunar{}
+	c.lunar = lunarByTime(c.time)
 	return c
 }
 

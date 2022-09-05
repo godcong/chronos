@@ -2,7 +2,6 @@ package chronos
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
@@ -110,9 +109,12 @@ func YearSolarTermDay(t time.Time, st SolarTerm) (day int) {
 }
 
 func yearLiChunDay(year int) (day int) {
-	fmt.Println("date", getYearSolarTermTime(year, SolarTermLiChun).Format(DefaultDateFormat))
 	_, _, day = getYearSolarTermTime(year, SolarTermLiChun).Date()
 	return
+}
+
+func afterYearLiChunTime(t time.Time) bool {
+	return getYearSolarTermTime(t.Year(), SolarTermLiChun).Sub(t) <= 0
 }
 
 func CheckSolarTermDay(t time.Time) (SolarTerm, bool) {
