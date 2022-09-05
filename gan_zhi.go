@@ -100,18 +100,14 @@ func getDiZhi(v int) DiZhi {
 	return DiZhi(v % 12)
 }
 
-func ganZhiStr(tiangan TianGan, dizhi DiZhi) string {
-	return tiangan.String() + dizhi.String()
-}
-
-func ganChineseStr(tiangan TianGan, dizhi DiZhi) string {
-	return tiangan.Chinese() + dizhi.Chinese()
-}
-
 func splitGanZhi(gz GanZhi) (TianGan, DiZhi) {
 	return TianGan(gz % 10), DiZhi(gz % 12)
 }
 
+// parseGanZhiV2
+// @param TianGan
+// @param DiZhi
+// @return GanZhi
 func parseGanZhiV2(tiangan TianGan, dizhi DiZhi) GanZhi {
 	if tiangan >= TianGanMax || dizhi >= DiZhiMax {
 		return GanZhiMax
@@ -119,6 +115,11 @@ func parseGanZhiV2(tiangan TianGan, dizhi DiZhi) GanZhi {
 	return _TianGanDiZhiGanZhiTable[tiangan][dizhi]
 }
 
+// parseGanZhi
+// @param TianGan
+// @param DiZhi
+// @return GanZhi
+// decrypted use parseGanZhiV2
 func parseGanZhi(tiangan TianGan, dizhi DiZhi) GanZhi {
 	for i := 0; i < 6; i++ {
 		for j := 0; j < 6; j++ {
@@ -236,15 +237,8 @@ func YueZhu(t time.Time) GanZhi {
 	return yueZhu(t.Date())
 }
 
-func getSolarTermDay(year int, month time.Month) (min, max int) {
-	days := yearSolarTermDay[year]
-	idx := (month - 1) * 2
-	return int(days[idx]), int(days[idx+1])
-}
-
 func yueZhu(y int, m time.Month, d int) GanZhi {
-	//todo(use getSolarTermDay)
-	min := GetTermInfo(y, int(m)*2-1)
+	_, min := getSolarTermDay(y, m)
 	gz := yearOffset(y+1)*12 + int(m)
 	if d < min {
 		gz -= 1

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/godcong/chronos/v2/runes"
+	"github.com/godcong/chronos/v2/utils"
 )
 
 const defaultSolarTerm = "节气"
@@ -149,6 +150,27 @@ func SolarTermChinese(st SolarTerm) (string, error) {
 		return "", ErrWrongSolarTermIndex
 	}
 	return readString, nil
+}
+
+func getSolarTermDay(year int, month time.Month) (min, max int) {
+	year = yearOffset(year)
+	idx := (month - 1) * 2
+	return readSolarTermDay(year, SolarTerm(idx)), readSolarTermDay(year, SolarTerm(idx)+1)
+}
+
+func readSolarTermDay(offset int, st SolarTerm) int {
+	sta := int(st) * 9
+	return int(readYearSolarTermData(offset)[sta])
+}
+
+func readSolarTermTime(offset int, st SolarTerm) time.Time {
+	sta := int(st)*9 + 1
+	return utils.BytesToTime(readYearSolarTermData(offset)[sta : sta+8])
+}
+
+func readYearSolarTermData(offset int) []byte {
+	sta := offset * 9 * 24
+	return SolarTermData[sta : sta+SolarTermDataOffset]
 }
 
 var _ ChineseSupport = SolarTerm(0)
