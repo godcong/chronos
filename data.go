@@ -1,20 +1,18 @@
 package chronos
 
 import (
+	_ "embed"
+
 	"github.com/godcong/chronos/v2/runes"
 )
 
-const (
-	cvalue20 = iota
-	cvalue21
-	cvalue22
-)
+//go:embed DataSolarTerm
+var DataSolarTerm []byte
 
-var ctable = []float64{
-	cvalue20: 4.6295,
-	cvalue21: 3.87,
-	cvalue22: 4.15,
-}
+//go:embed DataLeapMonth
+var DataLeapMonth []byte
+
+const SolarTermDataOffset = 8 * 24
 
 var yearNumber = []int{
 	0x9, 0xE, 0x13, 0x18, 0x1E, 0x23, 0x28, 0x2D, 0x33, 0x38, //1900-1909
@@ -78,7 +76,7 @@ var lunarInfoList = []int{
 	0x0d520, //2100
 }
 
-//decrypted use SolarTermData
+//decrypted use DataSolarTerm
 //var termInfoList = []string{
 //	`9778397bd097c36b0b6fc9274c91aa`, `97b6b97bd19801ec9210c965cc920e`, `97bcf97c3598082c95f8c965cc920f`, `97bd0b06bdb0722c965ce1cfcc920f`, `b027097bd097c36b0b6fc9274c91aa`,
 //	`97b6b97bd19801ec9210c965cc920e`, `97bcf97c359801ec95f8c965cc920f`, `97bd0b06bdb0722c965ce1cfcc920f`, `b027097bd097c36b0b6fc9274c91aa`, `97b6b97bd19801ec9210c965cc920e`,
@@ -139,6 +137,11 @@ func GetLunarInfo(y int) int {
 		return 0
 	}
 	return lunarInfoList[y]
+}
+
+func yearLeapMonth(year int) int {
+	offset := yearOffset(year)
+	return int(DataLeapMonth[offset])
 }
 
 // GetTermInfo ...
