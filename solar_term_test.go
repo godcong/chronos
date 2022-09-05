@@ -262,3 +262,91 @@ func Test_yearLiChunDay(t *testing.T) {
 		})
 	}
 }
+
+func Test_readSolarTermDay(t *testing.T) {
+	type args struct {
+		offset int
+		st     SolarTerm
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "",
+			args: args{
+				offset: yearOffset(1900),
+				st:     0,
+			},
+			want: 6,
+		},
+		{
+			name: "",
+			args: args{
+				offset: yearOffset(1900),
+				st:     1,
+			},
+			want: 20,
+		},
+		{
+			name: "",
+			args: args{
+				offset: yearOffset(3000),
+				st:     0,
+			},
+			want: 06,
+		},
+		{
+			name: "",
+			args: args{
+				offset: yearOffset(3000),
+				st:     1,
+			},
+			want: 20,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := readSolarTermDay(tt.args.offset, tt.args.st); got != tt.want {
+				t.Errorf("readSolarTermDay() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_readSolarTermTime(t *testing.T) {
+	type args struct {
+		offset int
+		st     SolarTerm
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "",
+			args: args{
+				offset: yearOffset(1900),
+				st:     0,
+			},
+			want: "1900/01/06 02:03:57",
+		},
+		{
+			name: "",
+			args: args{
+				offset: yearOffset(1900),
+				st:     1,
+			},
+			want: "1900/01/20 19:32:25",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := readSolarTermTime(tt.args.offset, tt.args.st); !reflect.DeepEqual(got.Format(DefaultDateFormat), tt.want) {
+				t.Errorf("readSolarTermTime() = %v, want %v", got.Format(DefaultDateFormat), tt.want)
+			}
+		})
+	}
+}
