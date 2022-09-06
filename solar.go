@@ -6,6 +6,7 @@ import (
 
 // solar ...
 type solar struct {
+	t       time.Time
 	year    int
 	month   time.Month
 	day     int
@@ -48,6 +49,14 @@ func (s *solar) Hour() int {
 	return s.hour
 }
 
+func (s *solar) Ymd() string {
+	return s.t.Format(DateFormatYMD)
+}
+
+func (s *solar) YmdHms() string {
+	return s.t.Format(DateFormatYMDHMS)
+}
+
 func (s *solar) Date() SolarDate {
 	return SolarDate{
 		Year:    s.year,
@@ -62,6 +71,7 @@ func (s *solar) Date() SolarDate {
 
 func solarByTime(t time.Time) *solar {
 	s := &solar{
+		t:       t,
 		hour:    t.Hour(),
 		minute:  t.Minute(),
 		second:  t.Second(),

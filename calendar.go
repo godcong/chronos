@@ -10,10 +10,11 @@ import (
 	"time"
 )
 
-// DefaultDateFormat ...
 const (
-	DefaultDateFormat = "2006/01/02 15:04:05"
-	LunarDateFormat   = "2006/01/02"
+	// DateFormatYMD ...
+	DateFormatYMD = "2006/01/02"
+	// DateFormatYMDHMS ...
+	DateFormatYMDHMS = "2006/01/02 15:04:05"
 )
 
 var (
@@ -37,7 +38,12 @@ func (c *calendar) Date() CalendarDate {
 		IsToday: c.isToday,
 		Solar:   c.solar.Date(),
 		Lunar:   c.lunar.Date(),
-		//Ganzhi:         c.ganzhi.Info(),
+		EightCharacter: EightCharacter{
+			NianZhu: NianZhu(c.Time()),
+			YueZhu:  YueZhu(c.Time()),
+			Rizhu:   RiZhu(c.Time()),
+			ShiZhu:  ShiZhu(c.Time()),
+		},
 		Zodiac:         getZodiac(c.solar.year),
 		Constellation:  getConstellation(c.time.Date()),
 		IsSolarTermDay: ok,
@@ -52,7 +58,7 @@ func isToday(t time.Time, now time.Time) bool {
 }
 
 func (c *calendar) FormatTime() string {
-	return c.time.Format(DefaultDateFormat)
+	return c.time.Format(DateFormatYMDHMS)
 }
 
 func (c *calendar) Time() time.Time {

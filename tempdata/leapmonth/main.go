@@ -11,7 +11,7 @@ import (
 )
 
 var path = "E:\\workspace\\project\\golang\\chronos\\tempdata\\leapmonth\\runyue.txt"
-var number = runes.Runes(`一二三四五六七八九十十一十二`)
+var number = runes.Runes(`一二三四五六七八九十冬腊`)
 
 func main() {
 	file, err := ReadFile(path)
