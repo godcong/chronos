@@ -59,30 +59,33 @@ func TestMonthDayCheck(t *testing.T) {
 	//t.Log(got.Date())
 	for idx := 1900; idx < 2100; idx++ {
 		t := yearDate(idx)
-		days := utils.CalcYearMonthDays(t)
+		days := utils.CalcYearMonthDays(t.Year())
 		var mdays []int
-		if idx == 2034 {
-			lm, err1 := LeapMonth(t.AddDate(-1, 0, 0))
-			s, err2 := LeapMonthBS(t.AddDate(-1, 0, 0))
-			if 11 == lm && err1 == nil && err2 == nil {
-				if s == LeapMonthBig {
-					mdays = append(mdays, 30)
-				} else {
-					mdays = append(mdays, 29)
-				}
-			}
-		}
+		//if idx == 2034 {
+		//	lm, err1 := LeapMonth(t.AddDate(-1, 0, 0))
+		//	s, err2 := LeapMonthBS(t.AddDate(-1, 0, 0))
+		//	if 11 == lm && err1 == nil && err2 == nil {
+		//		if s == LeapMonthBig {
+		//			mdays = append(mdays, 30)
+		//		} else {
+		//			mdays = append(mdays, 29)
+		//		}
+		//	}
+		//}
+		lm, _ := LeapMonth(t)
 		for m := 1; m <= 12; m++ {
-			mdays = append(mdays, monthDays(t.Year(), m))
-			lm, err1 := LeapMonth(t)
-			s, err2 := LeapMonthBS(t)
-			if m == lm && err1 == nil && err2 == nil {
-				if s == LeapMonthBig {
-					mdays = append(mdays, 30)
-				} else {
-					mdays = append(mdays, 29)
-				}
+			mdays = append(mdays, monthDays(t.Year(), m, lm, false))
+			//lm, err1 := LeapMonth(t)
+			//s, err2 := LeapMonthBS(t)
+			if m == lm {
+				mdays = append(mdays, monthDays(t.Year(), m, lm, true))
 			}
+			//	if s == LeapMonthBig {
+			//		mdays = append(mdays, 30)
+			//	} else {
+			//		mdays = append(mdays, 29)
+			//	}
+			//}
 
 			//fmt.Printf("wrong year: %d,month: %d,day: (%d,%d)\n", t.Year(), t.Month(), days[m-1], mday)
 		}
@@ -105,7 +108,7 @@ func TestMonthDayCheck(t *testing.T) {
 				fmt.Printf("wrong year: %d,month: %d,day: (%d,%d)\n", t.Year(), i+1, days[i], mday)
 			}
 		}
-		//fmt.Printf("month days: %+v,%+v\n", days, mdays)
+		fmt.Printf("month days: %+v,%+v\n", days, mdays)
 	}
 }
 
