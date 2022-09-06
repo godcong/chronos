@@ -138,16 +138,20 @@ func leapDay(y int) int {
 	return 0
 }
 
-func monthDays(y int, m int, leapMonth int) int {
+func monthDays(y int, m int, leapMonth int, isleap bool) int {
 	//月份参数从1至12，参数错误返回-1
-	if m > 12 || m < 1 {
-		return -1
-	}
+	//if m > 12 || m < 1 {
+	//	return -1
+	//}
 	days := utils.CalcYearMonthDays(y)
-	if m == leapMonth {
-		return days[m+1]
+
+	if (isleap && m == leapMonth) || leapMonth > 0 && m > leapMonth {
+		return days[m]
 	}
-	return days[m]
+	//if leapMonth != -1 && m >= leapMonth {
+	//	return days[m]
+	//}
+	return days[m-1]
 }
 
 func solarDays(y, m int) int {
@@ -243,7 +247,7 @@ func calculateLunar(date string) *lunar {
 			lunar.leap = true
 			i--
 		} else {
-			day = monthDays(year, i, lunar.leapMonth)
+			day = monthDays(year, i, lunar.leapMonth, false)
 		}
 		offset -= day
 		if offset <= 0 {

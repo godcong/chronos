@@ -184,7 +184,7 @@ func LeapMonth(t time.Time) (int, error) {
 	if lm := yearLeapMonth(t.Year()); lm != 0 {
 		return lm, nil
 	}
-	return 0, ErrYearNotHaveLeapMonth
+	return -1, ErrYearNotHaveLeapMonth
 }
 
 // GetTermInfo ...
