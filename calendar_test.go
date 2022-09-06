@@ -1,9 +1,12 @@
 package chronos
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/godcong/chronos/v2/utils"
 )
 
 func TestNewSolarCalendar(t *testing.T) {
@@ -20,7 +23,7 @@ func TestNewSolarCalendar(t *testing.T) {
 			args: args{
 				v: nil,
 			},
-			want: time.Now().Format(DefaultDateFormat),
+			want: time.Now().Format(DateFormatYMDHMS),
 		},
 		{
 			name: "",
@@ -44,10 +47,65 @@ func TestNewSolarCalendar(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewSolarCalendar(tt.args.v...); !reflect.DeepEqual(got.FormatTime(), tt.want) {
+			got := NewSolarCalendar(tt.args.v...)
+			if !reflect.DeepEqual(got.FormatTime(), tt.want) {
 				t.Errorf("New() = %v, want %v", got.FormatTime(), tt.want)
 			}
 		})
+	}
+}
+
+func TestMonthDayCheck(t *testing.T) {
+	//t.Log(got.Date())
+	for idx := 1900; idx < 2100; idx++ {
+		t := yearDate(idx)
+		days := utils.CalcYearMonthDays(t)
+		var mdays []int
+		if idx == 2034 {
+			lm, err1 := LeapMonth(t.AddDate(-1, 0, 0))
+			s, err2 := LeapMonthBS(t.AddDate(-1, 0, 0))
+			if 11 == lm && err1 == nil && err2 == nil {
+				if s == LeapMonthBig {
+					mdays = append(mdays, 30)
+				} else {
+					mdays = append(mdays, 29)
+				}
+			}
+		}
+		for m := 1; m <= 12; m++ {
+			mdays = append(mdays, monthDays(t.Year(), m))
+			lm, err1 := LeapMonth(t)
+			s, err2 := LeapMonthBS(t)
+			if m == lm && err1 == nil && err2 == nil {
+				if s == LeapMonthBig {
+					mdays = append(mdays, 30)
+				} else {
+					mdays = append(mdays, 29)
+				}
+			}
+
+			//fmt.Printf("wrong year: %d,month: %d,day: (%d,%d)\n", t.Year(), t.Month(), days[m-1], mday)
+		}
+		//idx, err1 := LeapMonth(t)
+		//s, err2 := LeapMonthBS(t)
+		//if err1 == nil && err2 == nil {
+		//	tmp := make([]int, len(mdays)+1)
+		//	//copy(tmp, mdays[0:idx])
+		//	fmt.Println("tmp", tmp)
+		//	if s == LeapMonthBig {
+		//		//mdays = append(mdays[0:idx], []int{120,mdays[idx:]...}, mdays[idx:])
+		//	} else {
+		//		//tmp[idx] = 129
+		//	}
+		//
+		//	//mdays = append(tmp, mdays[idx:]...)
+		//}
+		for i, mday := range mdays {
+			if days[i] != mday {
+				fmt.Printf("wrong year: %d,month: %d,day: (%d,%d)\n", t.Year(), i+1, days[i], mday)
+			}
+		}
+		//fmt.Printf("month days: %+v,%+v\n", days, mdays)
 	}
 }
 

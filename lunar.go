@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/godcong/chronos/v2/utils"
 )
 
 // minLunarYear 最小可转换年
@@ -136,15 +138,16 @@ func leapDay(y int) int {
 	return 0
 }
 
-func monthDays(y int, m int) int {
+func monthDays(y int, m int, leapMonth int) int {
 	//月份参数从1至12，参数错误返回-1
 	if m > 12 || m < 1 {
 		return -1
 	}
-	if getLunarInfo(y)&(0x10000>>uint32(m)) != 0 {
-		return 30
+	days := utils.CalcYearMonthDays(y)
+	if m == leapMonth {
+		return days[m+1]
 	}
-	return 29
+	return days[m]
 }
 
 func solarDays(y, m int) int {
@@ -200,12 +203,12 @@ func lunarByTime(t time.Time) *lunar {
 
 func lunarInput(date string) time.Time {
 
-	input, err := time.ParseInLocation(DefaultDateFormat, date, loc)
+	input, err := time.ParseInLocation(DateFormatYMDHMS, date, loc)
 	if err != nil {
 		fmt.Println(err.Error())
 		return time.Time{}
 	}
-	//newInput, err := time.ParseInLocation(LunarDateFormat, input.Format(LunarDateFormat), loc)
+	//newInput, err := time.ParseInLocation(DateFormatYMD, input.Format(DateFormatYMD), loc)
 	//if err != nil {
 	//	fmt.Println(err.Error())
 	//	return time.Time{}
@@ -240,7 +243,7 @@ func calculateLunar(date string) *lunar {
 			lunar.leap = true
 			i--
 		} else {
-			day = monthDays(year, i)
+			day = monthDays(year, i, lunar.leapMonth)
 		}
 		offset -= day
 		if offset <= 0 {
@@ -258,7 +261,7 @@ func calculateLunar(date string) *lunar {
 
 //betweenDay 计算两个时间差的天数
 func betweenDay(d time.Time, s time.Time) int {
-	newInput, err := time.ParseInLocation(LunarDateFormat, d.Format(LunarDateFormat), loc)
+	newInput, err := time.ParseInLocation(DateFormatYMD, d.Format(DateFormatYMD), loc)
 	if err != nil {
 		return 0
 	}
@@ -269,7 +272,7 @@ func betweenDay(d time.Time, s time.Time) int {
 
 //solar2Lunar 输入日历输出月历
 func solar2Lunar(time time.Time) string {
-	lunar := calculateLunar(time.Format(DefaultDateFormat))
+	lunar := calculateLunar(time.Format(DateFormatYMDHMS))
 	result := nianZhuChinese(lunar.year) + "年"
 	if lunar.leap && (lunar.month == lunar.leapMonth) {
 		result += "闰"

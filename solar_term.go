@@ -11,8 +11,6 @@ const defaultSolarTerm = "节气"
 
 var solarTerms = runes.Runes("小寒大寒立春雨水惊蛰春分清明谷雨立夏小满芒种夏至小暑大暑立秋处暑白露秋分寒露霜降立冬小雪大雪冬至")
 
-var ()
-
 // SolarTerm
 //ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,Max)
 type SolarTerm uint32
@@ -47,7 +45,7 @@ func solarTermDetail(st SolarTerm, time time.Time) SolarTermDetail {
 	return SolarTermDetail{
 		Index:       int(st),
 		SolarTerm:   st,
-		Time:        time.Format(DefaultDateFormat),
+		Time:        time.Format(DateFormatYMDHMS),
 		SanHou:      solarTermSanHous[st],
 		Explanation: solarTermExplanations[st],
 	}
@@ -134,7 +132,7 @@ func getYearSolarTermTime(year int, st SolarTerm) time.Time {
 
 func getYearSolarTermTimeStr(year int, st SolarTerm) string {
 	offset := yearOffset(year)
-	return readSolarTermTime(offset, st).Format(DefaultDateFormat)
+	return readSolarTermTime(offset, st).Format(DateFormatYMDHMS)
 }
 
 func SolarTermChineseV2(st SolarTerm) string {
@@ -147,6 +145,11 @@ func SolarTermChinese(st SolarTerm) (string, error) {
 		return "", ErrWrongSolarTermIndex
 	}
 	return readString, nil
+}
+
+func solarTermToSolar(year int, st SolarTerm) *solar {
+	t := readSolarTermTime(yearOffset(year), st)
+	return solarByTime(t)
 }
 
 func getSolarTermDay(year int, month time.Month) (min, max int) {

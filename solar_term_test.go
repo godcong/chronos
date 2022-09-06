@@ -344,8 +344,8 @@ func Test_readSolarTermTime(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := readSolarTermTime(tt.args.offset, tt.args.st); !reflect.DeepEqual(got.Format(DefaultDateFormat), tt.want) {
-				t.Errorf("readSolarTermTime() = %v, want %v", got.Format(DefaultDateFormat), tt.want)
+			if got := readSolarTermTime(tt.args.offset, tt.args.st); !reflect.DeepEqual(got.Format(DateFormatYMDHMS), tt.want) {
+				t.Errorf("readSolarTermTime() = %v, want %v", got.Format(DateFormatYMDHMS), tt.want)
 			}
 		})
 	}
