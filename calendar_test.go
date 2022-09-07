@@ -161,3 +161,13 @@ func TestParseSolarNow(t *testing.T) {
 		})
 	}
 }
+
+func TestStartDay(t *testing.T) {
+	start, err := time.ParseInLocation(DateFormatYMD, "1900/01/31", time.Local)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	//FFFFFFFF7C7C9E00
+	fmt.Printf("start:%X,%X\n", uint64(start.Unix()), uint64(lunarStartTime.Unix()))
+
+}

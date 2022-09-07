@@ -22,6 +22,8 @@ var (
 	//startTimeUnix = uint64(0xFFFFFFFF7C558180)
 	//startTime is 1900/01/01 00:00:00
 	startTime = yearMonthDayDate(1900, 1, 1)
+	//lunarStartTimeUnix = uint64(0xFFFFFFFF7C7C9E00)
+	lunarStartTime = yearMonthDayDate(1900, 1, 31)
 )
 
 type calendar struct {
