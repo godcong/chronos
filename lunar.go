@@ -1,6 +1,7 @@
 package chronos
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 const minLunarYear = 1900
 
 // maxLunarYear 最大可转换年
-const maxLunarYear = 2100
+const maxLunarYear = 3000
 
 // lunar ...
 type lunar struct {
@@ -114,7 +115,15 @@ func yearDay(y int) int {
 			sum++
 		}
 	}
+	//offset := yearOffset(y)
 	return sum + leapDay(y)
+}
+
+func yearDayOld(y int) int {
+	current := getYearSolarTermTime(y, SolarTermLiChun)
+	next := getYearSolarTermTime(y+1, SolarTermLiChun)
+	fmt.Println("day", current.Format(DateFormatYMDHMS), "next", next.Format(DateFormatYMDHMS))
+	return utils.BetweenDay(next, current)
 }
 
 func leapDay(y int) int {
@@ -182,9 +191,9 @@ func lunarByString(date string) (time.Time, error) {
 }
 
 // calculateLunar ...
-func calculateLunar(date string) *lunar {
-	input, _ := lunarByString(date)
-	lunar := lunar{
+func calculateLunar(t time.Time) *lunar {
+	//input, _ := lunarByString(date)
+	lunar := &lunar{
 		leap: false,
 	}
 
@@ -192,7 +201,7 @@ func calculateLunar(date string) *lunar {
 	isLeapYear := false
 
 	start := lunarStartTime
-	offset := utils.BetweenDay(input, start)
+	offset := utils.BetweenDay(t, start)
 	year, offset := lunarYear(offset)
 	lunar.leapMonth = yearLeapMonth(year) //计算该年闰哪个月
 
@@ -220,13 +229,13 @@ func calculateLunar(date string) *lunar {
 	lunar.month = i
 	lunar.day = offset
 	lunar.year = year
-	return &lunar
+	return lunar
 
 }
 
 //solar2Lunar 输入日历输出月历
-func solar2Lunar(time time.Time) string {
-	lunar := calculateLunar(time.Format(DateFormatYMDHMS))
+func solar2Lunar(t time.Time) string {
+	lunar := calculateLunar(t)
 	result := nianZhuChinese(lunar.year) + "年"
 	if lunar.leap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
