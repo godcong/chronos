@@ -223,7 +223,7 @@ func TestIsSolarTermDetailDay(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: time.Date(1900, 01, 20, 19, 32, 25, 0, time.UTC),
+				t: time.Date(1900, 01, 20, 19, 32, 25, 0, time.Local),
 			},
 			want: true,
 		},

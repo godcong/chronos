@@ -167,13 +167,13 @@ func checkYearSupport(year int) error {
 }
 
 func yearDate(year int) time.Time {
-	return time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
+	return time.Date(year, 1, 1, 0, 0, 0, 0, time.Local)
 }
 
 func yearMonthDate(year int, month time.Month) time.Time {
-	return time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
+	return time.Date(year, month, 1, 0, 0, 0, 0, time.Local)
 }
 
 func yearMonthDayDate(year int, month time.Month, day int) time.Time {
-	return time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+	return time.Date(year, month, day, 0, 0, 0, 0, time.Local)
 }

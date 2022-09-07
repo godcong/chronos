@@ -26,7 +26,7 @@ func YearZodiac(t time.Time) (Zodiac, error) {
 	if err := checkYearSupport(t.Year()); err != nil {
 		return 0, err
 	}
-	if t.UTC().Unix() >= getYearSolarTermTime(t.Year(), SolarTermLiChun).Unix() {
+	if t.Unix() >= getYearSolarTermTime(t.Year(), SolarTermLiChun).Unix() {
 		return getZodiac(t.Year()), nil
 	}
 	return getZodiac(t.Year() - 1), nil
@@ -40,7 +40,7 @@ func YearZodiacDay(t time.Time) (Zodiac, error) {
 	if err := checkYearSupport(t.Year()); err != nil {
 		return 0, err
 	}
-	_, m, d := t.UTC().Date()
+	_, m, d := t.Date()
 	_, sm, sd := getYearSolarTermTime(t.Year(), SolarTermLiChun).Date()
 	if m >= sm && d >= sd {
 		return getZodiac(t.Year()), nil
