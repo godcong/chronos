@@ -16,5 +16,5 @@ func BytesToInt64(buf []byte) int64 {
 }
 
 func BytesToTime(buf []byte) time.Time {
-	return time.Unix(int64(binary.BigEndian.Uint64(buf)), 0).UTC()
+	return time.Unix(int64(binary.BigEndian.Uint64(buf)), 0).Local()
 }

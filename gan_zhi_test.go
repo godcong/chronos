@@ -299,28 +299,28 @@ func TestShiZhu(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: time.Date(2022, 9, 5, 14, 42, 30, 0, time.UTC),
+				t: time.Date(2022, 9, 5, 14, 42, 30, 0, time.Local),
 			},
 			want: "乙未",
 		},
 		{
 			name: "",
 			args: args{
-				t: time.Date(2022, 9, 5, 23, 42, 30, 0, time.UTC),
+				t: time.Date(2022, 9, 5, 23, 42, 30, 0, time.Local),
 			},
 			want: "庚子",
 		},
 		{
 			name: "",
 			args: args{
-				t: time.Date(2022, 9, 6, 0, 42, 30, 0, time.UTC),
+				t: time.Date(2022, 9, 6, 0, 42, 30, 0, time.Local),
 			},
 			want: "庚子",
 		},
 		{
 			name: "",
 			args: args{
-				t: time.Date(2022, 10, 1, 0, 42, 30, 0, time.UTC),
+				t: time.Date(2022, 10, 1, 0, 42, 30, 0, time.Local),
 			},
 			want: "庚子",
 		},

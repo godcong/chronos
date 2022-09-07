@@ -16,13 +16,12 @@ const maxLunarYear = 2100
 
 // lunar ...
 type lunar struct {
-	year       int
-	month      int
-	day        int
-	hour       int
-	leapMonth  int
-	leap       bool
-	liChunMode int //立春当天如果未到时辰：-1
+	year      int
+	month     int
+	day       int
+	hour      int
+	leapMonth int
+	leap      bool
 }
 
 func (l *lunar) LeapMonth() int {
@@ -56,10 +55,10 @@ func (l *lunar) Hour() int {
 	return l.hour
 }
 
-var loc *time.Location
+//var loc *time.Location
 
 func init() {
-	loc, _ = time.LoadLocation("Local")
+	//loc, _ = time.LoadLocation("Local")
 }
 
 func (l *lunar) isLeap() bool {
@@ -71,15 +70,6 @@ func (l *lunar) isLeap() bool {
 
 func (l *lunar) Month() int {
 	return l.month
-}
-
-// Type ...
-func (l *lunar) Type() string {
-	return "l"
-}
-
-func (l *lunar) FixLiChun(fix int) {
-	l.liChunMode = fix
 }
 
 // Calendar ...
@@ -139,34 +129,19 @@ func leapDay(y int) int {
 }
 
 func monthDays(y int, m int, leapMonth int, isleap bool) int {
-	//月份参数从1至12，参数错误返回-1
-	//if m > 12 || m < 1 {
-	//	return -1
-	//}
 	days := utils.CalcYearMonthDays(y)
 
 	if (isleap && m == leapMonth) || leapMonth > 0 && m > leapMonth {
 		return days[m]
 	}
-	//if leapMonth != -1 && m >= leapMonth {
-	//	return days[m]
-	//}
 	return days[m-1]
 }
 
 func solarDays(y, m int) int {
-	//若参数错误 返回-1
-	if m > 12 || m < 1 {
-		return -1
+	if m == 2 && ((y%4 == 0) && (y%100 != 0) || (y%400 == 0)) { //2月份的闰平规律测算后确认返回28或29
+		return monthDay[m-1] + 1
 	}
-	var idx = m - 1
-	if idx == 1 { //2月份的闰平规律测算后确认返回28或29
-		if (y%4 == 0) && (y%100 != 0) || (y%400 == 0) {
-			return 29
-		}
-		return 28
-	}
-	return monthDay[idx]
+	return monthDay[m-1]
 }
 
 func lunarYear(offset int) (int, int) {
@@ -184,8 +159,7 @@ func lunarYear(offset int) (int, int) {
 }
 
 func lunarStart() time.Time {
-	loc, _ := time.LoadLocation("Local")
-	start, err := time.ParseInLocation("2006/01/02", "1900/01/30", loc)
+	start, err := time.ParseInLocation("2006/01/02", "1900/01/30", time.Local)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -195,19 +169,17 @@ func lunarStart() time.Time {
 func lunarByTime(t time.Time) *lunar {
 	//todo: use lunar time instead of solar time
 	return &lunar{
-		year:       t.Year(),
-		month:      int(t.Month()),
-		day:        t.Day(),
-		hour:       t.Hour(),
-		leapMonth:  yearLeapMonth(t.Year()),
-		leap:       int(t.Month()) == yearLeapMonth(t.Year()),
-		liChunMode: 0,
+		year:      t.Year(),
+		month:     int(t.Month()),
+		day:       t.Day(),
+		hour:      t.Hour(),
+		leapMonth: yearLeapMonth(t.Year()),
+		leap:      int(t.Month()) == yearLeapMonth(t.Year()),
 	}
 }
 
 func lunarInput(date string) time.Time {
-
-	input, err := time.ParseInLocation(DateFormatYMDHMS, date, loc)
+	input, err := time.ParseInLocation(DateFormatYMDHMS, date, time.Local)
 	if err != nil {
 		fmt.Println(err.Error())
 		return time.Time{}
@@ -265,7 +237,7 @@ func calculateLunar(date string) *lunar {
 
 //betweenDay 计算两个时间差的天数
 func betweenDay(d time.Time, s time.Time) int {
-	newInput, err := time.ParseInLocation(DateFormatYMD, d.Format(DateFormatYMD), loc)
+	newInput, err := time.ParseInLocation(DateFormatYMD, d.Format(DateFormatYMD), time.Local)
 	if err != nil {
 		return 0
 	}

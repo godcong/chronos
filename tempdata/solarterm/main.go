@@ -80,7 +80,7 @@ func ReadFile(path string) ([]map[string]jieqi, error) {
 //			j, ok := m[istr]
 //			if ok {
 //				//fmt.Printf("%v:\"%v\",\n", istr, j.Year)
-//				parse, err := time.ParseInLocation("2006-01-02 15:04:05", j.Year, time.UTC)
+//				parse, err := time.ParseInLocation("2006-01-02 15:04:05", j.Year, time.Local)
 //				if err != nil {
 //					fmt.Println("error parsing", "time", j.Year, "err", err)
 //					continue
@@ -109,7 +109,7 @@ func main() {
 			panic(err)
 		}
 		fmt.Printf("reading %v, hex:%x\n", fileSta, bytes)
-		err = WriteByteToFile("SolarTerm.data", yearOffset(fileSta), bytes)
+		err = WriteByteToFile("data/DataSolarTerm", yearOffset(fileSta), bytes)
 		if err != nil {
 			panic(err)
 		}
@@ -131,7 +131,7 @@ func ReadBytes(name string) ([]byte, error) {
 			istr := strconv.Itoa(i)
 			j, ok := m[istr]
 			if ok {
-				parse, err := time.ParseInLocation("2006-01-02 15:04:05", j.Year, time.UTC)
+				parse, err := time.ParseInLocation("2006-01-02 15:04:05", j.Year, time.Local)
 				if err != nil {
 					fmt.Println("error parsing", "time", j.Year, "err", err)
 					continue

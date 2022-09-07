@@ -50,7 +50,7 @@ func parseStringDateFormat(t string, vv ...string) *calendar {
 	if len(vv) > 0 {
 		f = vv[0]
 	}
-	tt, err := time.Parse(f, t)
+	tt, err := time.ParseInLocation(f, t, time.Local)
 	if err == nil {
 		c.time = tt
 	}
@@ -67,7 +67,7 @@ func parseStringDate(t string, vv ...any) *calendar {
 	}
 
 	f := parseStringFormat(DateFormatYMDHMS, vv...)
-	tt, err := time.Parse(f, t)
+	tt, err := time.ParseInLocation(f, t, time.Local)
 	if err == nil {
 		c.time = tt
 	}
