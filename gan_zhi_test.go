@@ -284,7 +284,7 @@ func Test_parseGanZhi(t *testing.T) {
 	//tm, err := time.Parse(DateFormatYMDHMS, "2000/01/01 00:00:00")
 	//fmt.Printf("time:%X,%v\n", uint64(tm.UTC().Unix()), err)
 
-	//fmt.Println("diff day:", utils.DateDiffDay(tm, startTime))
+	//fmt.Println("diff day:", utils.BetweenDay(tm, startTime))
 }
 
 func TestShiZhu(t *testing.T) {

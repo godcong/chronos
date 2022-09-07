@@ -1,7 +1,6 @@
 package chronos
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -158,14 +157,6 @@ func lunarYear(offset int) (int, int) {
 	return i, offset
 }
 
-func lunarStart() time.Time {
-	start, err := time.ParseInLocation("2006/01/02", "1900/01/30", time.Local)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	return start
-}
-
 func lunarByTime(t time.Time) *lunar {
 	//todo: use lunar time instead of solar time
 	return &lunar{
@@ -178,23 +169,21 @@ func lunarByTime(t time.Time) *lunar {
 	}
 }
 
-func lunarInput(date string) time.Time {
-	input, err := time.ParseInLocation(DateFormatYMDHMS, date, time.Local)
+// ParseLunarString
+// @param string
+// @return time.Time
+// @return error
+func lunarByString(date string) (time.Time, error) {
+	t, err := time.ParseInLocation(DateFormatYMDHMS, date, time.Local)
 	if err != nil {
-		fmt.Println(err.Error())
-		return time.Time{}
+		return time.Time{}, err
 	}
-	//newInput, err := time.ParseInLocation(DateFormatYMD, input.Format(DateFormatYMD), loc)
-	//if err != nil {
-	//	fmt.Println(err.Error())
-	//	return time.Time{}
-	//}
-	return input
+	return t, nil
 }
 
 // calculateLunar ...
 func calculateLunar(date string) *lunar {
-	input := lunarInput(date)
+	input, _ := lunarByString(date)
 	lunar := lunar{
 		leap: false,
 	}
@@ -202,8 +191,8 @@ func calculateLunar(date string) *lunar {
 	i, day := 0, 0
 	isLeapYear := false
 
-	start := lunarStart()
-	offset := betweenDay(input, start)
+	start := lunarStartTime
+	offset := utils.BetweenDay(input, start)
 	year, offset := lunarYear(offset)
 	lunar.leapMonth = yearLeapMonth(year) //计算该年闰哪个月
 
@@ -233,17 +222,6 @@ func calculateLunar(date string) *lunar {
 	lunar.year = year
 	return &lunar
 
-}
-
-//betweenDay 计算两个时间差的天数
-func betweenDay(d time.Time, s time.Time) int {
-	newInput, err := time.ParseInLocation(DateFormatYMD, d.Format(DateFormatYMD), time.Local)
-	if err != nil {
-		return 0
-	}
-
-	subValue := float64(newInput.Unix()-s.Unix())/86400.0 + 0.5
-	return int(subValue)
 }
 
 //solar2Lunar 输入日历输出月历
