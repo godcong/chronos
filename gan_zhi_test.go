@@ -17,28 +17,28 @@ func TestNianZhuChineseV2(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				y: yearDate(1900),
+				y: TimeFromY(1900),
 			},
 			want: "庚子",
 		},
 		{
 			name: "",
 			args: args{
-				y: yearDate(1899),
+				y: TimeFromY(1899),
 			},
 			want: "己亥",
 		},
 		{
 			name: "",
 			args: args{
-				y: yearDate(2099),
+				y: TimeFromY(2099),
 			},
 			want: "己未",
 		},
 		{
 			name: "",
 			args: args{
-				y: yearDate(2100),
+				y: TimeFromY(2100),
 			},
 			want: "庚申",
 		},
@@ -113,7 +113,7 @@ func TestYueZhu(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: yearMonthDayDate(1900, 1, 1),
+				t: TimeFromYmd(1900, 1, 1),
 			},
 			want: "丙子",
 		},
@@ -277,7 +277,7 @@ func Test_parseGanZhi(t *testing.T) {
 			}
 			//got = parseGanZhi(tt.args.tiangan, tt.args.dizhi)
 			//if got != tt.want {
-			//	t.Errorf("parseGanZhiV2() got = %v, want %v", got, tt.want)
+			//	date.Errorf("parseGanZhiV2() got = %v, want %v", got, tt.want)
 			//}
 		})
 	}
@@ -346,14 +346,14 @@ func TestRiZhu(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: yearMonthDayDate(2022, 9, 5),
+				t: TimeFromYmd(2022, 9, 5),
 			},
 			want: "辛酉",
 		},
 		{
 			name: "",
 			args: args{
-				t: yearMonthDayDate(2099, 11, 4),
+				t: TimeFromYmd(2099, 11, 4),
 			},
 			want: "乙巳",
 		},

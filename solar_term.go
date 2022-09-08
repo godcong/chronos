@@ -149,7 +149,7 @@ func SolarTermChinese(st SolarTerm) (string, error) {
 
 func solarTermToSolar(year int, st SolarTerm) *solar {
 	t := readSolarTermTime(yearOffset(year), st)
-	return solarByTime(t)
+	return ParseSolarByTime(t)
 }
 
 func getSolarTermDay(year int, month time.Month) (min, max int) {

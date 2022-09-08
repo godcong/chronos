@@ -10,6 +10,9 @@ import (
 	"time"
 )
 
+const minYear = 1900
+const maxYear = 3000
+
 const (
 	// DateFormatYMD ...
 	DateFormatYMD = "2006/01/02"
@@ -21,9 +24,9 @@ var (
 	//startTimeUnix is 1900/01/01 00:00:00
 	//startTimeUnix = uint64(0xFFFFFFFF7C558180)
 	//startTime is 1900/01/01 00:00:00
-	startTime = yearMonthDayDate(1900, 1, 1)
+	startTime = TimeFromYmd(1900, 1, 1)
 	//lunarStartTimeUnix = uint64(0xFFFFFFFF7C7C9E00)
-	lunarStartTime = yearMonthDayDate(1900, 1, 31)
+	lunarStartTime = TimeFromYmd(1900, 1, 31)
 )
 
 type calendar struct {
@@ -91,8 +94,8 @@ func (c *calendar) initializeCalendarDate() *calendar {
 		panic(err)
 	}
 	c.isToday = isToday(c.time, time.Now())
-	c.solar = solarByTime(c.time)
-	c.lunar = lunarByTime(c.time)
+	c.solar = ParseSolarByTime(c.time)
+	c.lunar = ParseLunarTime(c.time)
 	return c
 }
 
@@ -155,8 +158,21 @@ func ParseSolarTime(t time.Time) Calendar {
 	return parseTime(t, time.Local).initializeCalendarDate()
 }
 
-const minYear = 1900
-const maxYear = 3000
+func TimeFromY(y int) time.Time {
+	return time.Date(y, 1, 1, 0, 0, 0, 0, time.Local)
+}
+
+func TimeFromYm(y int, m time.Month) time.Time {
+	return time.Date(y, m, 1, 0, 0, 0, 0, time.Local)
+}
+
+func TimeFromYmd(y int, m time.Month, d int) time.Time {
+	return time.Date(y, m, d, 0, 0, 0, 0, time.Local)
+}
+
+func TimeFromYmdHms(Y int, M time.Month, D int, h, m, s int) time.Time {
+	return time.Date(Y, M, D, h, m, s, 0, time.Local)
+}
 
 func checkYearSupport(year int) error {
 	if year < minYear || year > maxYear {
@@ -166,16 +182,4 @@ func checkYearSupport(year int) error {
 	//	return fmt.Errorf("[chronos] year %d not supported", year)
 	//}
 	return nil
-}
-
-func yearDate(year int) time.Time {
-	return time.Date(year, 1, 1, 0, 0, 0, 0, time.Local)
-}
-
-func yearMonthDate(year int, month time.Month) time.Time {
-	return time.Date(year, month, 1, 0, 0, 0, 0, time.Local)
-}
-
-func yearMonthDayDate(year int, month time.Month, day int) time.Time {
-	return time.Date(year, month, day, 0, 0, 0, 0, time.Local)
 }

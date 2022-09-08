@@ -162,7 +162,7 @@ func TestYearSolarTermDetail(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				year: yearDate(1900),
+				year: TimeFromY(1900),
 				st:   0,
 			},
 			want: SolarTermDetail{
@@ -176,7 +176,7 @@ func TestYearSolarTermDetail(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				year: yearDate(1900),
+				year: TimeFromY(1900),
 				st:   SolarTermDaHan,
 			},
 			want: SolarTermDetail{
@@ -190,7 +190,7 @@ func TestYearSolarTermDetail(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				year: yearDate(1900),
+				year: TimeFromY(1900),
 				st:   SolarTermLiChun,
 			},
 			want: SolarTermDetail{

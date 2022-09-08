@@ -219,7 +219,7 @@ func ShiZhu(t time.Time) GanZhi {
 }
 
 func shiZhu(y int, m time.Month, d int, h int) GanZhi {
-	days := utils.BetweenDay(yearMonthDayDate(y, m, 1), startTime) + d + 9
+	days := utils.BetweenDay(TimeFromYmd(y, m, 1), startTime) + d + 9
 	zhi := ((h + 1) / 2) % 12
 	if h >= 23 {
 		days += 1
@@ -236,7 +236,7 @@ func RiZhu(t time.Time) GanZhi {
 }
 
 func riZhu(y int, m time.Month, d int) GanZhi {
-	days := utils.BetweenDay(yearMonthDayDate(y, m, 1), startTime) + d + 9
+	days := utils.BetweenDay(TimeFromYmd(y, m, 1), startTime) + d + 9
 	return parseGanZhi(getTianGan(days), getDiZhi(days))
 }
 
