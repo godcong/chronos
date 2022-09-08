@@ -56,14 +56,14 @@ func TestNewSolarCalendar(t *testing.T) {
 }
 
 func TestMonthDayCheck(t *testing.T) {
-	//t.Log(got.Date())
+	//date.Log(got.Date())
 	for idx := 1900; idx < 2100; idx++ {
-		t := yearDate(idx)
-		days := utils.CalcYearMonthDays(t.Year())
+		t := TimeFromY(idx)
+		days := utils.YearLunarMonthDays(t.Year())[2:]
 		var mdays []int
 		//if idx == 2034 {
-		//	lm, err1 := LeapMonth(t.AddDate(-1, 0, 0))
-		//	s, err2 := LeapMonthBS(t.AddDate(-1, 0, 0))
+		//	lm, err1 := LeapList(date.AddDate(-1, 0, 0))
+		//	s, err2 := LeapMonthBS(date.AddDate(-1, 0, 0))
 		//	if 11 == lm && err1 == nil && err2 == nil {
 		//		if s == LeapMonthBig {
 		//			mdays = append(mdays, 30)
@@ -75,8 +75,8 @@ func TestMonthDayCheck(t *testing.T) {
 		lm, _ := LeapMonth(t)
 		for m := 1; m <= 12; m++ {
 			mdays = append(mdays, monthDays(t.Year(), m, lm, false))
-			//lm, err1 := LeapMonth(t)
-			//s, err2 := LeapMonthBS(t)
+			//lm, err1 := LeapList(date)
+			//s, err2 := LeapMonthBS(date)
 			if m == lm {
 				mdays = append(mdays, monthDays(t.Year(), m, lm, true))
 			}
@@ -87,10 +87,10 @@ func TestMonthDayCheck(t *testing.T) {
 			//	}
 			//}
 
-			//fmt.Printf("wrong year: %d,month: %d,day: (%d,%d)\n", t.Year(), t.Month(), days[m-1], mday)
+			//fmt.Printf("wrong year: %d,month: %d,day: (%d,%d)\n", date.Year(), date.Month(), days[m-1], mday)
 		}
-		//idx, err1 := LeapMonth(t)
-		//s, err2 := LeapMonthBS(t)
+		//idx, err1 := LeapList(date)
+		//s, err2 := LeapMonthBS(date)
 		//if err1 == nil && err2 == nil {
 		//	tmp := make([]int, len(mdays)+1)
 		//	//copy(tmp, mdays[0:idx])
@@ -125,7 +125,7 @@ func Test_isToday(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t:   yearDate(1900),
+				t:   TimeFromY(1900),
 				now: time.Now(),
 			},
 			want: false,

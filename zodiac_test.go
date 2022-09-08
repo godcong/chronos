@@ -187,7 +187,7 @@ func TestGetYearZodiac(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: yearDate(1900),
+				t: TimeFromY(1900),
 			},
 			want:    ZodiacPig,
 			wantErr: false,
@@ -195,7 +195,7 @@ func TestGetYearZodiac(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: yearMonthDayDate(1900, 2, 3),
+				t: TimeFromYmd(1900, 2, 3),
 			},
 			want:    ZodiacPig,
 			wantErr: false,
@@ -219,7 +219,7 @@ func TestGetYearZodiac(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: yearMonthDayDate(1900, 2, 5),
+				t: TimeFromYmd(1900, 2, 5),
 			},
 			want:    ZodiacRat,
 			wantErr: false,
@@ -252,7 +252,7 @@ func TestYearZodiacDay(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: yearDate(1900),
+				t: TimeFromY(1900),
 			},
 			want:    ZodiacPig,
 			wantErr: false,
@@ -260,7 +260,7 @@ func TestYearZodiacDay(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: yearMonthDayDate(1900, 2, 3),
+				t: TimeFromYmd(1900, 2, 3),
 			},
 			want:    ZodiacPig,
 			wantErr: false,
@@ -284,7 +284,7 @@ func TestYearZodiacDay(t *testing.T) {
 		{
 			name: "",
 			args: args{
-				t: yearMonthDayDate(1900, 2, 5),
+				t: TimeFromYmd(1900, 2, 5),
 			},
 			want:    ZodiacRat,
 			wantErr: false,

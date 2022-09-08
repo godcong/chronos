@@ -20,12 +20,15 @@ type lunar struct {
 	month     int
 	day       int
 	hour      int
+	minute    int
+	second    int
 	leapMonth int
 	leap      bool
+	date      time.Time
 }
 
 func (l *lunar) LeapMonth() int {
-	return yearLeapMonth(l.year)
+	return l.leapMonth
 }
 
 func (l *lunar) Date() LunarDate {
@@ -137,8 +140,8 @@ func leapDay(y int) int {
 }
 
 func monthDays(y int, m int, leapMonth int, isleap bool) int {
-	days := utils.CalcYearMonthDays(y)
-
+	days := utils.YearLunarMonthDays(y)
+	days = days[2:]
 	if (isleap && m == leapMonth) || leapMonth > 0 && m > leapMonth {
 		return days[m]
 	}
@@ -152,7 +155,8 @@ func solarDays(y, m int) int {
 	return monthDay[m-1]
 }
 
-func lunarYear(offset int) (int, int) {
+//
+func calcLunarYear(offset int) (int, int) {
 	day := 0
 	i := 0
 	//求当年农历年天数
@@ -166,15 +170,96 @@ func lunarYear(offset int) (int, int) {
 	return i, offset
 }
 
-func lunarByTime(t time.Time) *lunar {
-	//todo: use lunar time instead of solar time
+func ParseLunarTime(date time.Time) *lunar {
+	// 节气(中午12点)，长度27
+	//jq := make([]float64, 27)
+	// 合朔，即每月初一(中午12点)，长度16
+	//hs := make([]float64, 16)
+	// 每月天数，长度15
+	currentYear := date.Year()
+	currentMonth := date.Month()
+	currentDay := date.Day()
+	lunarYear := 0
+	lunarMonth := 0
+	lunarDay := 0
+	//year := currentYear - 2000
+
+	// 从上年的大雪到下年的立春
+	//j := len(JIE_QI_IN_USE)
+	//lunarYear.jieQiJulianDays = make([]float64, j)
+	jq := utils.YearSolarTermList(currentYear)
+	hs := utils.YearHeshuoList(currentYear)
+	dayCounts := utils.YearLunarMonthDays(currentYear)
+
+	currentYearLeap, exists := utils.LeapList[currentYear]
+	if !exists {
+		currentYearLeap = -1
+		if hs[13] <= jq[24] {
+			i := 1
+			for {
+				if hs[i+1] <= jq[2*i] {
+					break
+				}
+				if i >= 13 {
+					break
+				}
+				i++
+			}
+			currentYearLeap = i
+		}
+	}
+
+	prevYear := currentYear - 1
+	prevYearLeap, exists := utils.LeapList[prevYear]
+	if !exists {
+		prevYearLeap = -1
+	} else {
+		prevYearLeap -= 12
+	}
+	y := prevYear
+	m := 11
+	for i := 0; i < 15; i++ {
+		cm := m
+		isNextLeap := false
+		if y == currentYear && i == currentYearLeap {
+			cm = -cm
+		} else if y == prevYear && i == prevYearLeap {
+			cm = -cm
+		}
+		if y == currentYear && i+1 == currentYearLeap {
+			isNextLeap = true
+		} else if y == prevYear && i+1 == prevYearLeap {
+			isNextLeap = true
+		}
+
+		lm := newLunarMonth(cm, dayCounts[i], hs[i]+J2000)
+		firstDay := utils.JulianDayTime(hs[i] + J2000)
+		days := utils.BetweenDay(TimeFromYmd(firstDay.Year(), firstDay.Month(), firstDay.Day()), TimeFromYmd(currentYear, currentMonth, currentDay))
+		if days < lm.DayCount() {
+			lunarYear = y
+			lunarMonth = lm.Month()
+			lunarDay = days + 1
+			break
+		}
+		if !isNextLeap {
+			m++
+		}
+		if m == 13 {
+			m = 1
+			y++
+		}
+	}
+
 	return &lunar{
-		year:      t.Year(),
-		month:     int(t.Month()),
-		day:       t.Day(),
-		hour:      t.Hour(),
-		leapMonth: yearLeapMonth(t.Year()),
-		leap:      int(t.Month()) == yearLeapMonth(t.Year()),
+		date:      date,
+		year:      lunarYear,
+		month:     lunarMonth,
+		day:       lunarDay,
+		hour:      date.Hour(),
+		minute:    date.Minute(),
+		second:    date.Second(),
+		leapMonth: yearLeapMonth(date.Year()),
+		leap:      int(date.Month()) == yearLeapMonth(date.Year()),
 	}
 }
 
@@ -202,7 +287,7 @@ func calculateLunar(t time.Time) *lunar {
 
 	start := lunarStartTime
 	offset := utils.BetweenDay(t, start)
-	year, offset := lunarYear(offset)
+	year, offset := calcLunarYear(offset)
 	lunar.leapMonth = yearLeapMonth(year) //计算该年闰哪个月
 
 	//设定当年是否有闰月
