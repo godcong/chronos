@@ -5,6 +5,8 @@ import (
 	"strings"
 	"time"
 
+	lc "github.com/6tail/lunar-go/calendar"
+
 	"github.com/godcong/chronos/v2/utils"
 )
 
@@ -88,22 +90,22 @@ func (l *lunar) EightCharacter() []string {
 	return strings.Split(rlt, "")
 }
 
-//shiZhu 时柱
+// shiZhu 时柱
 func (l *lunar) shiZhu() string {
 	return shiZhu(l.year, time.Month(l.month), l.Day(), l.Hour()).Chinese()
 }
 
-//riZhu 日柱
+// riZhu 日柱
 func (l *lunar) riZhu() string {
 	return riZhu(l.year, time.Month(l.month), l.Day()).Chinese()
 }
 
-//yueZhu 月柱
+// yueZhu 月柱
 func (l *lunar) yueZhu() string {
 	return yueZhu(l.Year(), time.Month(l.Month()), l.Day()).Chinese()
 }
 
-//nianZhu 年柱
+// nianZhu 年柱
 func (l *lunar) nianZhu() string {
 	if l.Month() > 2 || (l.Month() == 2 && l.Day() >= yearLiChunDay(l.Year())) {
 		return nianZhuChinese(l.Year())
@@ -155,7 +157,6 @@ func solarDays(y, m int) int {
 	return monthDay[m-1]
 }
 
-//
 func calcLunarYear(offset int) (int, int) {
 	day := 0
 	i := 0
@@ -275,52 +276,35 @@ func lunarByString(date string) (time.Time, error) {
 	return t, nil
 }
 
-// calculateLunar ...
-func calculateLunar(t time.Time) *lunar {
+// lunarFromSolar ...
+func lunarFromSolar(t time.Time) *lunar {
+	date := lc.NewLunarFromDate(t)
+
 	//input, _ := lunarByString(date)
+	month := date.GetMonth()
+	isLeap := false
+	if month < 0 {
+		month = -month
+		isLeap = true
+	}
 	lunar := &lunar{
-		leap: false,
+		year:      date.GetYear(),
+		month:     month,
+		day:       date.GetDay(),
+		hour:      date.GetHour(),
+		minute:    date.GetMinute(),
+		second:    date.GetSecond(),
+		leapMonth: yearLeapMonth(date.GetYear()),
+		leap:      isLeap,
+		date:      time.Time{},
 	}
-
-	i, day := 0, 0
-	isLeapYear := false
-
-	start := lunarStartTime
-	offset := utils.BetweenDay(t, start)
-	year, offset := calcLunarYear(offset)
-	lunar.leapMonth = yearLeapMonth(year) //计算该年闰哪个月
-
-	//设定当年是否有闰月
-	if lunar.leapMonth > 0 {
-		isLeapYear = true
-	}
-
-	for i = 1; i <= 12; i++ {
-		if i == lunar.leapMonth+1 && isLeapYear {
-			day = leapDay(year)
-			isLeapYear = false
-			lunar.leap = true
-			i--
-		} else {
-			day = monthDays(year, i, lunar.leapMonth, false)
-		}
-		offset -= day
-		if offset <= 0 {
-			break
-		}
-	}
-
-	offset += day
-	lunar.month = i
-	lunar.day = offset
-	lunar.year = year
 	return lunar
 
 }
 
-//solar2Lunar 输入日历输出月历
+// solar2Lunar 输入日历输出月历
 func solar2Lunar(t time.Time) string {
-	lunar := calculateLunar(t)
+	lunar := lunarFromSolar(t)
 	result := nianZhuChinese(lunar.year) + "年"
 	if lunar.leap && (lunar.month == lunar.leapMonth) {
 		result += "闰"
