@@ -10,7 +10,7 @@ import (
 	"github.com/godcong/chronos/v2/runes"
 )
 
-var path = "E:\\workspace\\project\\golang\\chronos\\tempdata\\leapmonth\\runyue.txt"
+var path = "runyue.txt"
 var number = runes.Runes(`一二三四五六七八九十冬腊`)
 
 func main() {

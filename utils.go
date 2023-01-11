@@ -38,10 +38,9 @@ func parseStringTime(v any) string {
 	return t
 }
 
-func parseStringDateFormat(t string, vv ...string) *calendar {
-	c := &calendar{
-		loc:  time.Local,
-		time: time.Now(),
+func parseStringDateFormat(t string, vv ...string) *calendarTime {
+	c := &calendarTime{
+		time: localTime(),
 	}
 	if t == "" {
 		return c
@@ -57,26 +56,24 @@ func parseStringDateFormat(t string, vv ...string) *calendar {
 	return c
 }
 
-func parseStringDate(t string, vv ...any) *calendar {
-	c := &calendar{
-		loc:  time.Local,
-		time: time.Now(),
+func parseStringDate(t string, vv ...any) *calendarTime {
+	c := &calendarTime{
+		time: localTime(),
 	}
 	if t == "" {
 		return c
 	}
 
 	f := parseStringFormat(DateFormatYMDHMS, vv...)
-	tt, err := time.ParseInLocation(f, t, time.Local)
+	tt, err := time.ParseInLocation(f, t, loc)
 	if err == nil {
 		c.time = tt
 	}
 	return c
 }
 
-func parseTime(t time.Time, local *time.Location) *calendar {
-	c := &calendar{
-		loc:  local,
+func parseTime(t time.Time) *calendarTime {
+	c := &calendarTime{
 		time: t,
 	}
 	return c
@@ -86,6 +83,30 @@ func parseTime(t time.Time, local *time.Location) *calendar {
 // @param time.Time
 // @param *time.Location
 // @return Calendar
-func ParseTime(t time.Time, local *time.Location) Calendar {
-	return parseTime(t, local).initializeCalendarDate()
+func ParseTime(t time.Time) Calendar {
+	return parseTime(t).initialize()
+}
+
+func parseIntDate(vv int, args ...any) *calendarTime {
+	var c calendarTime
+	switch len(args) {
+	case 0:
+		c.time = TimeFromY(vv)
+	case 1:
+		c.time = TimeFromYm(vv, args[0].(time.Month))
+	case 2:
+		c.time = TimeFromYmd(vv, args[0].(time.Month), args[1].(int))
+	case 3:
+	case 4:
+		c.time = TimeFromYmd(vv, args[0].(time.Month), args[1].(int))
+	//case 5:
+	//	c.time = TimeFromYmdHms(vv, args[0].(time.Month), args[1].(int), args[2].(int), args[3].(int), args[4].(int))
+	default:
+		c.time = TimeFromYmdHms(vv, args[0].(time.Month), args[1].(int), args[2].(int), args[3].(int), args[4].(int))
+	}
+	return &c
+}
+
+func localTime() time.Time {
+	return time.Now().In(loc)
 }
