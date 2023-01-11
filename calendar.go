@@ -5,7 +5,6 @@
 package chronos
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -21,107 +20,76 @@ const (
 )
 
 var (
-	//startTimeUnix is 1900/01/01 00:00:00
-	//startTimeUnix = uint64(0xFFFFFFFF7C558180)
-	//startTime is 1900/01/01 00:00:00
+	loc, _ = time.LoadLocation("Asia/Shanghai")
+	// startTimeUnix is 1900/01/01 00:00:00
+	// startTimeUnix = uint64(0xFFFFFFFF7C558180)
+	// startTime is 1900/01/01 00:00:00
 	startTime = TimeFromYmd(1900, 1, 1)
-	//lunarStartTimeUnix = uint64(0xFFFFFFFF7C7C9E00)
-	lunarStartTime = TimeFromYmd(1900, 1, 31)
+	// lunarStartTimeUnix = uint64(0xFFFFFFFF7C7C9E00)
+	// lunarStartTime = TimeFromYmd(1900, 1, 31)
 )
 
-type calendar struct {
-	loc     *time.Location
-	time    time.Time
-	lunar   *lunar
-	solar   *solar
-	isToday bool
+type calendarTime struct {
+	time time.Time
+
+	solar Solar
+	lunar Lunar
 }
 
-func (c *calendar) Date() CalendarDate {
-	st, ok := CheckSolarTermDay(c.Time())
-	return CalendarDate{
-		IsToday: c.isToday,
-		Solar:   c.solar.Date(),
-		Lunar:   c.lunar.Date(),
-		EightCharacter: EightCharacter{
-			NianZhu: NianZhu(c.Time()),
-			YueZhu:  YueZhu(c.Time()),
-			Rizhu:   RiZhu(c.Time()),
-			ShiZhu:  ShiZhu(c.Time()),
-		},
-		Zodiac:         getZodiac(c.solar.year),
-		Constellation:  getConstellation(c.time.Date()),
-		IsSolarTermDay: ok,
-		SolarTerm:      st,
-	}
-}
-
-func isToday(t time.Time, now time.Time) bool {
-	y, m, d := t.Date()
-	ny, nm, nd := now.Date()
-	return y == ny && m == nm && d == nd
-}
-
-func (c *calendar) FormatTime() string {
+func (c *calendarTime) FormatTime() string {
 	return c.time.Format(DateFormatYMDHMS)
 }
 
-func (c *calendar) Time() time.Time {
+func (c *calendarTime) Time() time.Time {
 	return c.time
 }
 
-func (c *calendar) LocalTime() time.Time {
+func (c *calendarTime) LocalTime() time.Time {
 	return c.time
-}
-
-func (c *calendar) String() string {
-	vd, _ := json.Marshal(c.Date())
-	return string(vd)
 }
 
 // Lunar ...
-func (c *calendar) Lunar() Lunar {
+func (c *calendarTime) Lunar() Lunar {
 	return c.lunar
 }
 
 // Solar ...
-func (c *calendar) Solar() Solar {
+func (c *calendarTime) Solar() Solar {
 	return c.solar
 }
 
-func (c *calendar) initializeCalendarDate() *calendar {
-	if err := checkYearSupport(c.time.Year()); err != nil {
-		panic(err)
-	}
-	c.isToday = isToday(c.time, time.Now())
+func (c *calendarTime) initialize() *calendarTime {
 	c.solar = ParseSolarByTime(c.time)
 	c.lunar = ParseLunarTime(c.time)
 	return c
 }
 
-//NewSolarCalendar can input three type of time to create the calendar
-//"2006/01/02 03:04" format string
+// NewSolarCalendar can input three type of time to create the calendarTime
+// "2006/01/02 03:04" format string
 // time.Time value
 // or nil to create a new time.Now() value
 func NewSolarCalendar(v ...any) Calendar {
-	var c *calendar
+	var c *calendarTime
 	if len(v) == 0 {
-		return ParseTime(time.Now(), time.Local)
+		c = &calendarTime{
+			time: localTime(),
+		}
+		return c.initialize()
 	}
 
 	first := parseFirstArg(v)
 	args := parseArgs(v)
 	switch vv := first.(type) {
 	case int:
-		//todo(parseIntDate)
+		c = parseIntDate(vv, args...)
 	case string:
 		c = parseStringDate(vv, args...)
 	case time.Time:
-		c = parseTime(vv, time.Local)
+		c = parseTime(vv.In(loc))
 	default:
-		c = parseTime(time.Now(), time.Local)
+		c = parseTime(localTime())
 	}
-	return c.initializeCalendarDate()
+	return c.initialize()
 }
 
 // ParseSolarString returns Calendar parse from string(value,format?)
@@ -129,7 +97,7 @@ func NewSolarCalendar(v ...any) Calendar {
 // @param ...string
 // @return Calendar
 func ParseSolarString(s string, format ...string) Calendar {
-	return parseStringDateFormat(s, format...).initializeCalendarDate()
+	return parseStringDateFormat(s, format...).initialize()
 }
 
 // ParseSolarDate returns Calendar parse from date(year, month, day, hour, minute, second)
@@ -141,45 +109,44 @@ func ParseSolarString(s string, format ...string) Calendar {
 // @param int
 // @return Calendar
 func ParseSolarDate(year, month, day, hour, minute, second int) Calendar {
-	date := time.Date(year, time.Month(month), day, hour, minute, second, 0, time.Local)
-	return parseTime(date, time.Local).initializeCalendarDate()
+	date := time.Date(year, time.Month(month), day, hour, minute, second, 0, loc)
+	return parseTime(date).initialize()
 }
 
 // ParseSolarNow returns Calendar parse from solar time now(time.Now())
 // @return Calendar
 func ParseSolarNow() Calendar {
-	return parseTime(time.Now(), time.Local).initializeCalendarDate()
+	return parseTime(localTime()).initialize()
 }
 
 // ParseSolarTime returns Calendar parse from solar time
 // @param time.Time
 // @return Calendar
 func ParseSolarTime(t time.Time) Calendar {
-	return parseTime(t, time.Local).initializeCalendarDate()
+	return parseTime(t.In(loc)).initialize()
 }
 
 func TimeFromY(y int) time.Time {
-	return time.Date(y, 1, 1, 0, 0, 0, 0, time.Local)
+	return time.Date(y, 1, 1, 0, 0, 0, 0, loc)
 }
 
 func TimeFromYm(y int, m time.Month) time.Time {
-	return time.Date(y, m, 1, 0, 0, 0, 0, time.Local)
+	return time.Date(y, m, 1, 0, 0, 0, 0, loc)
 }
 
 func TimeFromYmd(y int, m time.Month, d int) time.Time {
-	return time.Date(y, m, d, 0, 0, 0, 0, time.Local)
+	return time.Date(y, m, d, 0, 0, 0, 0, loc)
 }
 
 func TimeFromYmdHms(Y int, M time.Month, D int, h, m, s int) time.Time {
-	return time.Date(Y, M, D, h, m, s, 0, time.Local)
+	return time.Date(Y, M, D, h, m, s, 0, loc)
 }
 
 func checkYearSupport(year int) error {
 	if year < minYear || year > maxYear {
 		return fmt.Errorf("[chronos] year %d not supported", year)
 	}
-	//if _, ok := solarTermTimes[year]; !ok {
-	//	return fmt.Errorf("[chronos] year %d not supported", year)
-	//}
 	return nil
 }
+
+var _ Calendar = (*calendarTime)(nil)

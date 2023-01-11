@@ -10,42 +10,36 @@ const defaultZodiac = "猫"
 
 var zodiacs = runes.Runes("鼠牛虎兔龙蛇马羊猴鸡狗猪")
 
-//Zodiac
-//ENUM(Rat, Cow, Tiger, Rabbit, Dragon, Snake, Horse, Sheep, Monkey, Chicken, Dog, Pig, Max)
+// Zodiac
+// ENUM(Rat, Cow, Tiger, Rabbit, Dragon, Snake, Horse, Sheep, Monkey, Chicken, Dog, Pig, Max)
 type Zodiac uint32
 
 func (x Zodiac) Chinese() string {
 	return ZodiacChineseV2(x)
 }
 
-// YearZodiac returns the zodiac of year.(pa: this will auto fix zodiac with LiChun check stopped at seconds)
+// YearZodiac returns the zodiac of year.(ps: this will auto fix zodiac with LiChun check stopped at seconds)
 // @param time.Time
 // @return Zodiac
 // @return error
-func YearZodiac(t time.Time) (Zodiac, error) {
-	if err := checkYearSupport(t.Year()); err != nil {
-		return 0, err
+func YearZodiac(t time.Time, lichun time.Time) Zodiac {
+	if t.Unix() >= lichun.Unix() {
+		return getZodiac(t.Year())
 	}
-	if t.Unix() >= getYearSolarTermTime(t.Year(), SolarTermLiChun).Unix() {
-		return getZodiac(t.Year()), nil
-	}
-	return getZodiac(t.Year() - 1), nil
+	return getZodiac(t.Year() - 1)
 }
 
-// YearZodiacDay returns the zodiac of year.(pa: this will auto fix zodiac with LiChun check stopped at day)
+// YearZodiacDay returns the zodiac of year.(ps: this will auto fix zodiac with LiChun check stopped at day)
 // @param time.Time
 // @return Zodiac
 // @return error
-func YearZodiacDay(t time.Time) (Zodiac, error) {
-	if err := checkYearSupport(t.Year()); err != nil {
-		return 0, err
-	}
+func YearZodiacDay(t time.Time, lichun time.Time) Zodiac {
 	_, m, d := t.Date()
-	_, sm, sd := getYearSolarTermTime(t.Year(), SolarTermLiChun).Date()
+	_, sm, sd := lichun.Date()
 	if m >= sm && d >= sd {
-		return getZodiac(t.Year()), nil
+		return getZodiac(t.Year())
 	}
-	return getZodiac(t.Year() - 1), nil
+	return getZodiac(t.Year() - 1)
 }
 
 // YearZodiacNoFix returns the zodiac of year.(ps: this is not support LiChun day fix)
@@ -77,16 +71,5 @@ func ZodiacChinese(zodiac Zodiac) (string, error) {
 	}
 	return readString, nil
 }
-
-// YearZodiacNoFix ...
-//func YearZodiacNoFix(lunar *lunar) string {
-//	s := string([]rune(lunar.nianZhu(lunar.liChunMode))[1])
-//	for idx, v := range _DiZhiTable {
-//		if strings.Compare(v, s) == 0 {
-//			return zodiacs[idx]
-//		}
-//	}
-//	return ""
-//}
 
 var _ ChineseSupport = Zodiac(0)

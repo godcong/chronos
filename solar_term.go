@@ -3,6 +3,7 @@ package chronos
 import (
 	"time"
 
+	"github.com/6tail/lunar-go/calendar"
 	"github.com/godcong/chronos/v2/runes"
 	"github.com/godcong/chronos/v2/utils"
 )
@@ -12,7 +13,7 @@ const defaultSolarTerm = "节气"
 var solarTerms = runes.Runes("小寒大寒立春雨水惊蛰春分清明谷雨立夏小满芒种夏至小暑大暑立秋处暑白露秋分寒露霜降立冬小雪大雪冬至")
 
 // SolarTerm
-//ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,Max)
+// ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,Max)
 type SolarTerm uint32
 
 // SolarTermDetail 24节气表
@@ -31,15 +32,6 @@ func (x SolarTerm) index() int {
 func (x SolarTerm) Chinese() string {
 	return SolarTermChineseV2(x)
 }
-
-//func (x SolarTerm) detail() SolarTermDetail {
-//	return SolarTermDetail{
-//		Index:       int(x),
-//		SolarTerm:   x,
-//		SanHou:      solarTermSanHous[x],
-//		Explanation: solarTermExplanations[x],
-//	}
-//}
 
 func solarTermDetail(st SolarTerm, time time.Time) SolarTermDetail {
 	return SolarTermDetail{
@@ -149,7 +141,7 @@ func SolarTermChinese(st SolarTerm) (string, error) {
 
 func solarTermToSolar(year int, st SolarTerm) *solar {
 	t := readSolarTermTime(yearOffset(year), st)
-	return ParseSolarByTime(t)
+	return &solar{Solar: calendar.NewSolarFromDate(t)}
 }
 
 func getSolarTermDay(year int, month time.Month) (min, max int) {
