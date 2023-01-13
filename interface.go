@@ -176,8 +176,9 @@ type Lunar interface {
 	GetTimeChongGanTie() string
 	GetTimeChongShengXiao() string
 	GetTimeChongDesc() string
-	GetJieQiTable() map[string]*calendar.Solar
-	GetJieQiList() *list.List
+	GetSolarTerm() SolarTerm
+	//GetJieQiTable() map[string]*calendar.Solar
+	//GetJieQiList() *list.List
 	GetDayYi() *list.List
 	GetDayYiBySect(sect int) *list.List
 	GetDayJi() *list.List
@@ -193,22 +194,7 @@ type Lunar interface {
 	GetMonthNineStar() *calendar.NineStar
 	GetDayNineStar() *calendar.NineStar
 	GetTimeNineStar() *calendar.NineStar
-	GetNextJie() *calendar.JieQi
-	GetNextJieByWholeDay(wholeDay bool) *calendar.JieQi
-	GetPrevJie() *calendar.JieQi
-	GetPrevJieByWholeDay(wholeDay bool) *calendar.JieQi
-	GetNextQi() *calendar.JieQi
-	GetNextQiByWholeDay(wholeDay bool) *calendar.JieQi
-	GetPrevQi() *calendar.JieQi
-	GetPrevQiByWholeDay(wholeDay bool) *calendar.JieQi
-	GetNextJieQi() *calendar.JieQi
-	GetNextJieQiByWholeDay(wholeDay bool) *calendar.JieQi
-	GetPrevJieQi() *calendar.JieQi
-	GetPrevJieQiByWholeDay(wholeDay bool) *calendar.JieQi
-	GetJieQi() string
 	GetCurrentJieQi() *calendar.JieQi
-	GetCurrentJie() *calendar.JieQi
-	GetCurrentQi() *calendar.JieQi
 	String() string
 	ToFullString() string
 	GetYear() int

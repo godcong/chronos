@@ -17,6 +17,15 @@ type lunar struct {
 	*calendar.Lunar
 }
 
+func (l *lunar) GetSolarTerm() SolarTerm {
+	jieQi := solarTerms.Find(l.GetJieQi())
+	if jieQi == 0 {
+		return SolarTermMax
+	}
+	l.GetCurrentJieQi().IsJie()
+	return SolarTerm(jieQi/2 - 1)
+}
+
 func (l *lunar) GetZodiac() Zodiac {
 	jieQi := l.GetJieQiTable()
 	liChun := jieQi["立春"]
@@ -29,10 +38,6 @@ func (l *lunar) GetZodiac() Zodiac {
 
 func (l *lunar) EightChar() EightChar {
 	return &eightChar{l.GetEightChar()}
-}
-
-func (l *lunar) name() {
-	l.GetTimeInGanZhi()
 }
 
 func ParseLunarTime(t time.Time) Lunar {
