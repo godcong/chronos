@@ -36,8 +36,8 @@ func (l *lunar) GetZodiac() Zodiac {
 	return YearZodiac(l.GetSolar().GetCalendar(), t)
 }
 
-func (l *lunar) EightChar() EightChar {
-	return &eightChar{l.GetEightChar()}
+func (l *lunar) GetEightChar() EightChar {
+	return &eightChar{EightChar: l.Lunar.GetEightChar()}
 }
 
 func ParseLunarTime(t time.Time) Lunar {
