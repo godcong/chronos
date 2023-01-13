@@ -2,6 +2,7 @@ package runes
 
 import (
 	"errors"
+	"strings"
 )
 
 type Runes []rune
@@ -31,6 +32,10 @@ func (r Runes) Index(rn rune) int {
 		}
 	}
 	return -1
+}
+
+func (r Runes) Find(s string) int {
+	return strings.Index(string(r), s) / 2
 }
 
 func ReadString(runs []rune, offset int, limit int) (string, error) {
