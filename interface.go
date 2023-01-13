@@ -151,16 +151,7 @@ type Lunar interface {
 	GetMonthNaYin() string
 	GetDayNaYin() string
 	GetTimeNaYin() string
-	GetEightChar() *calendar.EightChar
-	//GetBaZi() [4]string
-	//GetBaZiWuXing() [4]string
-	//GetBaZiNaYin() [4]string
-	//GetBaZiShiShenGan() [4]string
-	//GetBaZiShiShenZhi() [4]string
-	//GetBaZiShiShenYearZhi() *list.List
-	//GetBaZiShiShenMonthZhi() *list.List
-	//GetBaZiShiShenDayZhi() *list.List
-	//GetBaZiShiShenTimeZhi() *list.List
+	GetEightChar() EightChar
 	GetZhiXing() string
 	GetDayTianShen() string
 	GetTimeTianShen() string
