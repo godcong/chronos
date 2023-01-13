@@ -21,8 +21,7 @@ type Solar interface {
 	IsLeapYear() bool
 	GetWeek() int
 	GetWeekInChinese() string
-	GetXingzuo() string
-	GetXingZuo() string
+	GetConstellation() Constellation
 	GetFestivals() *list.List
 	GetOtherFestivals() *list.List
 	GetYear() int
@@ -72,13 +71,6 @@ type Lunar interface {
 	GetTimeGan() string
 	GetTimeZhi() string
 	GetTimeInGanZhi() string
-	//GetShengxiao() string
-	//GetYearShengXiao() string
-	//GetYearShengXiaoByLiChun() string
-	//GetYearShengXiaoExact() string
-	//GetMonthShengXiao() string
-	//GetDayShengXiao() string
-	//GetTimeShengXiao() string
 	GetZodiac() Zodiac
 	GetYearInChinese() string
 	GetMonthInChinese() string
