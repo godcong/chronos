@@ -26,6 +26,10 @@ func (l *lunar) GetSolarTerm() SolarTerm {
 	return SolarTerm(jieQi/2 - 1)
 }
 
+func (l *lunar) GetSolarTermDetail() SolarTermDetail {
+	return solarTermDetail(l.GetSolarTerm(), l.GetSolar().GetCalendar())
+}
+
 func (l *lunar) GetZodiac() Zodiac {
 	jieQi := l.GetJieQiTable()
 	liChun := jieQi["立春"]

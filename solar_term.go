@@ -33,6 +33,14 @@ func (x SolarTerm) Chinese() string {
 	return SolarTermChineseV2(x)
 }
 
+func (x SolarTerm) SanHou() string {
+	return solarTermSanHous[x]
+}
+
+func (x SolarTerm) Explanation() string {
+	return solarTermExplanations[x]
+}
+
 func solarTermDetail(st SolarTerm, time time.Time) SolarTermDetail {
 	return SolarTermDetail{
 		Index:       int(st),

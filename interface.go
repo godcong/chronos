@@ -168,6 +168,7 @@ type Lunar interface {
 	GetTimeChongShengXiao() string
 	GetTimeChongDesc() string
 	GetSolarTerm() SolarTerm
+	GetSolarTermDetail() SolarTermDetail
 	//GetJieQiTable() map[string]*calendar.Solar
 	//GetJieQiList() *list.List
 	GetDayYi() *list.List
