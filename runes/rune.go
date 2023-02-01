@@ -2,8 +2,9 @@ package runes
 
 import (
 	"errors"
-	"strings"
 )
+
+//const runeSize = len(rune)/len(byte)
 
 type Runes []rune
 
@@ -25,17 +26,12 @@ func (r Runes) MustReadString(offset int, limit int) string {
 	return readString
 }
 
-func (r Runes) Index(rn rune) int {
-	for i := range r {
-		if rn == r[i] {
-			return i
-		}
-	}
-	return -1
+func (r Runes) Index(sub []rune) int {
+	return Index(r, sub)
 }
 
-func (r Runes) Find(s string) int {
-	return strings.Index(string(r), s) / 2
+func (r Runes) FindString(s string) int {
+	return r.Index([]rune(s))
 }
 
 func ReadString(runs []rune, offset int, limit int) (string, error) {
