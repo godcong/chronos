@@ -18,12 +18,14 @@ type lunar struct {
 }
 
 func (l *lunar) GetSolarTerm() SolarTerm {
-	jieQi := solarTerms.Find(l.GetJieQi())
+	jieQi := solarTerms.FindString(l.GetJieQi())
 	if jieQi == 0 {
 		return SolarTermMax
 	}
-	l.GetCurrentJieQi().IsJie()
-	return SolarTerm(jieQi/2 - 1)
+	if !l.GetCurrentJieQi().IsJie() {
+		return SolarTermMax
+	}
+	return SolarTerm(jieQi / 2)
 }
 
 func (l *lunar) GetSolarTermDetail() SolarTermDetail {

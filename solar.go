@@ -12,7 +12,7 @@ type solar struct {
 }
 
 func (s solar) GetConstellation() Constellation {
-	return Constellation(constellations.Find(s.GetXingZuo()) / 2)
+	return Constellation(constellations.FindString(s.GetXingZuo()) / 2)
 }
 
 func ParseSolarByTime(date time.Time) Solar {
