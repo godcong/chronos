@@ -2,7 +2,6 @@ package chronos
 
 import (
 	"container/list"
-	"time"
 
 	"github.com/6tail/lunar-go/calendar"
 )
@@ -30,13 +29,13 @@ type Solar interface {
 	GetHour() int
 	GetMinute() int
 	GetSecond() int
-	GetCalendar() time.Time
+	//GetCalendar() time.Time
 	GetJulianDay() float64
 	ToYmd() string
 	ToYmdHms() string
 	String() string
 	ToFullString() string
-	Next(days int) *calendar.Solar
+	Next(days int, onlyWorkDays bool) *calendar.Solar
 	GetLunar() *calendar.Lunar
 }
 
@@ -318,5 +317,6 @@ type EightChar interface {
 	GetShiShenGan() [4]string
 	GetShiShenZhi() [4][]string
 	GetCangGan() [4][]string
+	GetDaYun(sex int) []int
 	//GetXunKong() [4]string
 }

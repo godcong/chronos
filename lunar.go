@@ -29,7 +29,7 @@ func (l *lunar) GetSolarTerm() SolarTerm {
 }
 
 func (l *lunar) GetSolarTermDetail() SolarTermDetail {
-	return solarTermDetail(l.GetSolarTerm(), l.GetSolar().GetCalendar())
+	return solarTermDetail(l.GetSolarTerm(), l.GetSolar().ToYmdHms())
 }
 
 func (l *lunar) GetZodiac() Zodiac {
@@ -39,7 +39,9 @@ func (l *lunar) GetZodiac() Zodiac {
 		liChun = jieQi["LI_CHUN"]
 	}
 	t := TimeFromYmdHms(liChun.GetYear(), (time.Month)(liChun.GetMonth()), liChun.GetDay(), liChun.GetHour(), liChun.GetMinute(), liChun.GetSecond())
-	return YearZodiac(l.GetSolar().GetCalendar(), t)
+	sl := l.GetSolar()
+	t2 := TimeFromYmdHms(sl.GetYear(), (time.Month)(sl.GetMonth()), sl.GetDay(), sl.GetHour(), sl.GetMinute(), sl.GetSecond())
+	return YearZodiac(t2, t)
 }
 
 func (l *lunar) GetEightChar() EightChar {
