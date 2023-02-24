@@ -41,11 +41,11 @@ func (x SolarTerm) Explanation() string {
 	return solarTermExplanations[x]
 }
 
-func solarTermDetail(st SolarTerm, time time.Time) SolarTermDetail {
+func solarTermDetail(st SolarTerm, ymdhms string) SolarTermDetail {
 	return SolarTermDetail{
 		Index:       int(st),
 		SolarTerm:   st,
-		Time:        time.Format(DateFormatYMDHMS),
+		Time:        ymdhms,
 		SanHou:      solarTermSanHous[st],
 		Explanation: solarTermExplanations[st],
 	}
@@ -69,7 +69,7 @@ func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error) {
 		return SolarTermDetail{}, err
 	}
 	ts := getYearSolarTermTime(t.Year(), st)
-	return solarTermDetail(st, ts), nil
+	return solarTermDetail(st, ts.Format(DateFormatYMDHMS)), nil
 }
 
 // YearSolarTermDate returns the year month day of the solar term

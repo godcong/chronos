@@ -86,6 +86,7 @@ func Test_lunar_GetEightChar(t *testing.T) {
 		wantShiShengGan [4]string
 		wantShiShengZhi [4][]string
 		wantCangGan     [4][]string
+		wantDaYun       []int
 	}{
 		{
 			name: "",
@@ -98,6 +99,7 @@ func Test_lunar_GetEightChar(t *testing.T) {
 			wantShiShengGan: [4]string{"正印", "比肩", "日主", "七杀"}, //偏官(七杀)
 			wantShiShengZhi: [4][]string{{"劫财"}, {"比肩", "食神", "偏财"}, {"伤官", "正财"}, {"伤官", "正财"}},
 			wantCangGan:     [4][]string{{"乙"}, {"甲", "丙", "戊"}, {"丁", "己"}, {"丁", "己"}},
+			wantDaYun:       []int{2023, 2033, 2043, 2053, 2063, 2073, 2083, 2093, 2103, 2113},
 		},
 	}
 	for _, tt := range tests {
@@ -120,6 +122,9 @@ func Test_lunar_GetEightChar(t *testing.T) {
 			}
 			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetCangGan(), tt.wantCangGan) {
 				t.Errorf("GetCangGan() = %v, want %v", got.GetCangGan(), tt.wantCangGan)
+			}
+			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetDaYun(1), tt.wantDaYun) {
+				t.Errorf("GetDaYun() = %v, want %v", got.GetDaYun(1), tt.wantDaYun)
 			}
 		})
 	}

@@ -49,7 +49,7 @@ func parseStringDateFormat(t string, vv ...string) *calendarTime {
 	if len(vv) > 0 {
 		f = vv[0]
 	}
-	tt, err := time.ParseInLocation(f, t, time.Local)
+	tt, err := time.ParseInLocation(f, t, loc)
 	if err == nil {
 		c.time = tt
 	}

@@ -104,6 +104,18 @@ func (e *eightChar) GetShiShenZhi() [4][]string {
 	}
 }
 
+func (e *eightChar) GetDaYun(sex int) []int {
+	dayun := e.GetYun(sex).GetDaYunBy(11)
+	if len(dayun) <= 0 {
+		return nil
+	}
+	var result []int
+	for i := 1; i < len(dayun); i++ {
+		result = append(result, dayun[i].GetStartYear())
+	}
+	return result
+}
+
 func getShiShenZhiString(l *list.List) []string {
 	var result []string
 	for e := l.Front(); e != nil; e = e.Next() {
