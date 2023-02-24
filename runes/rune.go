@@ -34,6 +34,14 @@ func (r Runes) FindString(s string) int {
 	return r.Index([]rune(s))
 }
 
+func (r Runes) StringArray() []string {
+	var result []string
+	for i := range r {
+		result = append(result, string(r[i]))
+	}
+	return result
+}
+
 func ReadString(runs []rune, offset int, limit int) (string, error) {
 	return Runes(runs).ReadString(offset, limit)
 }

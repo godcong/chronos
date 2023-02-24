@@ -316,5 +316,7 @@ type EightChar interface {
 	GetNaYin() [4]string
 	GetSiZhu() [4]string
 	GetShiShenGan() [4]string
-	GetShiShenZhi() [4]string
+	GetShiShenZhi() [4][]string
+	GetCangGan() [4][]string
+	//GetXunKong() [4]string
 }
