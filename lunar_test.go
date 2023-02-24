@@ -24,7 +24,14 @@ func Test_lunar_GetZodiac(t *testing.T) {
 		{
 			name: "",
 			fields: fields{
-				Lunar: NewSolarCalendar(TimeFromYmdHms(2023, 2, 4, 10, 42, 20)).Lunar(),
+				Lunar: NewSolarCalendar(TimeFromYmdHms(2023, 2, 4, 0, 0, 0)).Lunar(),
+			},
+			want: ZodiacRabbit,
+		},
+		{
+			name: "",
+			fields: fields{
+				Lunar: NewSolarCalendar(TimeFromYmdHms(2023, 2, 3, 10, 42, 20)).Lunar(),
 			},
 			want: ZodiacTiger,
 		},
