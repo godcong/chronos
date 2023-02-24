@@ -38,9 +38,10 @@ func (l *lunar) GetZodiac() Zodiac {
 	if liChun.GetYear() != l.GetSolar().GetYear() {
 		liChun = jieQi["LI_CHUN"]
 	}
-	t := TimeFromYmdHms(liChun.GetYear(), (time.Month)(liChun.GetMonth()), liChun.GetDay(), liChun.GetHour(), liChun.GetMinute(), liChun.GetSecond())
+	t := TimeFromYmdHms(liChun.GetYear(), (time.Month)(liChun.GetMonth()), liChun.GetDay(), 0, 0, 0)
+	//return getZodiac(t.Year())
 	sl := l.GetSolar()
-	t2 := TimeFromYmdHms(sl.GetYear(), (time.Month)(sl.GetMonth()), sl.GetDay(), sl.GetHour(), sl.GetMinute(), sl.GetSecond())
+	t2 := TimeFromYmdHms(sl.GetYear(), (time.Month)(sl.GetMonth()), sl.GetDay(), 0, 0, 0)
 	return YearZodiac(t2, t)
 }
 
