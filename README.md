@@ -3,7 +3,7 @@
 # chronos
 
 ```go
-import "github.com/godcong/chronos/v2"
+import "github.com/godcong/chronos"
 ```
 
 ## Index

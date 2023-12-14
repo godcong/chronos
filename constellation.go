@@ -3,7 +3,7 @@ package chronos
 import (
 	"time"
 
-	"github.com/godcong/chronos/v2/runes"
+	"github.com/godcong/chronos/runes"
 )
 
 const defaultConstellation = "星座"
@@ -15,7 +15,7 @@ var ()
 
 //var ErrWrongConstellationMonth = errors.New("wrong constellation month")
 
-//Constellation
+// Constellation
 // ENUM(Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpio,Sagittarius,Max)
 type Constellation int
 
