@@ -3,7 +3,7 @@ package chronos
 import (
 	"time"
 
-	"github.com/godcong/chronos/v2/runes"
+	"github.com/godcong/chronos/runes"
 )
 
 const defaultZodiac = "猫"

@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/godcong/chronos/v2/runes"
+	"github.com/godcong/chronos/runes"
 )
 
 var path = "runyue.txt"

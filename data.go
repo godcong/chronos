@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"time"
 
-	"github.com/godcong/chronos/v2/runes"
+	"github.com/godcong/chronos/runes"
 )
 
 //go:embed data/DataSolarTerm
@@ -134,13 +134,13 @@ var lunarInfoList = []int{
 var number = runes.Runes(`一二三四五六七八九十十一十二`)
 var ten = runes.Runes(`初十廿卅`)
 
-//月历月份
+// 月历月份
 var chineseNumber = runes.Runes(`正二三四五六七八九十十一腊`)
 
-//公历每个月份的天数
+// 公历每个月份的天数
 var monthDay = []int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
 
-//getLunarInfo 取得月历信息
+// getLunarInfo 取得月历信息
 func getLunarInfo(y int) int {
 	y = yearOffset(y)
 	if y < 0 || y > len(lunarInfoList) {
@@ -209,7 +209,7 @@ func getChineseYear(year int) string {
 	return nianZhuChinese(year) + "年"
 }
 
-//getChineseMonth 取得月历月
+// getChineseMonth 取得月历月
 func getChineseMonth(m int) string {
 	if m > 12 || m < 1 {
 		return "?月"
@@ -217,7 +217,7 @@ func getChineseMonth(m int) string {
 	return chineseNumber.MustReadString(m-1, 1) + "月" //加上月字
 }
 
-//getChineseDay 取得月历日
+// getChineseDay 取得月历日
 func getChineseDay(d int) string {
 	if d < 0 || d > 31 {
 		return "?日"

@@ -4,8 +4,9 @@ import (
 	"time"
 
 	"github.com/6tail/lunar-go/calendar"
-	"github.com/godcong/chronos/v2/runes"
-	"github.com/godcong/chronos/v2/utils"
+
+	"github.com/godcong/chronos/runes"
+	"github.com/godcong/chronos/utils"
 )
 
 const defaultSolarTerm = "节气"
