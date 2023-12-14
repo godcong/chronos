@@ -91,7 +91,7 @@ func decodeStr(str string) (year int, month int, sb int, err error) {
 }
 
 func chineseMonthToInt(r rune) int {
-	if n := number.Index(r); n != -1 {
+	if n := number.Index([]rune{r}); n != -1 {
 		return n + 1
 	}
 	return -1
