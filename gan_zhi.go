@@ -3,8 +3,8 @@ package chronos
 import (
 	"time"
 
-	"github.com/godcong/chronos/runes"
-	"github.com/godcong/chronos/utils"
+	"github.com/godcong/chronos/v2/runes"
+	"github.com/godcong/chronos/v2/utils"
 )
 
 const defaultTianGan = "天干"
