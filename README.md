@@ -3,7 +3,7 @@
 # chronos
 
 ```go
-import "github.com/godcong/chronos"
+import "github.com/godcong/chronos/v2"
 ```
 
 ## Index
@@ -149,7 +149,7 @@ var (
 )
 ```
 
-## func [ConstellationChinese](<https://github.com/godcong/chronos/blob/master/constellation.go#L34>)
+## func [ConstellationChinese](<https://github.com/godcong/chronos/v2/blob/master/constellation.go#L34>)
 
 ```go
 func ConstellationChinese(c Constellation) (string, error)
@@ -157,7 +157,7 @@ func ConstellationChinese(c Constellation) (string, error)
 
 ConstellationChinese returns a constellation of the chinese @param Constellation @return string @return error
 
-## func [ConstellationChineseV2](<https://github.com/godcong/chronos/blob/master/constellation.go#L45>)
+## func [ConstellationChineseV2](<https://github.com/godcong/chronos/v2/blob/master/constellation.go#L45>)
 
 ```go
 func ConstellationChineseV2(c Constellation) string
@@ -165,7 +165,7 @@ func ConstellationChineseV2(c Constellation) string
 
 ConstellationChineseV2 returns a constellation of the chinese @param Constellation @return string
 
-## func [DiZhiChinese](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L177>)
+## func [DiZhiChinese](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L177>)
 
 ```go
 func DiZhiChinese(dizhi DiZhi) (string, error)
@@ -173,7 +173,7 @@ func DiZhiChinese(dizhi DiZhi) (string, error)
 
 DiZhiChinese returns the chinese DiZhi string @param DiZhi @return string @return error
 
-## func [DiZhiChineseV2](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L169>)
+## func [DiZhiChineseV2](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L169>)
 
 ```go
 func DiZhiChineseV2(dizhi DiZhi) string
@@ -181,7 +181,7 @@ func DiZhiChineseV2(dizhi DiZhi) string
 
 DiZhiChineseV2 returns the chinese DiZhi string @param DiZhi @return string
 
-## func [GanZhiChinese](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L196>)
+## func [GanZhiChinese](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L196>)
 
 ```go
 func GanZhiChinese(ganzhi GanZhi) (string, error)
@@ -189,7 +189,7 @@ func GanZhiChinese(ganzhi GanZhi) (string, error)
 
 GanZhiChinese returns the chinese GanZhi string @param GanZhi @return string @return error
 
-## func [GanZhiChineseV2](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L188>)
+## func [GanZhiChineseV2](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L188>)
 
 ```go
 func GanZhiChineseV2(ganzhi GanZhi) string
@@ -197,7 +197,7 @@ func GanZhiChineseV2(ganzhi GanZhi) string
 
 GanZhiChineseV2 returns the chinese GanZhi string @param GanZhi @return string
 
-## func [LeapMonth](<https://github.com/godcong/chronos/blob/master/data.go#L180>)
+## func [LeapMonth](<https://github.com/godcong/chronos/v2/blob/master/data.go#L180>)
 
 ```go
 func LeapMonth(t time.Time) (int, error)
@@ -205,7 +205,7 @@ func LeapMonth(t time.Time) (int, error)
 
 LeapMonth returns the leap month if leap month is exists in the year @param time.Time @return int @return error
 
-## func [LeapMonthBS](<https://github.com/godcong/chronos/blob/master/data.go#L166>)
+## func [LeapMonthBS](<https://github.com/godcong/chronos/v2/blob/master/data.go#L166>)
 
 ```go
 func LeapMonthBS(t time.Time) (int, error)
@@ -213,7 +213,7 @@ func LeapMonthBS(t time.Time) (int, error)
 
 LeapMonthBS returns the leap month of big month or small month @param time.Time @return int @return error
 
-## func [NianZhuChineseV2](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L278>)
+## func [NianZhuChineseV2](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L278>)
 
 ```go
 func NianZhuChineseV2(t time.Time) string
@@ -221,19 +221,19 @@ func NianZhuChineseV2(t time.Time) string
 
 NianZhuChineseV2 returns the chinese NianZhu string @param time.Time @return string
 
-## func [SolarTermChinese](<https://github.com/godcong/chronos/blob/master/solar_term.go#L144>)
+## func [SolarTermChinese](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L144>)
 
 ```go
 func SolarTermChinese(st SolarTerm) (string, error)
 ```
 
-## func [SolarTermChineseV2](<https://github.com/godcong/chronos/blob/master/solar_term.go#L140>)
+## func [SolarTermChineseV2](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L140>)
 
 ```go
 func SolarTermChineseV2(st SolarTerm) string
 ```
 
-## func [TianGanChinese](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L158>)
+## func [TianGanChinese](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L158>)
 
 ```go
 func TianGanChinese(tiangan TianGan) (string, error)
@@ -241,7 +241,7 @@ func TianGanChinese(tiangan TianGan) (string, error)
 
 TianGanChinese returns the chinese TianGan string @param TianGan @return string @return error
 
-## func [TianGanChineseV2](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L150>)
+## func [TianGanChineseV2](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L150>)
 
 ```go
 func TianGanChineseV2(tiangan TianGan) string
@@ -249,7 +249,7 @@ func TianGanChineseV2(tiangan TianGan) string
 
 TianGanChineseV2 returns the chinese TianGan string @param TianGan @return string
 
-## func [YearGanZhiChinese](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L135>)
+## func [YearGanZhiChinese](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L135>)
 
 ```go
 func YearGanZhiChinese(t time.Time) (string, error)
@@ -257,7 +257,7 @@ func YearGanZhiChinese(t time.Time) (string, error)
 
 YearGanZhiChinese returns the year of the chinese GanZhi string @param int @return string @return error
 
-## func [YearSolarTermDate](<https://github.com/godcong/chronos/blob/master/solar_term.go#L82>)
+## func [YearSolarTermDate](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L82>)
 
 ```go
 func YearSolarTermDate(t time.Time, st SolarTerm) (month time.Month, day int)
@@ -265,7 +265,7 @@ func YearSolarTermDate(t time.Time, st SolarTerm) (month time.Month, day int)
 
 YearSolarTermDate returns the year month day of the solar term @param time.Time @param SolarTerm @return month @return day
 
-## func [YearSolarTermDay](<https://github.com/godcong/chronos/blob/master/solar_term.go#L100>)
+## func [YearSolarTermDay](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L100>)
 
 ```go
 func YearSolarTermDay(t time.Time, st SolarTerm) (day int)
@@ -273,7 +273,7 @@ func YearSolarTermDay(t time.Time, st SolarTerm) (day int)
 
 YearSolarTermDay returns the year day of the solar term @param time.Time @param SolarTerm @return day
 
-## func [YearSolarTermMonth](<https://github.com/godcong/chronos/blob/master/solar_term.go#L91>)
+## func [YearSolarTermMonth](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L91>)
 
 ```go
 func YearSolarTermMonth(t time.Time, st SolarTerm) (month time.Month)
@@ -281,7 +281,7 @@ func YearSolarTermMonth(t time.Time, st SolarTerm) (month time.Month)
 
 YearSolarTermMonth returns the year month  of the solar term @param time.Time @param SolarTerm @return month
 
-## func [YueZhuChineseV2](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L246>)
+## func [YueZhuChineseV2](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L246>)
 
 ```go
 func YueZhuChineseV2(t time.Time) string
@@ -289,7 +289,7 @@ func YueZhuChineseV2(t time.Time) string
 
 YueZhuChineseV2 returns the chinese YueZhuChineseV2 string @param time.Time @return string
 
-## func [ZodiacChinese](<https://github.com/godcong/chronos/blob/master/zodiac.go#L73>)
+## func [ZodiacChinese](<https://github.com/godcong/chronos/v2/blob/master/zodiac.go#L73>)
 
 ```go
 func ZodiacChinese(zodiac Zodiac) (string, error)
@@ -297,7 +297,7 @@ func ZodiacChinese(zodiac Zodiac) (string, error)
 
 ZodiacChinese returns the chinese Zodiac string @param Zodiac @return string @return error
 
-## func [ZodiacChineseV2](<https://github.com/godcong/chronos/blob/master/zodiac.go#L65>)
+## func [ZodiacChineseV2](<https://github.com/godcong/chronos/v2/blob/master/zodiac.go#L65>)
 
 ```go
 func ZodiacChineseV2(zodiac Zodiac) string
@@ -305,7 +305,7 @@ func ZodiacChineseV2(zodiac Zodiac) string
 
 ZodiacChineseV2 returns the chinese Zodiac string @param Zodiac @return string
 
-## type [Calendar](<https://github.com/godcong/chronos/blob/master/interface.go#L8-L14>)
+## type [Calendar](<https://github.com/godcong/chronos/v2/blob/master/interface.go#L8-L14>)
 
 Calendar returns a calendar
 
@@ -319,7 +319,7 @@ type Calendar interface {
 }
 ```
 
-### func [NewSolarCalendar](<https://github.com/godcong/chronos/blob/master/calendar.go#L95>)
+### func [NewSolarCalendar](<https://github.com/godcong/chronos/v2/blob/master/calendar.go#L95>)
 
 ```go
 func NewSolarCalendar(v ...any) Calendar
@@ -327,7 +327,7 @@ func NewSolarCalendar(v ...any) Calendar
 
 NewSolarCalendar can input three type of time to create the calendar "2006/01/02 03:04" format string time.Time value or nil to create a new time.Now\(\) value
 
-### func [ParseSolarDate](<https://github.com/godcong/chronos/blob/master/calendar.go#L132>)
+### func [ParseSolarDate](<https://github.com/godcong/chronos/v2/blob/master/calendar.go#L132>)
 
 ```go
 func ParseSolarDate(year, month, day, hour, minute, second int) Calendar
@@ -335,7 +335,7 @@ func ParseSolarDate(year, month, day, hour, minute, second int) Calendar
 
 ParseSolarDate returns Calendar parse from date\(year, month, day, hour, minute, second\) @param int @param int @param int @param int @param int @param int @return Calendar
 
-### func [ParseSolarNow](<https://github.com/godcong/chronos/blob/master/calendar.go#L139>)
+### func [ParseSolarNow](<https://github.com/godcong/chronos/v2/blob/master/calendar.go#L139>)
 
 ```go
 func ParseSolarNow() Calendar
@@ -343,7 +343,7 @@ func ParseSolarNow() Calendar
 
 ParseSolarNow returns Calendar parse from solar time now\(time.Now\(\)\) @return Calendar
 
-### func [ParseSolarString](<https://github.com/godcong/chronos/blob/master/calendar.go#L120>)
+### func [ParseSolarString](<https://github.com/godcong/chronos/v2/blob/master/calendar.go#L120>)
 
 ```go
 func ParseSolarString(s string, format ...string) Calendar
@@ -351,7 +351,7 @@ func ParseSolarString(s string, format ...string) Calendar
 
 ParseSolarString returns Calendar parse from string\(value,format?\) @param string @param ...string @return Calendar
 
-### func [ParseSolarTime](<https://github.com/godcong/chronos/blob/master/calendar.go#L146>)
+### func [ParseSolarTime](<https://github.com/godcong/chronos/v2/blob/master/calendar.go#L146>)
 
 ```go
 func ParseSolarTime(t time.Time) Calendar
@@ -359,7 +359,7 @@ func ParseSolarTime(t time.Time) Calendar
 
 ParseSolarTime returns Calendar parse from solar time @param time.Time @return Calendar
 
-### func [ParseTime](<https://github.com/godcong/chronos/blob/master/utils.go#L89>)
+### func [ParseTime](<https://github.com/godcong/chronos/v2/blob/master/utils.go#L89>)
 
 ```go
 func ParseTime(t time.Time, local *time.Location) Calendar
@@ -367,7 +367,7 @@ func ParseTime(t time.Time, local *time.Location) Calendar
 
 ParseTime parse time.Time to Calendar @param time.Time @param \*time.Location @return Calendar
 
-## type [CalendarDate](<https://github.com/godcong/chronos/blob/master/date.go#L33-L42>)
+## type [CalendarDate](<https://github.com/godcong/chronos/v2/blob/master/date.go#L33-L42>)
 
 ```go
 type CalendarDate struct {
@@ -382,7 +382,7 @@ type CalendarDate struct {
 }
 ```
 
-## type [ChineseSupport](<https://github.com/godcong/chronos/blob/master/interface.go#L39-L41>)
+## type [ChineseSupport](<https://github.com/godcong/chronos/v2/blob/master/interface.go#L39-L41>)
 
 ChineseSupport implements the interface, if support chinese language output
 
@@ -392,7 +392,7 @@ type ChineseSupport interface {
 }
 ```
 
-## type [Constellation](<https://github.com/godcong/chronos/blob/master/constellation.go#L20>)
+## type [Constellation](<https://github.com/godcong/chronos/v2/blob/master/constellation.go#L20>)
 
 Constellation ENUM\(Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpio,Sagittarius,Max\)
 
@@ -431,7 +431,7 @@ const (
 )
 ```
 
-### func [GetConstellation](<https://github.com/godcong/chronos/blob/master/constellation.go#L52>)
+### func [GetConstellation](<https://github.com/godcong/chronos/v2/blob/master/constellation.go#L52>)
 
 ```go
 func GetConstellation(t time.Time) Constellation
@@ -439,7 +439,7 @@ func GetConstellation(t time.Time) Constellation
 
 GetConstellation get the constellation of date @param time.Time @return Constellation
 
-### func [ParseConstellation](<https://github.com/godcong/chronos/blob/master/constellation_enum.go#L85>)
+### func [ParseConstellation](<https://github.com/godcong/chronos/v2/blob/master/constellation_enum.go#L85>)
 
 ```go
 func ParseConstellation(name string) (Constellation, error)
@@ -447,13 +447,13 @@ func ParseConstellation(name string) (Constellation, error)
 
 ParseConstellation attempts to convert a string to a Constellation.
 
-### func \(Constellation\) [Chinese](<https://github.com/godcong/chronos/blob/master/constellation.go#L26>)
+### func \(Constellation\) [Chinese](<https://github.com/godcong/chronos/v2/blob/master/constellation.go#L26>)
 
 ```go
 func (x Constellation) Chinese() string
 ```
 
-### func \(Constellation\) [MarshalText](<https://github.com/godcong/chronos/blob/master/constellation_enum.go#L93>)
+### func \(Constellation\) [MarshalText](<https://github.com/godcong/chronos/v2/blob/master/constellation_enum.go#L93>)
 
 ```go
 func (x Constellation) MarshalText() ([]byte, error)
@@ -461,7 +461,7 @@ func (x Constellation) MarshalText() ([]byte, error)
 
 MarshalText implements the text marshaller method.
 
-### func \(Constellation\) [String](<https://github.com/godcong/chronos/blob/master/constellation_enum.go#L61>)
+### func \(Constellation\) [String](<https://github.com/godcong/chronos/v2/blob/master/constellation_enum.go#L61>)
 
 ```go
 func (x Constellation) String() string
@@ -469,7 +469,7 @@ func (x Constellation) String() string
 
 String implements the Stringer interface.
 
-### func \(\*Constellation\) [UnmarshalText](<https://github.com/godcong/chronos/blob/master/constellation_enum.go#L98>)
+### func \(\*Constellation\) [UnmarshalText](<https://github.com/godcong/chronos/v2/blob/master/constellation_enum.go#L98>)
 
 ```go
 func (x *Constellation) UnmarshalText(text []byte) error
@@ -477,7 +477,7 @@ func (x *Constellation) UnmarshalText(text []byte) error
 
 UnmarshalText implements the text unmarshaller method.
 
-## type [DiZhi](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L19>)
+## type [DiZhi](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L19>)
 
 DiZhi ENUM\(Zi , Chou , Yin , Mao , Chen , Si , Wu , Wei , Shen , You , Xu , Hai , Max\)
 
@@ -516,7 +516,7 @@ const (
 )
 ```
 
-### func [ParseDiZhi](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L85>)
+### func [ParseDiZhi](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L85>)
 
 ```go
 func ParseDiZhi(name string) (DiZhi, error)
@@ -524,13 +524,13 @@ func ParseDiZhi(name string) (DiZhi, error)
 
 ParseDiZhi attempts to convert a string to a DiZhi.
 
-### func \(DiZhi\) [Chinese](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L62>)
+### func \(DiZhi\) [Chinese](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L62>)
 
 ```go
 func (x DiZhi) Chinese() string
 ```
 
-### func \(DiZhi\) [MarshalText](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L93>)
+### func \(DiZhi\) [MarshalText](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L93>)
 
 ```go
 func (x DiZhi) MarshalText() ([]byte, error)
@@ -538,7 +538,7 @@ func (x DiZhi) MarshalText() ([]byte, error)
 
 MarshalText implements the text marshaller method.
 
-### func \(DiZhi\) [String](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L61>)
+### func \(DiZhi\) [String](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L61>)
 
 ```go
 func (x DiZhi) String() string
@@ -546,7 +546,7 @@ func (x DiZhi) String() string
 
 String implements the Stringer interface.
 
-### func \(\*DiZhi\) [UnmarshalText](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L98>)
+### func \(\*DiZhi\) [UnmarshalText](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L98>)
 
 ```go
 func (x *DiZhi) UnmarshalText(text []byte) error
@@ -554,7 +554,7 @@ func (x *DiZhi) UnmarshalText(text []byte) error
 
 UnmarshalText implements the text unmarshaller method.
 
-## type [EightCharacter](<https://github.com/godcong/chronos/blob/master/date.go#L26-L31>)
+## type [EightCharacter](<https://github.com/godcong/chronos/v2/blob/master/date.go#L26-L31>)
 
 ```go
 type EightCharacter struct {
@@ -565,7 +565,7 @@ type EightCharacter struct {
 }
 ```
 
-## type [GanZhi](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L27>)
+## type [GanZhi](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L27>)
 
 GanZhi returns the GanZhi enum ENUM\(JiaZi,YiChou,BingYin,DingMao,WuChen,JiSi,GengWu,XinWei,RenShen,GuiYou,JiaXu,YiHai, BingZi,DingChou,WuYin,JiMao,GengChen,XinSi,RenWu,GuiWei,JiaShen,YiYou,BingXu,DingHai, WuZi,JiChou,GengYin,XinMao,RenChen,GuiSi,JiaWu,YiWei,BingShen,DingYou,WuXu,JiHai, GengZi,XinChou,RenYin,GuiMao,JiaChen,YiSi,BingWu,DingWei,WuShen,JiYou,GengXu,XinHai, RenZi,GuiChou,JiaYin,YiMao,BingChen,DingSi,WuWu,JiWei,GengShen,XinYou,RenXu,GuiHai,Max\)
 
@@ -700,7 +700,7 @@ const (
 )
 ```
 
-### func [NianZhu](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L271>)
+### func [NianZhu](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L271>)
 
 ```go
 func NianZhu(t time.Time) GanZhi
@@ -708,7 +708,7 @@ func NianZhu(t time.Time) GanZhi
 
 NianZhu returns a GanZhi of year @param time.Time @return string
 
-### func [ParseGanZhi](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L372>)
+### func [ParseGanZhi](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L372>)
 
 ```go
 func ParseGanZhi(name string) (GanZhi, error)
@@ -716,7 +716,7 @@ func ParseGanZhi(name string) (GanZhi, error)
 
 ParseGanZhi attempts to convert a string to a GanZhi.
 
-### func [RiZhu](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L234>)
+### func [RiZhu](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L234>)
 
 ```go
 func RiZhu(t time.Time) GanZhi
@@ -724,7 +724,7 @@ func RiZhu(t time.Time) GanZhi
 
 RiZhu returns a GanZhi of day @param time.Time @return GanZhi
 
-### func [ShiZhu](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L217>)
+### func [ShiZhu](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L217>)
 
 ```go
 func ShiZhu(t time.Time) GanZhi
@@ -732,7 +732,7 @@ func ShiZhu(t time.Time) GanZhi
 
 ShiZhu returns a GanZhi of hour @param time.Time @return GanZhi @descriptions 子 　　丑 　　寅 　　卯 　　辰 　　己 23\-01：01\-03：03\-05 :05\-07：07\-09：09\-11 午 　　未 　　申 　　酉 　　戊 　　亥 11\-13：13\-15：15\-17：17\-19：19\-21：21\-23 \`甲子\`, \`乙丑\`, \`丙寅\`, \`丁卯\`, \`戊辰\`, \`己巳\`, \`庚午\`, \`辛未\`, \`壬申\`, \`癸酉\`, \`甲戌\`, \`乙亥\`, //甲或己日 \`丙子\`, \`丁丑\`, \`戊寅\`, \`己卯\`, \`庚辰\`, \`辛巳\`, \`壬午\`, \`癸未\`, \`甲申\`, \`乙酉\`, \`丙戌\`, \`丁亥\`, //乙或庚日 \`戊子\`, \`己丑\`, \`庚寅\`, \`辛卯\`, \`壬辰\`, \`癸巳\`, \`甲午\`, \`乙未\`, \`丙申\`, \`丁酉\`, \`戊戌\`, \`己亥\`, //丙或辛日 \`庚子\`, \`辛丑\`, \`壬寅\`, \`癸卯\`, \`甲辰\`, \`乙巳\`, \`丙午\`, \`丁未\`, \`戊申\`, \`己酉\`, \`庚戌\`, \`辛亥\`, //丁或壬日 \`壬子\`, \`癸丑\`, \`甲寅\`, \`乙卯\`, \`丙辰\`, \`丁巳\`, \`戊午\`, \`己未\`, \`庚申\`, \`辛酉\`, \`壬戌\`, \`癸亥\`, //戊或癸日
 
-### func [YueZhu](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L254>)
+### func [YueZhu](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L254>)
 
 ```go
 func YueZhu(t time.Time) GanZhi
@@ -740,13 +740,13 @@ func YueZhu(t time.Time) GanZhi
 
 YueZhu returns a GanZhi of month @param time.Time @return GanZhi
 
-### func \(GanZhi\) [Chinese](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L66>)
+### func \(GanZhi\) [Chinese](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L66>)
 
 ```go
 func (x GanZhi) Chinese() string
 ```
 
-### func \(GanZhi\) [MarshalText](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L380>)
+### func \(GanZhi\) [MarshalText](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L380>)
 
 ```go
 func (x GanZhi) MarshalText() ([]byte, error)
@@ -754,7 +754,7 @@ func (x GanZhi) MarshalText() ([]byte, error)
 
 MarshalText implements the text marshaller method.
 
-### func \(GanZhi\) [String](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L300>)
+### func \(GanZhi\) [String](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L300>)
 
 ```go
 func (x GanZhi) String() string
@@ -762,7 +762,7 @@ func (x GanZhi) String() string
 
 String implements the Stringer interface.
 
-### func \(\*GanZhi\) [UnmarshalText](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L385>)
+### func \(\*GanZhi\) [UnmarshalText](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L385>)
 
 ```go
 func (x *GanZhi) UnmarshalText(text []byte) error
@@ -770,7 +770,7 @@ func (x *GanZhi) UnmarshalText(text []byte) error
 
 UnmarshalText implements the text unmarshaller method.
 
-## type [Lunar](<https://github.com/godcong/chronos/blob/master/interface.go#L29-L36>)
+## type [Lunar](<https://github.com/godcong/chronos/v2/blob/master/interface.go#L29-L36>)
 
 Lunar returns the lunar time
 
@@ -785,7 +785,7 @@ type Lunar interface {
 }
 ```
 
-## type [LunarDate](<https://github.com/godcong/chronos/blob/master/date.go#L17-L24>)
+## type [LunarDate](<https://github.com/godcong/chronos/v2/blob/master/date.go#L17-L24>)
 
 ```go
 type LunarDate struct {
@@ -798,7 +798,7 @@ type LunarDate struct {
 }
 ```
 
-## type [Solar](<https://github.com/godcong/chronos/blob/master/interface.go#L17-L26>)
+## type [Solar](<https://github.com/godcong/chronos/v2/blob/master/interface.go#L17-L26>)
 
 Solar returns the solar time
 
@@ -815,7 +815,7 @@ type Solar interface {
 }
 ```
 
-## type [SolarDate](<https://github.com/godcong/chronos/blob/master/date.go#L7-L15>)
+## type [SolarDate](<https://github.com/godcong/chronos/v2/blob/master/date.go#L7-L15>)
 
 ```go
 type SolarDate struct {
@@ -829,7 +829,7 @@ type SolarDate struct {
 }
 ```
 
-## type [SolarTerm](<https://github.com/godcong/chronos/blob/master/solar_term.go#L18>)
+## type [SolarTerm](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L18>)
 
 SolarTerm ENUM\(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,Max\)
 
@@ -892,13 +892,13 @@ const (
 )
 ```
 
-### func [CheckSolarTermDay](<https://github.com/godcong/chronos/blob/master/solar_term.go#L114>)
+### func [CheckSolarTermDay](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L114>)
 
 ```go
 func CheckSolarTermDay(t time.Time) (SolarTerm, bool)
 ```
 
-### func [ParseSolarTerm](<https://github.com/godcong/chronos/blob/master/solar_term_enum.go#L133>)
+### func [ParseSolarTerm](<https://github.com/godcong/chronos/v2/blob/master/solar_term_enum.go#L133>)
 
 ```go
 func ParseSolarTerm(name string) (SolarTerm, error)
@@ -906,19 +906,19 @@ func ParseSolarTerm(name string) (SolarTerm, error)
 
 ParseSolarTerm attempts to convert a string to a SolarTerm.
 
-### func \(SolarTerm\) [Chinese](<https://github.com/godcong/chronos/blob/master/solar_term.go#L33>)
+### func \(SolarTerm\) [Chinese](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L33>)
 
 ```go
 func (x SolarTerm) Chinese() string
 ```
 
-### func \(SolarTerm\) [GetYearDate](<https://github.com/godcong/chronos/blob/master/solar_term.go#L56>)
+### func \(SolarTerm\) [GetYearDate](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L56>)
 
 ```go
 func (x SolarTerm) GetYearDate(year int) (month time.Month, day int)
 ```
 
-### func \(SolarTerm\) [String](<https://github.com/godcong/chronos/blob/master/solar_term_enum.go#L97>)
+### func \(SolarTerm\) [String](<https://github.com/godcong/chronos/v2/blob/master/solar_term_enum.go#L97>)
 
 ```go
 func (x SolarTerm) String() string
@@ -926,7 +926,7 @@ func (x SolarTerm) String() string
 
 String implements the Stringer interface.
 
-## type [SolarTermDetail](<https://github.com/godcong/chronos/blob/master/solar_term.go#L21-L27>)
+## type [SolarTermDetail](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L21-L27>)
 
 SolarTermDetail 24节气表
 
@@ -940,7 +940,7 @@ type SolarTermDetail struct {
 }
 ```
 
-### func [YearSolarTermDetail](<https://github.com/godcong/chronos/blob/master/solar_term.go#L66>)
+### func [YearSolarTermDetail](<https://github.com/godcong/chronos/v2/blob/master/solar_term.go#L66>)
 
 ```go
 func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error)
@@ -948,7 +948,7 @@ func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error)
 
 YearSolarTermDetail get the details of year solar term @param time.Time @param SolarTerm @return SolarTermDetail @return error
 
-## type [StemBranch](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L30>)
+## type [StemBranch](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L30>)
 
 StemBranch is an alias name for GanZhi
 
@@ -956,7 +956,7 @@ StemBranch is an alias name for GanZhi
 type StemBranch = GanZhi
 ```
 
-## type [TianGan](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L15>)
+## type [TianGan](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L15>)
 
 TianGan ENUM\(Jia , Yi , Bing , Ding , Wu , Ji , Geng , Xin , Ren , Gui , Max\)
 
@@ -991,7 +991,7 @@ const (
 )
 ```
 
-### func [ParseTianGan](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L459>)
+### func [ParseTianGan](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L459>)
 
 ```go
 func ParseTianGan(name string) (TianGan, error)
@@ -999,13 +999,13 @@ func ParseTianGan(name string) (TianGan, error)
 
 ParseTianGan attempts to convert a string to a TianGan.
 
-### func \(TianGan\) [Chinese](<https://github.com/godcong/chronos/blob/master/gan_zhi.go#L58>)
+### func \(TianGan\) [Chinese](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi.go#L58>)
 
 ```go
 func (x TianGan) Chinese() string
 ```
 
-### func \(TianGan\) [MarshalText](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L467>)
+### func \(TianGan\) [MarshalText](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L467>)
 
 ```go
 func (x TianGan) MarshalText() ([]byte, error)
@@ -1013,7 +1013,7 @@ func (x TianGan) MarshalText() ([]byte, error)
 
 MarshalText implements the text marshaller method.
 
-### func \(TianGan\) [String](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L437>)
+### func \(TianGan\) [String](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L437>)
 
 ```go
 func (x TianGan) String() string
@@ -1021,7 +1021,7 @@ func (x TianGan) String() string
 
 String implements the Stringer interface.
 
-### func \(\*TianGan\) [UnmarshalText](<https://github.com/godcong/chronos/blob/master/gan_zhi_enum.go#L472>)
+### func \(\*TianGan\) [UnmarshalText](<https://github.com/godcong/chronos/v2/blob/master/gan_zhi_enum.go#L472>)
 
 ```go
 func (x *TianGan) UnmarshalText(text []byte) error
@@ -1029,7 +1029,7 @@ func (x *TianGan) UnmarshalText(text []byte) error
 
 UnmarshalText implements the text unmarshaller method.
 
-## type [Zodiac](<https://github.com/godcong/chronos/blob/master/zodiac.go#L15>)
+## type [Zodiac](<https://github.com/godcong/chronos/v2/blob/master/zodiac.go#L15>)
 
 Zodiac ENUM\(Rat, Cow, Tiger, Rabbit, Dragon, Snake, Horse, Sheep, Monkey, Chicken, Dog, Pig, Max\)
 
@@ -1068,7 +1068,7 @@ const (
 )
 ```
 
-### func [ParseZodiac](<https://github.com/godcong/chronos/blob/master/zodiac_enum.go#L85>)
+### func [ParseZodiac](<https://github.com/godcong/chronos/v2/blob/master/zodiac_enum.go#L85>)
 
 ```go
 func ParseZodiac(name string) (Zodiac, error)
@@ -1076,7 +1076,7 @@ func ParseZodiac(name string) (Zodiac, error)
 
 ParseZodiac attempts to convert a string to a Zodiac.
 
-### func [YearZodiac](<https://github.com/godcong/chronos/blob/master/zodiac.go#L25>)
+### func [YearZodiac](<https://github.com/godcong/chronos/v2/blob/master/zodiac.go#L25>)
 
 ```go
 func YearZodiac(t time.Time) (Zodiac, error)
@@ -1084,7 +1084,7 @@ func YearZodiac(t time.Time) (Zodiac, error)
 
 YearZodiac returns the zodiac of year.\(pa: this will auto fix zodiac with LiChun check stopped at seconds\) @param time.Time @return Zodiac @return error
 
-### func [YearZodiacDay](<https://github.com/godcong/chronos/blob/master/zodiac.go#L39>)
+### func [YearZodiacDay](<https://github.com/godcong/chronos/v2/blob/master/zodiac.go#L39>)
 
 ```go
 func YearZodiacDay(t time.Time) (Zodiac, error)
@@ -1092,7 +1092,7 @@ func YearZodiacDay(t time.Time) (Zodiac, error)
 
 YearZodiacDay returns the zodiac of year.\(pa: this will auto fix zodiac with LiChun check stopped at day\) @param time.Time @return Zodiac @return error
 
-### func [YearZodiacNoFix](<https://github.com/godcong/chronos/blob/master/zodiac.go#L54>)
+### func [YearZodiacNoFix](<https://github.com/godcong/chronos/v2/blob/master/zodiac.go#L54>)
 
 ```go
 func YearZodiacNoFix(year int) Zodiac
@@ -1100,13 +1100,13 @@ func YearZodiacNoFix(year int) Zodiac
 
 YearZodiacNoFix returns the zodiac of year.\(ps: this is not support LiChun day fix\) @param int @return Zodiac
 
-### func \(Zodiac\) [Chinese](<https://github.com/godcong/chronos/blob/master/zodiac.go#L17>)
+### func \(Zodiac\) [Chinese](<https://github.com/godcong/chronos/v2/blob/master/zodiac.go#L17>)
 
 ```go
 func (x Zodiac) Chinese() string
 ```
 
-### func \(Zodiac\) [MarshalText](<https://github.com/godcong/chronos/blob/master/zodiac_enum.go#L93>)
+### func \(Zodiac\) [MarshalText](<https://github.com/godcong/chronos/v2/blob/master/zodiac_enum.go#L93>)
 
 ```go
 func (x Zodiac) MarshalText() ([]byte, error)
@@ -1114,7 +1114,7 @@ func (x Zodiac) MarshalText() ([]byte, error)
 
 MarshalText implements the text marshaller method.
 
-### func \(Zodiac\) [String](<https://github.com/godcong/chronos/blob/master/zodiac_enum.go#L61>)
+### func \(Zodiac\) [String](<https://github.com/godcong/chronos/v2/blob/master/zodiac_enum.go#L61>)
 
 ```go
 func (x Zodiac) String() string
@@ -1122,7 +1122,7 @@ func (x Zodiac) String() string
 
 String implements the Stringer interface.
 
-### func \(\*Zodiac\) [UnmarshalText](<https://github.com/godcong/chronos/blob/master/zodiac_enum.go#L98>)
+### func \(\*Zodiac\) [UnmarshalText](<https://github.com/godcong/chronos/v2/blob/master/zodiac_enum.go#L98>)
 
 ```go
 func (x *Zodiac) UnmarshalText(text []byte) error
