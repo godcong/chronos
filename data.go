@@ -25,7 +25,7 @@ var earthyBranch = []string{
 }
 
 var zodiacs = []string{
-	`鼠`, `牛`, `虎`, `兔`, `龙`, `蛇`, `马`, `羊`, `猴`, `子`, `狗`, `猪`,
+	`鼠`, `牛`, `虎`, `兔`, `龙`, `蛇`, `马`, `羊`, `猴`, `鸡`, `狗`, `猪`,
 }
 
 var stemBranchTable = []string{
