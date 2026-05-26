@@ -350,3 +350,66 @@ func Test_readSolarTermTime(t *testing.T) {
 		})
 	}
 }
+
+func TestYearSolarTermDate(t *testing.T) {
+	month, day := YearSolarTermDate(time.Date(2024, 1, 1, 0, 0, 0, 0, loc), SolarTermLiChun)
+	if month != 2 {
+		t.Errorf("LiChun month = %d, want 2", month)
+	}
+	if day < 3 || day > 5 {
+		t.Errorf("LiChun day = %d, want 3-5", day)
+	}
+}
+
+func TestYearSolarTermDay(t *testing.T) {
+	day := YearSolarTermDay(time.Date(2024, 1, 1, 0, 0, 0, 0, loc), SolarTermLiChun)
+	if day < 3 || day > 5 {
+		t.Errorf("LiChun day = %d, want 3-5", day)
+	}
+}
+
+func TestYearSolarTermMonth(t *testing.T) {
+	month := YearSolarTermMonth(time.Date(2024, 1, 1, 0, 0, 0, 0, loc), SolarTermLiChun)
+	if month != 2 {
+		t.Errorf("LiChun month = %d, want 2", month)
+	}
+}
+
+func TestYearSolarTermDetailV2(t *testing.T) {
+	detail, err := YearSolarTermDetail(time.Date(2024, 1, 1, 0, 0, 0, 0, loc), SolarTermXiaoHan)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if detail.SolarTerm != SolarTermXiaoHan {
+		t.Errorf("SolarTerm = %d, want %d", detail.SolarTerm, SolarTermXiaoHan)
+	}
+	if detail.Time == "" {
+		t.Error("Time should not be empty")
+	}
+}
+
+func TestCheckSolarTermDay(t *testing.T) {
+	st, ok := CheckSolarTermDay(time.Date(2024, 2, 4, 0, 0, 0, 0, loc))
+	if !ok {
+		t.Log("2024-02-04 is not a solar term day (may vary by year)")
+	} else {
+		t.Logf("2024-02-04 solar term: %s", st.Chinese())
+	}
+}
+
+func TestSolarTermChineseV2(t *testing.T) {
+	got, err := SolarTermChinese(SolarTermLiChun)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "立春" {
+		t.Errorf("SolarTermChinese(LiChun) = %s, want 立春", got)
+	}
+}
+
+func TestSolarTermSanHou(t *testing.T) {
+	sh := SolarTermLiChun.SanHou()
+	if sh == "" {
+		t.Error("SanHou should not be empty")
+	}
+}

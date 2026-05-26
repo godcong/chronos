@@ -29,15 +29,6 @@ func parseStringFormat(f string, v ...any) string {
 	return f
 }
 
-func parseStringTime(v any) string {
-	t := ""
-	df, ok := (v).(string)
-	if ok {
-		t = df
-	}
-	return t
-}
-
 func parseStringDateFormat(t string, vv ...string) *calendarTime {
 	c := &calendarTime{
 		time: localTime(),
@@ -97,10 +88,9 @@ func parseIntDate(vv int, args ...any) *calendarTime {
 	case 2:
 		c.time = TimeFromYmd(vv, args[0].(time.Month), args[1].(int))
 	case 3:
+		c.time = TimeFromYmdHms(vv, args[0].(time.Month), args[1].(int), args[2].(int), 0, 0)
 	case 4:
-		c.time = TimeFromYmd(vv, args[0].(time.Month), args[1].(int))
-	//case 5:
-	//	c.time = TimeFromYmdHms(vv, args[0].(time.Month), args[1].(int), args[2].(int), args[3].(int), args[4].(int))
+		c.time = TimeFromYmdHms(vv, args[0].(time.Month), args[1].(int), args[2].(int), args[3].(int), 0)
 	default:
 		c.time = TimeFromYmdHms(vv, args[0].(time.Month), args[1].(int), args[2].(int), args[3].(int), args[4].(int))
 	}

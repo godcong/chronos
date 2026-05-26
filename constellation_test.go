@@ -185,3 +185,30 @@ func Test_getConstellation2(t *testing.T) {
 		})
 	}
 }
+
+func TestGetConstellation(t *testing.T) {
+	tests := []struct {
+		month time.Month
+		day   int
+		want  string
+	}{
+		{1, 15, "摩羯"},
+		{2, 15, "水瓶"},
+		{3, 15, "双鱼"},
+		{4, 15, "白羊"},
+		{5, 15, "金牛"},
+		{6, 15, "双子"},
+		{7, 15, "巨蟹"},
+		{8, 15, "狮子"},
+		{9, 15, "处女"},
+		{10, 15, "天秤"},
+		{11, 15, "天蝎"},
+		{12, 15, "射手"},
+	}
+	for _, tt := range tests {
+		got := GetConstellation(time.Date(2024, tt.month, tt.day, 0, 0, 0, 0, loc))
+		if got.Chinese() != tt.want {
+			t.Errorf("GetConstellation(%d-%d) = %s, want %s", tt.month, tt.day, got.Chinese(), tt.want)
+		}
+	}
+}

@@ -334,6 +334,110 @@ func TestShiZhu(t *testing.T) {
 	}
 }
 
+func TestNianZhu(t *testing.T) {
+	tests := []struct {
+		year int
+		want string
+	}{
+		{2024, "甲辰"},
+		{1990, "庚午"},
+		{2000, "庚辰"},
+		{1900, "庚子"},
+	}
+	for _, tt := range tests {
+		got := NianZhu(time.Date(tt.year, 1, 1, 0, 0, 0, 0, loc))
+		if got.Chinese() != tt.want {
+			t.Errorf("NianZhu(%d) = %s, want %s", tt.year, got.Chinese(), tt.want)
+		}
+	}
+}
+
+func TestYueZhuGanZhi(t *testing.T) {
+	tests := []struct {
+		year  int
+		month time.Month
+		day   int
+		want  string
+	}{
+		{2024, 2, 5, "丙寅"},
+		{2024, 1, 5, "甲子"},
+	}
+	for _, tt := range tests {
+		got := YueZhu(time.Date(tt.year, tt.month, tt.day, 12, 0, 0, 0, loc))
+		if got.Chinese() != tt.want {
+			t.Errorf("YueZhu(%d-%d-%d) = %s, want %s", tt.year, tt.month, tt.day, got.Chinese(), tt.want)
+		}
+	}
+}
+
+func TestRiZhuGanZhi(t *testing.T) {
+	got := RiZhu(time.Date(2024, 2, 5, 12, 0, 0, 0, loc))
+	if got.Chinese() == "" {
+		t.Error("RiZhu should not be empty")
+	}
+}
+
+func TestShiZhuGanZhi(t *testing.T) {
+	got := ShiZhu(time.Date(2024, 2, 5, 12, 0, 0, 0, loc))
+	if got.Chinese() == "" {
+		t.Error("ShiZhu should not be empty")
+	}
+}
+
+func TestGetTianGan(t *testing.T) {
+	tests := []struct {
+		v    int
+		want string
+	}{
+		{0, "甲"}, {1, "乙"}, {4, "戊"}, {9, "癸"},
+	}
+	for _, tt := range tests {
+		got := getTianGan(tt.v)
+		if got.Chinese() != tt.want {
+			t.Errorf("getTianGan(%d) = %s, want %s", tt.v, got.Chinese(), tt.want)
+		}
+	}
+}
+
+func TestGetDiZhi(t *testing.T) {
+	tests := []struct {
+		v    int
+		want string
+	}{
+		{0, "子"}, {1, "丑"}, {11, "亥"},
+	}
+	for _, tt := range tests {
+		got := getDiZhi(tt.v)
+		if got.Chinese() != tt.want {
+			t.Errorf("getDiZhi(%d) = %s, want %s", tt.v, got.Chinese(), tt.want)
+		}
+	}
+}
+
+func TestParseGanZhiV2(t *testing.T) {
+	gz := parseGanZhiV2(TianGan(0), DiZhi(0))
+	if gz != GanZhi(0) {
+		t.Errorf("parseGanZhiV2(甲,子) = %d, want 0", gz)
+	}
+}
+
+func TestSplitGanZhi(t *testing.T) {
+	tg, dz := splitGanZhi(GanZhi(0))
+	if tg != TianGan(0) || dz != DiZhi(0) {
+		t.Errorf("splitGanZhi(甲子) = (%d, %d), want (0, 0)", tg, dz)
+	}
+}
+
+func TestYearGanZhiChinese(t *testing.T) {
+	got, err := YearGanZhiChinese(time.Date(2024, 1, 1, 0, 0, 0, 0, loc))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "甲辰" {
+		t.Errorf("YearGanZhiChinese(2024) = %s, want 甲辰", got)
+	}
+}
+
 func TestRiZhu(t *testing.T) {
 	type args struct {
 		t time.Time
