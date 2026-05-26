@@ -3,7 +3,7 @@ package chronos
 import (
 	"time"
 
-	"github.com/babyname/chronos/v2/runes"
+	"github.com/godcong/chronos/v2/runes"
 )
 
 const defaultConstellation = "星座"

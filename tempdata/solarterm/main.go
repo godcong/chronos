@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/babyname/chronos/v2/utils"
+	"github.com/godcong/chronos/v2/utils"
 )
 
 type jieqi struct {

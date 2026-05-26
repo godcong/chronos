@@ -5,7 +5,7 @@ import (
 
 	"github.com/6tail/lunar-go/calendar"
 
-	"github.com/babyname/chronos/v2/runes"
+	"github.com/godcong/chronos/v2/runes"
 )
 
 type eightChar struct {
