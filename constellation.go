@@ -11,8 +11,6 @@ const defaultConstellation = "星座"
 var constellations = runes.Runes("摩羯水瓶双鱼白羊金牛双子巨蟹狮子处女天秤天蝎射手")
 var constellationDays = [ConstellationMax]int{20, 19, 21, 20, 21, 22, 23, 23, 23, 24, 23, 22}
 
-var ()
-
 //var ErrWrongConstellationMonth = errors.New("wrong constellation month")
 
 // Constellation

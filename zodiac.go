@@ -36,7 +36,7 @@ func YearZodiac(t time.Time, lichun time.Time) Zodiac {
 func YearZodiacDay(t time.Time, lichun time.Time) Zodiac {
 	_, m, d := t.Date()
 	_, sm, sd := lichun.Date()
-	if m >= sm && d >= sd {
+	if m > sm || (m == sm && d >= sd) {
 		return getZodiac(t.Year())
 	}
 	return getZodiac(t.Year() - 1)

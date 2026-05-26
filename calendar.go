@@ -22,13 +22,8 @@ const (
 )
 
 var (
-	loc, _ = time.LoadLocation("Asia/Shanghai")
-	// startTimeUnix is 1900/01/01 00:00:00
-	// startTimeUnix = uint64(0xFFFFFFFF7C558180)
-	// startTime is 1900/01/01 00:00:00
-	startTime = TimeFromYmd(1900, 1, 1)
-	// lunarStartTimeUnix = uint64(0xFFFFFFFF7C7C9E00)
-	// lunarStartTime = TimeFromYmd(1900, 1, 31)
+	loc, _     = time.LoadLocation("Asia/Shanghai")
+	startTime  = TimeFromYmd(1900, 1, 1)
 )
 
 type calendarTime struct {

@@ -6,16 +6,11 @@ import (
 	"github.com/6tail/lunar-go/calendar"
 )
 
-// Calendar returns a calendarTime
 type Calendar interface {
 	Lunar() Lunar
 	Solar() Solar
-	//FormatTime() string
-	//Time() time.Time
-	//Date() CalendarDate
 }
 
-// Solar returns the solar time
 type Solar interface {
 	IsLeapYear() bool
 	GetWeek() int
@@ -29,7 +24,6 @@ type Solar interface {
 	GetHour() int
 	GetMinute() int
 	GetSecond() int
-	//GetCalendar() time.Time
 	GetJulianDay() float64
 	ToYmd() string
 	ToYmdHms() string
@@ -39,7 +33,6 @@ type Solar interface {
 	GetLunar() *calendar.Lunar
 }
 
-// Lunar returns the lunar time
 type Lunar interface {
 	GetGan() string
 	GetYearGan() string
@@ -168,8 +161,6 @@ type Lunar interface {
 	GetTimeChongDesc() string
 	GetSolarTerm() SolarTerm
 	GetSolarTermDetail() SolarTermDetail
-	//GetJieQiTable() map[string]*calendar.Solar
-	//GetJieQiList() *list.List
 	GetDayYi() *list.List
 	GetDayYiBySect(sect int) *list.List
 	GetDayJi() *list.List
@@ -244,73 +235,12 @@ type Lunar interface {
 	GetTao() *calendar.Tao
 }
 
-// ChineseSupport implements the interface, if support chinese language output
 type ChineseSupport interface {
 	Chinese() string
 }
 
-// EightChar returns the lunar eight char
 type EightChar interface {
 	String() string
-	//GetSect() int
-	//SetSect(sect int)
-	//GetDayGanIndex() int
-	//GetDayZhiIndex() int
-	//GetYear() string
-	//GetYearGan() string
-	//GetYearZhi() string
-	//GetYearHideGan() []string
-	//GetYearWuXing() string
-	//GetYearNaYin() string
-	//GetYearShiShenGan() string
-	//GetYearShiShenZhi() *list.List
-	//GetYearDiShi() string
-	//GetMonth() string
-	//GetMonthGan() string
-	//GetMonthZhi() string
-	//GetMonthHideGan() []string
-	//GetMonthWuXing() string
-	//GetMonthNaYin() string
-	//GetMonthShiShenGan() string
-	//GetMonthShiShenZhi() *list.List
-	//GetMonthDiShi() string
-	//GetDay() string
-	//GetDayGan() string
-	//GetDayZhi() string
-	//GetDayHideGan() []string
-	//GetDayWuXing() string
-	//GetDayNaYin() string
-	//GetDayShiShenGan() string
-	//GetDayShiShenZhi() *list.List
-	//GetDayDiShi() string
-	//GetTime() string
-	//GetTimeGan() string
-	//GetTimeZhi() string
-	//GetTimeHideGan() []string
-	//GetTimeWuXing() string
-	//GetTimeNaYin() string
-	//GetTimeShiShenGan() string
-	//GetTimeShiShenZhi() *list.List
-	//GetTimeDiShi() string
-	//GetTaiYuan() string
-	//GetTaiYuanNaYin() string
-	//GetTaiXi() string
-	//GetTaiXiNaYin() string
-	//GetMingGong() string
-	//GetMingGongNaYin() string
-	//GetShenGong() string
-	//GetShenGongNaYin() string
-	//GetLunar() *calendar.Lunar
-	//GetYun(gender int) *calendar.Yun
-	//GetYunBySect(gender int, sect int) *calendar.Yun
-	//GetYearXun() string
-	//GetYearXunKong() string
-	//GetMonthXun() string
-	//GetMonthXunKong() string
-	//GetDayXun() string
-	//GetDayXunKong() string
-	//GetTimeXun() string
-	//GetTimeXunKong() string
 	GetWuXing() [4]string
 	GetNaYin() [4]string
 	GetSiZhu() [4]string
@@ -318,5 +248,4 @@ type EightChar interface {
 	GetShiShenZhi() [4][]string
 	GetCangGan() [4][]string
 	GetDaYun(sex int) []int
-	//GetXunKong() [4]string
 }

@@ -188,11 +188,11 @@ func parseGanZhi(tiangan TianGan, dizhi DiZhi) GanZhi {
 // @return string
 // @return error
 func YearGanZhiChinese(t time.Time) (string, error) {
-	tgc, err := TianGanChinese(TianGan(t.Year() % 10))
+	tgc, err := TianGanChinese(TianGan((t.Year() - 4) % 10))
 	if err != nil {
 		return "", err
 	}
-	dzc, err := DiZhiChinese(DiZhi(t.Year() % 12))
+	dzc, err := DiZhiChinese(DiZhi((t.Year() - 4) % 12))
 	if err != nil {
 		return "", err
 	}
@@ -311,7 +311,7 @@ func YueZhu(t time.Time) GanZhi {
 }
 
 func yueZhu(y int, m time.Month, d int) GanZhi {
-	_, min := getSolarTermDay(y, m)
+	min, _ := getSolarTermDay(y, m)
 	gz := yearOffset(y+1)*12 + int(m)
 	if d < min {
 		gz -= 1
