@@ -6,10 +6,10 @@ import (
 )
 
 type FateInput struct {
-	BirthDate time.Time   `json:"birth_date"`
-	Gender    int         `json:"gender"`
-	IsLunar   bool        `json:"is_lunar"`
-	Surname   string      `json:"surname"`
+	BirthDate time.Time    `json:"birth_date"`
+	Gender    int          `json:"gender"`
+	IsLunar   bool         `json:"is_lunar"`
+	Surname   string       `json:"surname"`
 	Method    XiYongMethod `json:"method"`
 }
 
@@ -22,42 +22,42 @@ type FateData struct {
 }
 
 type BaziInfo struct {
-	Sizhu         [4]string   `json:"sizhu"`
-	Wuxing        [4]string   `json:"wuxing"`
-	Nayin         [4]string   `json:"nayin"`
-	Shishen       [4]string   `json:"shishen"`
-	Canggan       [4][]string `json:"canggan"`
-	Xunkong       [4]string   `json:"xunkong"`
-	Zodiac        string      `json:"zodiac"`
-	Constellation string      `json:"constellation"`
+	FourPillars  [4]string   `json:"four_pillars"`
+	FiveElements [4]string   `json:"five_elements"`
+	NaYin        [4]string   `json:"na_yin"`
+	TenGods      [4]string   `json:"ten_gods"`
+	HiddenStems  [4][]string `json:"hidden_stems"`
+	VoidPillars  [4]string   `json:"void_pillars"`
+	Zodiac       string      `json:"zodiac"`
+	Constellation string     `json:"constellation"`
 }
 
 type WuxingXijiInfo struct {
-	DayGan          string                     `json:"day_gan"`
-	DayWuxing       string                     `json:"day_wuxing"`
-	YueZhi          string                     `json:"yue_zhi"`
-	QiangRuo        string                     `json:"qiang_ruo"`
-	SimilarPoint    float64                    `json:"similar_point"`
-	HeteroPoint     float64                    `json:"hetero_point"`
-	TongleiRatio    float64                    `json:"tonglei_ratio"`
-	XiWuxing        []string                   `json:"xi_wuxing"`
-	YongWuxing      string                     `json:"yong_wuxing"`
-	JiWuxing        []string                   `json:"ji_wuxing"`
-	ChouWuxing      []string                   `json:"chou_wuxing"`
-	XianWuxing      []string                   `json:"xian_wuxing"`
-	TiaoHouWuxing   []string                   `json:"tiao_hou_wuxing"`
-	TiaoHouTianGan  []string                   `json:"tiao_hou_tian_gan"`
-	WuxingStrengths map[string]*WuxingStrength `json:"wuxing_strengths"`
-	Analysis        string                     `json:"analysis"`
-	SuggestWuxing   []string                   `json:"suggest_wuxing"`
-	WuXingFen       map[string]int             `json:"wuxing_fen"`
-	Method          XiYongMethod               `json:"method"`
-	MethodName      string                     `json:"method_name"`
-	GeJu            *GeJuInfo                  `json:"geju,omitempty"`
+	DayGan            string                     `json:"day_gan"`
+	DayWuxing         string                     `json:"day_wuxing"`
+	YueZhi            string                     `json:"yue_zhi"`
+	Strength          string                     `json:"strength"`
+	SimilarPoint      float64                    `json:"similar_point"`
+	HeteroPoint       float64                    `json:"hetero_point"`
+	TongleiRatio      float64                    `json:"tonglei_ratio"`
+	FavorableElements []string                   `json:"favorable_elements"`
+	UsefulElement     string                     `json:"useful_element"`
+	UnfavorableElements []string                 `json:"unfavorable_elements"`
+	HostileElements   []string                   `json:"hostile_elements"`
+	IdleElements      []string                   `json:"idle_elements"`
+	AdjustmentElements []string                  `json:"adjustment_elements"`
+	AdjustmentStems   []string                   `json:"adjustment_stems"`
+	WuxingStrengths   map[string]*WuxingStrength `json:"wuxing_strengths"`
+	Analysis          string                     `json:"analysis"`
+	SuggestWuxing     []string                   `json:"suggest_wuxing"`
+	ElementScores     map[string]int             `json:"element_scores"`
+	Method            XiYongMethod               `json:"method"`
+	MethodName        string                     `json:"method_name"`
+	GeJu              *GeJuInfo                  `json:"geju,omitempty"`
 }
 
 type WuxingStrength struct {
-	Wuxing  string  `json:"wuxing"`
+	Element string  `json:"element"`
 	Score   float64 `json:"score"`
 	Percent float64 `json:"percent"`
 	Rank    int     `json:"rank"`
@@ -133,23 +133,23 @@ func calculateBazi(calendar Calendar) (*BaziInfo, error) {
 	}
 
 	return &BaziInfo{
-		Sizhu:         siZhu,
-		Wuxing:        wuXing,
-		Nayin:         naYin,
-		Shishen:       shiShen,
-		Canggan:       cangGan,
-		Xunkong:       xunkong,
+		FourPillars:   siZhu,
+		FiveElements:  wuXing,
+		NaYin:         naYin,
+		TenGods:       shiShen,
+		HiddenStems:   cangGan,
+		VoidPillars:   xunkong,
 		Zodiac:        zodiac,
 		Constellation: constellation,
 	}, nil
 }
 
 func calculateWuxingXiji(baziInfo *BaziInfo, method XiYongMethod) *WuxingXijiInfo {
-	siZhu := baziInfo.Sizhu
+	siZhu := baziInfo.FourPillars
 	strengths := calculateWuxingStrength(siZhu)
 
-	riZhuGan := string([]rune(baziInfo.Sizhu[2])[:1])
-	yueZhi := string([]rune(baziInfo.Sizhu[1])[1:])
+	riZhuGan := string([]rune(baziInfo.FourPillars[2])[:1])
+	yueZhi := string([]rune(baziInfo.FourPillars[1])[1:])
 	qiangRuo := judgeRizhuQiangRuo(riZhuGan, strengths)
 	tiaoHou := findTiaoHouShen(riZhuGan, yueZhi)
 	similarPoint, heteroPoint := calculateTongYiPoints(riZhuGan, strengths)
@@ -164,46 +164,46 @@ func calculateWuxingXiji(baziInfo *BaziInfo, method XiYongMethod) *WuxingXijiInf
 	case XiYongMethodGeJu:
 		geJu = determineGeJu(riZhuGan, yueZhi, siZhu)
 		xyj = geJuXiYongJi(riZhuGan, geJu, qiangRuo, strengths, tiaoHou)
-		xyj.XianWuxing = findXianWuxing(xyj)
+		xyj.IdleElements = findXianWuxing(xyj)
 		analysis = generateGeJuAnalysis(riZhuGan, qiangRuo, geJu, xyj)
 		methodName = "格局用神法"
 	default:
 		xyj = balanceXiYongJi(riZhuGan, qiangRuo, strengths, tiaoHou)
-		xyj.XianWuxing = findXianWuxing(xyj)
+		xyj.IdleElements = findXianWuxing(xyj)
 		analysis = generateBalanceAnalysis(riZhuGan, qiangRuo, xyj)
 		methodName = "平衡用神法"
 	}
 
-	suggestWuxing := append([]string{xyj.YongWuxing}, xyj.XiWuxing...)
+	suggestWuxing := append([]string{xyj.UsefulElement}, xyj.FavorableElements...)
 
 	return &WuxingXijiInfo{
-		DayGan:          riZhuGan,
-		DayWuxing:       getWuxingOfTianGan(riZhuGan),
-		YueZhi:          yueZhi,
-		QiangRuo:        qiangRuo,
-		SimilarPoint:    similarPoint,
-		HeteroPoint:     heteroPoint,
-		TongleiRatio:    similarPoint / (similarPoint + heteroPoint) * 100,
-		XiWuxing:        xyj.XiWuxing,
-		YongWuxing:      xyj.YongWuxing,
-		JiWuxing:        xyj.JiWuxing,
-		ChouWuxing:      xyj.ChouWuxing,
-		XianWuxing:      xyj.XianWuxing,
-		TiaoHouWuxing:   tiaoHou,
-		TiaoHouTianGan:  getTiaoHouTianGan(tiaoHou),
-		WuxingStrengths: strengths,
-		Analysis:        analysis,
-		SuggestWuxing:   suggestWuxing,
-		WuXingFen:       wuXingFen,
-		Method:          method,
-		MethodName:      methodName,
-		GeJu:            geJu,
+		DayGan:            riZhuGan,
+		DayWuxing:         wuxingOfTianGan(riZhuGan),
+		YueZhi:            yueZhi,
+		Strength:          qiangRuo,
+		SimilarPoint:      similarPoint,
+		HeteroPoint:       heteroPoint,
+		TongleiRatio:      similarPoint / (similarPoint + heteroPoint) * 100,
+		FavorableElements: xyj.FavorableElements,
+		UsefulElement:     xyj.UsefulElement,
+		UnfavorableElements: xyj.UnfavorableElements,
+		HostileElements:   xyj.HostileElements,
+		IdleElements:      xyj.IdleElements,
+		AdjustmentElements: tiaoHou,
+		AdjustmentStems:   getTiaoHouTianGan(tiaoHou),
+		WuxingStrengths:   strengths,
+		Analysis:          analysis,
+		SuggestWuxing:     suggestWuxing,
+		ElementScores:     wuXingFen,
+		Method:            method,
+		MethodName:        methodName,
+		GeJu:              geJu,
 	}
 }
 
 func generateBalanceAnalysis(riZhuGan, qiangRuo string, xyj *XiYongJiChou) string {
 	return fmt.Sprintf("日主%s，五行%s，格局%s（平衡用神法）。用神为%s，喜神为%s，忌神为%s，仇神为%s。",
-		riZhuGan, getWuxingOfTianGan(riZhuGan), qiangRuo,
-		xyj.YongWuxing, joinStrings(xyj.XiWuxing, "、"),
-		joinStrings(xyj.JiWuxing, "、"), joinStrings(xyj.ChouWuxing, "、"))
+		riZhuGan, wuxingOfTianGan(riZhuGan), qiangRuo,
+		xyj.UsefulElement, joinStrings(xyj.FavorableElements, "、"),
+		joinStrings(xyj.UnfavorableElements, "、"), joinStrings(xyj.HostileElements, "、"))
 }

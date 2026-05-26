@@ -1,9 +1,5 @@
 package chronos
 
-import (
-	_ "embed"
-)
-
 var solarTermSanHous = []string{
 	0:  "东风解冻、蛰虫始振、鱼上冰。",
 	1:  "獭祭鱼、鸿雁来、草木萌动。",
@@ -56,38 +52,3 @@ var solarTermExplanations = []string{
 	22: "太阳黄经为285°。小寒以后，开始进入寒冷季节。冷气积久而寒，小寒是天气寒冷但还没有到极点的意思。",
 	23: "太阳黄经为300°。大寒就是天气寒冷到了极点的意思。大寒前后是一年中最冷的季节。大寒正值三九刚过，四九之初。谚云：“三九四九冰上走”。",
 }
-
-//var solarTermDataBuffer = bytes.NewBuffer(solarTermData)
-
-//var yearSolarTermDay = map[int][]byte{
-//	1900: {6, 20, 4, 19, 6, 21, 5, 20, 6, 21, 6, 22, 7, 23, 8, 23, 8, 23, 9, 24, 8, 23, 7, 22},
-//}
-//
-//var solarTermTimes = map[int][SolarTermMax]uint64{
-//	1900: {
-//		0xFFFFFFFF7C831763,
-//		0xFFFFFFFF7C96A7EA,
-//		0xFFFFFFFF7CAA5720,
-//		0xFFFFFFFF7CBE2FB5,
-//		0xFFFFFFFF7CD231A9,
-//		0xFFFFFFFF7CE662AA,
-//		0xFFFFFFFF7CFABC60,
-//		0xFFFFFFFF7D0F3EC7,
-//		0xFFFFFFFF7D23DD5F,
-//		0xFFFFFFFF7D389321,
-//		0xFFFFFFFF7D4D4FD0,
-//		0xFFFFFFFF7D620B77,
-//		0xFFFFFFFF7D76B65A,
-//		0xFFFFFFFF7D8B4895,
-//		0xFFFFFFFF7D9FB716,
-//		0xFFFFFFFF7DB3FCFB,
-//		0xFFFFFFFF7DC81635,
-//		0xFFFFFFFF7DDC02B4,
-//		0xFFFFFFFF7DEFC590,
-//		0xFFFFFFFF7E0363C6,
-//		0xFFFFFFFF7E16E5D6,
-//		0xFFFFFFFF7E2A549E,
-//		0xFFFFFFFF7C5C360D,
-//		0xFFFFFFFF7C6FA0C9,
-//	},
-//}

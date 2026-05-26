@@ -1,35 +1,6 @@
 package chronos
 
 func calculateWuxingStrength(siZhu [4]string) map[string]*WuxingStrength {
-	wuxingMap := map[string]string{
-		"甲": "木", "乙": "木",
-		"丙": "火", "丁": "火",
-		"戊": "土", "己": "土",
-		"庚": "金", "辛": "金",
-		"壬": "水", "癸": "水",
-		"子": "水", "丑": "土", "寅": "木", "卯": "木",
-		"辰": "土", "巳": "火", "午": "火", "未": "土",
-		"申": "金", "酉": "金", "戌": "土", "亥": "水",
-	}
-
-	cangGan := map[string][]struct {
-		wuxing string
-		weight float64
-	}{
-		"子": {{"水", 1.0}},
-		"丑": {{"土", 0.6}, {"金", 0.2}, {"水", 0.2}},
-		"寅": {{"木", 0.6}, {"火", 0.2}, {"土", 0.2}},
-		"卯": {{"木", 1.0}},
-		"辰": {{"土", 0.6}, {"木", 0.2}, {"水", 0.2}},
-		"巳": {{"火", 0.6}, {"土", 0.2}, {"金", 0.2}},
-		"午": {{"火", 0.7}, {"土", 0.3}},
-		"未": {{"土", 0.6}, {"火", 0.2}, {"木", 0.2}},
-		"申": {{"金", 0.6}, {"土", 0.2}, {"水", 0.2}},
-		"酉": {{"金", 1.0}},
-		"戌": {{"土", 0.6}, {"金", 0.2}, {"火", 0.2}},
-		"亥": {{"水", 0.7}, {"木", 0.3}},
-	}
-
 	scores := map[string]float64{
 		"木": 0, "火": 0, "土": 0, "金": 0, "水": 0,
 	}
@@ -41,7 +12,7 @@ func calculateWuxingStrength(siZhu [4]string) map[string]*WuxingStrength {
 		tianGan := string([]rune(zhu)[:1])
 		diZhi := string([]rune(zhu)[1:])
 
-		if wx, ok := wuxingMap[tianGan]; ok {
+		if wx, ok := tianGanWuxingMap[tianGan]; ok {
 			weight := 1.0
 			if i == 2 {
 				weight = 1.5
@@ -49,14 +20,14 @@ func calculateWuxingStrength(siZhu [4]string) map[string]*WuxingStrength {
 			scores[wx] += weight
 		}
 
-		if cgs, ok := cangGan[diZhi]; ok {
+		if cgs, ok := diZhiHiddenStemsWeighted[diZhi]; ok {
 			for _, cg := range cgs {
-				scores[cg.wuxing] += cg.weight
+				scores[cg.Wuxing] += cg.Weight
 			}
 		}
 	}
 
-	result := make(map[string]*WuxingStrength)
+	result := make(map[string]*WuxingStrength, 5)
 	totalScore := 0.0
 	for _, score := range scores {
 		totalScore += score
@@ -64,7 +35,7 @@ func calculateWuxingStrength(siZhu [4]string) map[string]*WuxingStrength {
 
 	for wx, score := range scores {
 		result[wx] = &WuxingStrength{
-			Wuxing:  wx,
+			Element: wx,
 			Score:   score,
 			Percent: score / totalScore * 100,
 		}
@@ -93,12 +64,12 @@ func calculateWuxingStrength(siZhu [4]string) map[string]*WuxingStrength {
 }
 
 func judgeRizhuQiangRuo(riZhuGan string, strengths map[string]*WuxingStrength) string {
-	riZhuWuxing := getWuxingOfTianGan(riZhuGan)
+	riZhuWuxing := wuxingOfTianGan(riZhuGan)
 	if riZhuWuxing == "" {
 		return "中和"
 	}
 
-	tonglei := getTongleiWuxing(riZhuWuxing)
+	tonglei := tongleiWuxing(riZhuWuxing)
 	tongleiScore := 0.0
 	for _, wx := range tonglei {
 		if s, ok := strengths[wx]; ok {
@@ -192,12 +163,12 @@ func findTiaoHouShen(riZhuGan string, yueZhi string) []string {
 }
 
 func calculateTongYiPoints(riZhuGan string, strengths map[string]*WuxingStrength) (float64, float64) {
-	riZhuWuxing := getWuxingOfTianGan(riZhuGan)
+	riZhuWuxing := wuxingOfTianGan(riZhuGan)
 	if riZhuWuxing == "" {
 		return 0, 0
 	}
 
-	tonglei := getTongleiWuxing(riZhuWuxing)
+	tonglei := tongleiWuxing(riZhuWuxing)
 	similarPoint := 0.0
 	heteroPoint := 0.0
 
@@ -245,19 +216,12 @@ func getTiaoHouTianGan(tiaoHouWuxing []string) []string {
 	return result
 }
 
-func getWuxingOfTianGan(tianGan string) string {
-	wuxingMap := map[string]string{
-		"甲": "木", "乙": "木",
-		"丙": "火", "丁": "火",
-		"戊": "土", "己": "土",
-		"庚": "金", "辛": "金",
-		"壬": "水", "癸": "水",
-	}
-	return wuxingMap[tianGan]
+func wuxingOfTianGan(tianGan string) string {
+	return tianGanWuxingMap[tianGan]
 }
 
-func getTongleiWuxing(wuxing string) []string {
-	return []string{wuxing, shengWoMap[wuxing]}
+func tongleiWuxing(wuxing string) []string {
+	return []string{wuxing, wuxingRelations.ShengWo[wuxing]}
 }
 
 func joinStrings(strs []string, sep string) string {

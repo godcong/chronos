@@ -51,10 +51,10 @@ func (e *eightChar) GetWuXing() [4]string {
 
 func (e *eightChar) GetCangGan() [4][]string {
 	return [4][]string{
-		diZhiCangGan[e.GetYearZhi()],
-		diZhiCangGan[e.GetMonthZhi()],
-		diZhiCangGan[e.GetDayZhi()],
-		diZhiCangGan[e.GetTimeZhi()],
+		diZhiHiddenStems[e.GetYearZhi()],
+		diZhiHiddenStems[e.GetMonthZhi()],
+		diZhiHiddenStems[e.GetDayZhi()],
+		diZhiHiddenStems[e.GetTimeZhi()],
 	}
 }
 
@@ -94,4 +94,37 @@ func getShiShenZhiString(l *list.List) []string {
 		result = append(result, e.Value.(string))
 	}
 	return result
+}
+
+type Pillar struct {
+	Stem   string `json:"stem"`
+	Branch string `json:"branch"`
+}
+
+type FourPillars struct {
+	Year  Pillar `json:"year"`
+	Month Pillar `json:"month"`
+	Day   Pillar `json:"day"`
+	Hour  Pillar `json:"hour"`
+}
+
+func (e *eightChar) ToFourPillars() FourPillars {
+	siZhu := e.GetSiZhu()
+	return FourPillarsFromArr(siZhu)
+}
+
+func FourPillarsFromArr(arr [4]string) FourPillars {
+	pillar := func(s string) Pillar {
+		runes := []rune(s)
+		if len(runes) < 2 {
+			return Pillar{}
+		}
+		return Pillar{Stem: string(runes[:1]), Branch: string(runes[1:])}
+	}
+	return FourPillars{
+		Year:  pillar(arr[0]),
+		Month: pillar(arr[1]),
+		Day:   pillar(arr[2]),
+		Hour:  pillar(arr[3]),
+	}
 }

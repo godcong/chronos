@@ -1,23 +1,29 @@
 package chronos
 
 import (
+	"sync"
 	"time"
 
 	"github.com/6tail/lunar-go/calendar"
 
 	"github.com/godcong/chronos/v2/runes"
-	"github.com/godcong/chronos/v2/utils"
 )
 
 const defaultSolarTerm = "节气"
 
 var solarTerms = runes.Runes("小寒大寒立春雨水惊蛰春分清明谷雨立夏小满芒种夏至小暑大暑立秋处暑白露秋分寒露霜降立冬小雪大雪冬至")
 
-// SolarTerm
-// ENUM(XiaoHan,DaHan,LiChun,YuShui,JingZhe,ChunFen,QingMing,GuYu,LiXia,XiaoMan,MangZhong,XiaZhi,XiaoShu,DaShu,LiQiu,ChuShu,BaiLu,QiuFen,HanLu,ShuangJiang,LiDong,XiaoXue,DaXue,DongZhi,Max)
+var jieQiNames = [24]string{
+	"冬至", "小寒", "大寒", "立春", "雨水", "惊蛰",
+	"春分", "清明", "谷雨", "立夏", "小满", "芒种",
+	"夏至", "小暑", "大暑", "立秋", "处暑", "白露",
+	"秋分", "寒露", "霜降", "立冬", "小雪", "大雪",
+}
+
+var solarTermCache sync.Map
+
 type SolarTerm uint32
 
-// SolarTermDetail 24节气表
 type SolarTermDetail struct {
 	Index       int       `json:"index"`
 	SolarTerm   SolarTerm `json:"solar_term"`
@@ -57,11 +63,6 @@ func (x SolarTerm) GetYearDate(year int) (month time.Month, day int) {
 	return
 }
 
-// YearSolarTermDetail get the details of year solar term
-// @param time.Time
-// @param SolarTerm
-// @return SolarTermDetail
-// @return error
 func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error) {
 	if st >= 24 {
 		return SolarTermDetail{}, ErrWrongSolarTermFormat
@@ -73,29 +74,16 @@ func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error) {
 	return solarTermDetail(st, ts.Format(DateFormatYMDHMS)), nil
 }
 
-// YearSolarTermDate returns the year month day of the solar term
-// @param time.Time
-// @param SolarTerm
-// @return month
-// @return day
 func YearSolarTermDate(t time.Time, st SolarTerm) (month time.Month, day int) {
 	_, month, day = getYearSolarTermTime(t.Year(), st).Date()
 	return
 }
 
-// YearSolarTermMonth returns the year month  of the solar term
-// @param time.Time
-// @param SolarTerm
-// @return month
 func YearSolarTermMonth(t time.Time, st SolarTerm) (month time.Month) {
 	_, month, _ = getYearSolarTermTime(t.Year(), st).Date()
 	return
 }
 
-// YearSolarTermDay returns the year day of the solar term
-// @param time.Time
-// @param SolarTerm
-// @return day
 func YearSolarTermDay(t time.Time, st SolarTerm) (day int) {
 	_, _, day = getYearSolarTermTime(t.Year(), st).Date()
 	return
@@ -116,9 +104,8 @@ func CheckSolarTermDay(t time.Time) (SolarTerm, bool) {
 	}
 
 	var yst time.Time
-	offset := yearOffset(t.Year())
 	for i := 0; i < 24; i++ {
-		yst = readSolarTermTime(offset, SolarTerm(i))
+		yst = getYearSolarTermTime(t.Year(), SolarTerm(i))
 		if yst.Month() == t.Month() && yst.Day() == t.Day() {
 			return SolarTerm(i), true
 		}
@@ -127,13 +114,11 @@ func CheckSolarTermDay(t time.Time) (SolarTerm, bool) {
 }
 
 func getYearSolarTermTime(year int, st SolarTerm) time.Time {
-	offset := yearOffset(year)
-	return readSolarTermTime(offset, st)
+	return getYearSolarTermTimeFromLunar(year, st)
 }
 
 func getYearSolarTermTimeStr(year int, st SolarTerm) string {
-	offset := yearOffset(year)
-	return readSolarTermTime(offset, st).Format(DateFormatYMDHMS)
+	return getYearSolarTermTime(year, st).Format(DateFormatYMDHMS)
 }
 
 func SolarTermChineseV2(st SolarTerm) string {
@@ -149,28 +134,48 @@ func SolarTermChinese(st SolarTerm) (string, error) {
 }
 
 func solarTermToSolar(year int, st SolarTerm) *solar {
-	t := readSolarTermTime(yearOffset(year), st)
+	t := getYearSolarTermTime(year, st)
 	return &solar{Solar: calendar.NewSolarFromDate(t)}
 }
 
 func getSolarTermDay(year int, month time.Month) (min, max int) {
-	year = yearOffset(year)
 	idx := (month - 1) * 2
-	return readSolarTermDay(year, SolarTerm(idx)), readSolarTermDay(year, SolarTerm(idx)+1)
+	return getYearSolarTermTime(year, SolarTerm(idx)).Day(), getYearSolarTermTime(year, SolarTerm(idx)+1).Day()
 }
 
-func readSolarTermDay(offset int, st SolarTerm) int {
-	return readSolarTermTime(offset, st).Day()
+func solarTermJieQiName(st SolarTerm) string {
+	return jieQiNames[(int(st)+1)%24]
 }
 
-func readSolarTermTime(offset int, st SolarTerm) time.Time {
-	sta := int(st) * 8
-	return utils.BytesToTime(readYearSolarTermData(offset)[sta : sta+8])
+func loadYearSolarTermCache(year int) map[SolarTerm]time.Time {
+	if v, ok := solarTermCache.Load(year); ok {
+		return v.(map[SolarTerm]time.Time)
+	}
+
+	solar := calendar.NewSolar(year, 7, 1, 12, 0, 0)
+	lunar := calendar.NewLunarFromSolar(solar)
+	table := lunar.GetJieQiTable()
+
+	m := make(map[SolarTerm]time.Time, 24)
+	for i := 0; i < 24; i++ {
+		st := SolarTerm(i)
+		name := solarTermJieQiName(st)
+		if s, ok := table[name]; ok && s.GetYear() == year {
+			m[st] = time.Date(s.GetYear(), time.Month(s.GetMonth()), s.GetDay(), s.GetHour(), s.GetMinute(), s.GetSecond(), 0, loc)
+		}
+	}
+
+	if s, ok := table["DONG_ZHI"]; ok && s.GetYear() == year {
+		m[SolarTermDongZhi] = time.Date(s.GetYear(), time.Month(s.GetMonth()), s.GetDay(), s.GetHour(), s.GetMinute(), s.GetSecond(), 0, loc)
+	}
+
+	solarTermCache.Store(year, m)
+	return m
 }
 
-func readYearSolarTermData(offset int) []byte {
-	sta := offset * solarTermDataOffset
-	return dataSolarTerm[sta : sta+solarTermDataOffset]
+func getYearSolarTermTimeFromLunar(year int, st SolarTerm) time.Time {
+	m := loadYearSolarTermCache(year)
+	return m[st]
 }
 
 var _ ChineseSupport = SolarTerm(0)

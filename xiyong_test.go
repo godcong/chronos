@@ -14,9 +14,9 @@ func TestGetWuxingOfTianGan(t *testing.T) {
 		{"壬", "水"}, {"癸", "水"}, {"?", ""},
 	}
 	for _, tt := range tests {
-		got := getWuxingOfTianGan(tt.gan)
+		got := wuxingOfTianGan(tt.gan)
 		if got != tt.want {
-			t.Errorf("getWuxingOfTianGan(%s) = %s, want %s", tt.gan, got, tt.want)
+			t.Errorf("wuxingOfTianGan(%s) = %s, want %s", tt.gan, got, tt.want)
 		}
 	}
 }
@@ -33,14 +33,14 @@ func TestGetTongleiWuxing(t *testing.T) {
 		{"水", []string{"水", "金"}},
 	}
 	for _, tt := range tests {
-		got := getTongleiWuxing(tt.wx)
+		got := tongleiWuxing(tt.wx)
 		if len(got) != len(tt.want) {
-			t.Errorf("getTongleiWuxing(%s) = %v, want %v", tt.wx, got, tt.want)
+			t.Errorf("tongleiWuxing(%s) = %v, want %v", tt.wx, got, tt.want)
 			continue
 		}
 		for i, v := range got {
 			if v != tt.want[i] {
-				t.Errorf("getTongleiWuxing(%s)[%d] = %s, want %s", tt.wx, i, v, tt.want[i])
+				t.Errorf("tongleiWuxing(%s)[%d] = %s, want %s", tt.wx, i, v, tt.want[i])
 			}
 		}
 	}
@@ -48,10 +48,10 @@ func TestGetTongleiWuxing(t *testing.T) {
 
 func TestFindXianWuxing(t *testing.T) {
 	xyj := &XiYongJiChou{
-		YongWuxing: "金",
-		XiWuxing:   []string{"水"},
-		JiWuxing:   []string{"木"},
-		ChouWuxing: []string{"火"},
+		UsefulElement:     "金",
+		FavorableElements: []string{"水"},
+		UnfavorableElements: []string{"木"},
+		HostileElements:   []string{"火"},
 	}
 	xian := findXianWuxing(xyj)
 	if len(xian) != 1 || xian[0] != "土" {
@@ -64,7 +64,7 @@ func TestDetermineGeJu(t *testing.T) {
 	if geJu == nil {
 		t.Fatal("expected non-nil GeJu")
 	}
-	if geJu.Type == GeJuSpecial && geJu.ShiShen == "" {
+	if geJu.Type == GeJuSpecial && geJu.TenGod == "" {
 		t.Error("expected non-special geju for valid input")
 	}
 }

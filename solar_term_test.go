@@ -16,7 +16,6 @@ func TestSolarTermChinese(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		// TODO: Add test cases.
 		{
 			name: "",
 			args: args{
@@ -130,7 +129,6 @@ func Test_getSolarTermTime(t *testing.T) {
 		args args
 		want string
 	}{
-		// TODO: Add test cases.
 		{
 			name: "",
 			args: args{
@@ -263,89 +261,39 @@ func Test_yearLiChunDay(t *testing.T) {
 	}
 }
 
-func Test_readSolarTermDay(t *testing.T) {
-	type args struct {
-		offset int
-		st     SolarTerm
-	}
+func Test_getSolarTermDayFromLunar(t *testing.T) {
 	tests := []struct {
-		name string
-		args args
+		year int
+		st   SolarTerm
 		want int
 	}{
-		{
-			name: "",
-			args: args{
-				offset: yearOffset(1900),
-				st:     0,
-			},
-			want: 6,
-		},
-		{
-			name: "",
-			args: args{
-				offset: yearOffset(1900),
-				st:     1,
-			},
-			want: 20,
-		},
-		{
-			name: "",
-			args: args{
-				offset: yearOffset(3000),
-				st:     0,
-			},
-			want: 06,
-		},
-		{
-			name: "",
-			args: args{
-				offset: yearOffset(3000),
-				st:     1,
-			},
-			want: 20,
-		},
+		{1900, 0, 6},
+		{1900, 1, 20},
+		{3000, 0, 6},
+		{3000, 1, 20},
 	}
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := readSolarTermDay(tt.args.offset, tt.args.st); got != tt.want {
-				t.Errorf("readSolarTermDay() = %v, want %v", got, tt.want)
+		t.Run("", func(t *testing.T) {
+			if got := getYearSolarTermTime(tt.year, tt.st).Day(); got != tt.want {
+				t.Errorf("getYearSolarTermTime(%d, %d).Day() = %v, want %v", tt.year, tt.st, got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_readSolarTermTime(t *testing.T) {
-	type args struct {
-		offset int
-		st     SolarTerm
-	}
+func Test_getSolarTermTimeFromLunar(t *testing.T) {
 	tests := []struct {
-		name string
-		args args
+		year int
+		st   SolarTerm
 		want string
 	}{
-		{
-			name: "",
-			args: args{
-				offset: yearOffset(1900),
-				st:     0,
-			},
-			want: "1900/01/06 02:03:57",
-		},
-		{
-			name: "",
-			args: args{
-				offset: yearOffset(1900),
-				st:     1,
-			},
-			want: "1900/01/20 19:32:25",
-		},
+		{1900, 0, "1900/01/06 02:03:57"},
+		{1900, 1, "1900/01/20 19:32:25"},
 	}
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := readSolarTermTime(tt.args.offset, tt.args.st); !reflect.DeepEqual(got.Format(DateFormatYMDHMS), tt.want) {
-				t.Errorf("readSolarTermTime() = %v, want %v", got.Format(DateFormatYMDHMS), tt.want)
+		t.Run("", func(t *testing.T) {
+			if got := getYearSolarTermTime(tt.year, tt.st); !reflect.DeepEqual(got.Format(DateFormatYMDHMS), tt.want) {
+				t.Errorf("getYearSolarTermTime() = %v, want %v", got.Format(DateFormatYMDHMS), tt.want)
 			}
 		})
 	}

@@ -68,11 +68,11 @@ func TestGetFateData(t *testing.T) {
 		if data.WuxingXiji == nil {
 			t.Error("expected non-nil WuxingXiji")
 		}
-		if len(data.Bazi.Sizhu) != 4 {
-			t.Errorf("expected 4 pillars, got %d", len(data.Bazi.Sizhu))
+		if len(data.Bazi.FourPillars) != 4 {
+			t.Errorf("expected 4 pillars, got %d", len(data.Bazi.FourPillars))
 		}
-		if data.WuxingXiji.YongWuxing == "" {
-			t.Error("expected non-empty YongWuxing")
+		if data.WuxingXiji.UsefulElement == "" {
+			t.Error("expected non-empty UsefulElement")
 		}
 		if data.WuxingXiji.MethodName != "平衡用神法" {
 			t.Errorf("expected method name '平衡用神法', got '%s'", data.WuxingXiji.MethodName)
@@ -129,8 +129,8 @@ func TestCalculateBazi(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(bazi.Sizhu) != 4 {
-		t.Errorf("expected 4 pillars, got %d", len(bazi.Sizhu))
+	if len(bazi.FourPillars) != 4 {
+		t.Errorf("expected 4 pillars, got %d", len(bazi.FourPillars))
 	}
 	if bazi.Zodiac == "" {
 		t.Error("expected non-empty zodiac")
@@ -146,8 +146,8 @@ func TestCalculateWuxingXiji(t *testing.T) {
 
 	t.Run("balance method", func(t *testing.T) {
 		result := calculateWuxingXiji(bazi, XiYongMethodBalance)
-		if result.YongWuxing == "" {
-			t.Error("expected non-empty YongWuxing")
+		if result.UsefulElement == "" {
+			t.Error("expected non-empty UsefulElement")
 		}
 		if result.Method != XiYongMethodBalance {
 			t.Errorf("expected XiYongMethodBalance, got %d", result.Method)
@@ -156,8 +156,8 @@ func TestCalculateWuxingXiji(t *testing.T) {
 
 	t.Run("geju method", func(t *testing.T) {
 		result := calculateWuxingXiji(bazi, XiYongMethodGeJu)
-		if result.YongWuxing == "" {
-			t.Error("expected non-empty YongWuxing")
+		if result.UsefulElement == "" {
+			t.Error("expected non-empty UsefulElement")
 		}
 		if result.Method != XiYongMethodGeJu {
 			t.Errorf("expected XiYongMethodGeJu, got %d", result.Method)

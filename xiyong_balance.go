@@ -8,68 +8,53 @@ const (
 )
 
 type XiYongJiChou struct {
-	YongWuxing string   `json:"yong_wuxing"`
-	XiWuxing   []string `json:"xi_wuxing"`
-	JiWuxing   []string `json:"ji_wuxing"`
-	ChouWuxing []string `json:"chou_wuxing"`
-	XianWuxing []string `json:"xian_wuxing"`
+	UsefulElement     string   `json:"useful_element"`
+	FavorableElements []string `json:"favorable_elements"`
+	UnfavorableElements []string `json:"unfavorable_elements"`
+	HostileElements   []string `json:"hostile_elements"`
+	IdleElements      []string `json:"idle_elements"`
 }
 
 func balanceXiYongJi(riZhuGan string, qiangRuo string, strengths map[string]*WuxingStrength, tiaoHou []string) *XiYongJiChou {
-	riZhuWuxing := getWuxingOfTianGan(riZhuGan)
+	riZhuWuxing := wuxingOfTianGan(riZhuGan)
 	result := &XiYongJiChou{}
 
 	switch qiangRuo {
 	case "强":
-		woKe := keWoMap[riZhuWuxing]
-		woSheng := woShengMap[riZhuWuxing]
-		keWo := shengWoMap[riZhuWuxing]
+		woKe := wuxingRelations.WoKe[riZhuWuxing]
+		woSheng := wuxingRelations.WoSheng[riZhuWuxing]
+		keWo := wuxingRelations.ShengWo[riZhuWuxing]
 
-		result.YongWuxing = woKe
-		result.XiWuxing = []string{woSheng, keWo}
-		result.JiWuxing = []string{riZhuWuxing, shengWoMap[riZhuWuxing]}
-		result.ChouWuxing = []string{shengWoMap[shengWoMap[riZhuWuxing]]}
-		result.XianWuxing = findXianWuxing(result)
+		result.UsefulElement = woKe
+		result.FavorableElements = []string{woSheng, keWo}
+		result.UnfavorableElements = []string{riZhuWuxing, wuxingRelations.ShengWo[riZhuWuxing]}
+		result.HostileElements = []string{wuxingRelations.ShengWo[wuxingRelations.ShengWo[riZhuWuxing]]}
+		result.IdleElements = findXianWuxing(result)
 
 	case "弱":
-		shengWo := shengWoMap[riZhuWuxing]
-		result.YongWuxing = shengWo
-		result.XiWuxing = []string{riZhuWuxing}
-		result.JiWuxing = []string{keWoMap[riZhuWuxing], woShengMap[riZhuWuxing]}
-		result.ChouWuxing = []string{shengWoMap[keWoMap[riZhuWuxing]]}
-		result.XianWuxing = findXianWuxing(result)
+		shengWo := wuxingRelations.ShengWo[riZhuWuxing]
+		result.UsefulElement = shengWo
+		result.FavorableElements = []string{riZhuWuxing}
+		result.UnfavorableElements = []string{wuxingRelations.KeWo[riZhuWuxing], wuxingRelations.WoSheng[riZhuWuxing]}
+		result.HostileElements = []string{wuxingRelations.ShengWo[wuxingRelations.KeWo[riZhuWuxing]]}
+		result.IdleElements = findXianWuxing(result)
 
 	default:
 		if len(tiaoHou) > 0 {
-			result.YongWuxing = tiaoHou[0]
-			result.XiWuxing = tiaoHou[1:]
+			result.UsefulElement = tiaoHou[0]
+			result.FavorableElements = tiaoHou[1:]
 		} else {
 			weakest := findWeakestWuxing(strengths)
-			result.YongWuxing = weakest
-			result.XiWuxing = []string{shengWoMap[weakest]}
+			result.UsefulElement = weakest
+			result.FavorableElements = []string{wuxingRelations.ShengWo[weakest]}
 		}
-		result.JiWuxing = []string{keWoMap[result.YongWuxing]}
-		result.ChouWuxing = []string{shengWoMap[keWoMap[result.YongWuxing]]}
-		result.XianWuxing = findXianWuxing(result)
+		result.UnfavorableElements = []string{wuxingRelations.KeWo[result.UsefulElement]}
+		result.HostileElements = []string{wuxingRelations.ShengWo[wuxingRelations.KeWo[result.UsefulElement]]}
+		result.IdleElements = findXianWuxing(result)
 	}
 
 	return result
 }
-
-var (
-	shengWoMap = map[string]string{
-		"木": "水", "火": "木", "土": "火", "金": "土", "水": "金",
-	}
-	woShengMap = map[string]string{
-		"木": "火", "火": "土", "土": "金", "金": "水", "水": "木",
-	}
-	keWoMap = map[string]string{
-		"木": "金", "火": "水", "土": "木", "金": "火", "水": "土",
-	}
-	woKeMap = map[string]string{
-		"木": "土", "火": "金", "土": "水", "金": "木", "水": "火",
-	}
-)
 
 func findWeakestWuxing(strengths map[string]*WuxingStrength) string {
 	minScore := 999.0
@@ -86,15 +71,15 @@ func findWeakestWuxing(strengths map[string]*WuxingStrength) string {
 func findXianWuxing(xyj *XiYongJiChou) []string {
 	allWuxing := []string{"木", "火", "土", "金", "水"}
 	used := map[string]bool{
-		xyj.YongWuxing: true,
+		xyj.UsefulElement: true,
 	}
-	for _, wx := range xyj.XiWuxing {
+	for _, wx := range xyj.FavorableElements {
 		used[wx] = true
 	}
-	for _, wx := range xyj.JiWuxing {
+	for _, wx := range xyj.UnfavorableElements {
 		used[wx] = true
 	}
-	for _, wx := range xyj.ChouWuxing {
+	for _, wx := range xyj.HostileElements {
 		used[wx] = true
 	}
 	var xian []string

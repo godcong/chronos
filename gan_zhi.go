@@ -105,7 +105,7 @@ var (
 	// PillarDay is an alias name of RiZhu
 	PillarDay = RiZhu
 	// PillarMonty is an alias name of YueZhu
-	PillarMonty = YueZhu
+	PillarMonth = YueZhu
 	// PillarYear is an alias name of NianZhu
 	PillarYear = NianZhu
 )

@@ -41,39 +41,11 @@ func (g GeJuType) String() string {
 }
 
 type GeJuInfo struct {
-	Type       GeJuType `json:"type"`
-	Name       string   `json:"name"`
-	YueZhiGan  string   `json:"yue_zhi_gan"`
-	ShiShen    string   `json:"shi_shen"`
-	YongShenWX string   `json:"yong_shen_wx"`
-}
-
-var diZhiCangGan = map[string][]string{
-	"子": {"癸"},
-	"丑": {"己", "癸", "辛"},
-	"寅": {"甲", "丙", "戊"},
-	"卯": {"乙"},
-	"辰": {"戊", "乙", "癸"},
-	"巳": {"丙", "庚", "戊"},
-	"午": {"丁", "己"},
-	"未": {"己", "丁", "乙"},
-	"申": {"庚", "壬", "戊"},
-	"酉": {"辛"},
-	"戌": {"戊", "辛", "丁"},
-	"亥": {"壬", "甲"},
-}
-
-var tianGanShiShenMap = map[string]map[string]string{
-	"甲": {"甲": "比肩", "乙": "劫财", "丙": "食神", "丁": "伤官", "戊": "偏财", "己": "正财", "庚": "七杀", "辛": "正官", "壬": "偏印", "癸": "正印"},
-	"乙": {"甲": "劫财", "乙": "比肩", "丙": "伤官", "丁": "食神", "戊": "正财", "己": "偏财", "庚": "正官", "辛": "七杀", "壬": "正印", "癸": "偏印"},
-	"丙": {"甲": "偏印", "乙": "正印", "丙": "比肩", "丁": "劫财", "戊": "食神", "己": "伤官", "庚": "偏财", "辛": "正财", "壬": "七杀", "癸": "正官"},
-	"丁": {"甲": "正印", "乙": "偏印", "丙": "劫财", "丁": "比肩", "戊": "伤官", "己": "食神", "庚": "正财", "辛": "偏财", "壬": "正官", "癸": "七杀"},
-	"戊": {"甲": "七杀", "乙": "正官", "丙": "偏印", "丁": "正印", "戊": "比肩", "己": "劫财", "庚": "食神", "辛": "伤官", "壬": "偏财", "癸": "正财"},
-	"己": {"甲": "正官", "乙": "七杀", "丙": "正印", "丁": "偏印", "戊": "劫财", "己": "比肩", "庚": "伤官", "辛": "食神", "壬": "正财", "癸": "偏财"},
-	"庚": {"甲": "偏财", "乙": "正财", "丙": "七杀", "丁": "正官", "戊": "偏印", "己": "正印", "庚": "比肩", "辛": "劫财", "壬": "食神", "癸": "伤官"},
-	"辛": {"甲": "正财", "乙": "偏财", "丙": "正官", "丁": "七杀", "戊": "正印", "己": "偏印", "庚": "劫财", "辛": "比肩", "壬": "伤官", "癸": "食神"},
-	"壬": {"甲": "食神", "乙": "伤官", "丙": "偏财", "丁": "正财", "戊": "七杀", "己": "正官", "庚": "偏印", "辛": "正印", "壬": "比肩", "癸": "劫财"},
-	"癸": {"甲": "伤官", "乙": "食神", "丙": "正财", "丁": "偏财", "戊": "正官", "己": "七杀", "庚": "正印", "辛": "偏印", "壬": "劫财", "癸": "比肩"},
+	Type            GeJuType `json:"type"`
+	Name            string   `json:"name"`
+	MonthBranchStem string   `json:"month_branch_stem"`
+	TenGod          string   `json:"ten_god"`
+	UsefulElement   string   `json:"useful_element"`
 }
 
 func getShiShen(dayGan, targetGan string) string {
@@ -86,7 +58,7 @@ func getShiShen(dayGan, targetGan string) string {
 }
 
 func determineGeJu(riZhuGan string, yueZhi string, siZhu [4]string) *GeJuInfo {
-	cangGans, ok := diZhiCangGan[yueZhi]
+	cangGans, ok := diZhiHiddenStems[yueZhi]
 	if !ok || len(cangGans) == 0 {
 		return &GeJuInfo{Type: GeJuSpecial, Name: "特殊格"}
 	}
@@ -97,10 +69,10 @@ func determineGeJu(riZhuGan string, yueZhi string, siZhu [4]string) *GeJuInfo {
 	geJuType := shiShenToGeJu(shiShen, riZhuGan, yueZhi)
 
 	return &GeJuInfo{
-		Type:      geJuType,
-		Name:      geJuType.String(),
-		YueZhiGan: mainGan,
-		ShiShen:   shiShen,
+		Type:            geJuType,
+		Name:            geJuType.String(),
+		MonthBranchStem: mainGan,
+		TenGod:          shiShen,
 	}
 }
 
@@ -147,7 +119,7 @@ func getYangRenZhi(riZhuGan string) string {
 }
 
 func geJuXiYongJi(riZhuGan string, geJu *GeJuInfo, qiangRuo string, strengths map[string]*WuxingStrength, tiaoHou []string) *XiYongJiChou {
-	riZhuWuxing := getWuxingOfTianGan(riZhuGan)
+	riZhuWuxing := wuxingOfTianGan(riZhuGan)
 	result := &XiYongJiChou{}
 
 	switch geJu.Type {
@@ -173,156 +145,152 @@ func geJuXiYongJi(riZhuGan string, geJu *GeJuInfo, qiangRuo string, strengths ma
 }
 
 func geJuZhengGuanYong(riZhuGan, riZhuWuxing, qiangRuo string, strengths map[string]*WuxingStrength) *XiYongJiChou {
-	guanWX := keWoMap[riZhuWuxing]
-	caiWX := woKeMap[riZhuWuxing]
-	yinWX := shengWoMap[riZhuWuxing]
+	guanWX := wuxingRelations.KeWo[riZhuWuxing]
+	caiWX := wuxingRelations.WoKe[riZhuWuxing]
+	yinWX := wuxingRelations.ShengWo[riZhuWuxing]
 
 	if qiangRuo == "强" {
 		return &XiYongJiChou{
-			YongWuxing: guanWX,
-			XiWuxing:   []string{caiWX, riZhuWuxing},
-			JiWuxing:   []string{yinWX},
-			ChouWuxing: []string{shengWoMap[yinWX]},
+			UsefulElement:     guanWX,
+			FavorableElements: []string{caiWX, riZhuWuxing},
+			UnfavorableElements: []string{yinWX},
+			HostileElements:   []string{wuxingRelations.ShengWo[yinWX]},
 		}
 	}
 	return &XiYongJiChou{
-		YongWuxing: yinWX,
-		XiWuxing:   []string{guanWX},
-		JiWuxing:   []string{caiWX, woShengMap[riZhuWuxing]},
-		ChouWuxing: []string{shengWoMap[caiWX]},
+		UsefulElement:     yinWX,
+		FavorableElements: []string{guanWX},
+		UnfavorableElements: []string{caiWX, wuxingRelations.WoSheng[riZhuWuxing]},
+		HostileElements:   []string{wuxingRelations.ShengWo[caiWX]},
 	}
 }
 
 func geJuQiShaYong(riZhuGan, riZhuWuxing, qiangRuo string, strengths map[string]*WuxingStrength) *XiYongJiChou {
-	shaWX := keWoMap[riZhuWuxing]
-	shiWX := woShengMap[riZhuWuxing]
-	yinWX := shengWoMap[riZhuWuxing]
+	shaWX := wuxingRelations.KeWo[riZhuWuxing]
+	shiWX := wuxingRelations.WoSheng[riZhuWuxing]
+	yinWX := wuxingRelations.ShengWo[riZhuWuxing]
 
 	if qiangRuo == "强" {
 		return &XiYongJiChou{
-			YongWuxing: shiWX,
-			XiWuxing:   []string{shaWX, yinWX},
-			JiWuxing:   []string{riZhuWuxing},
-			ChouWuxing: []string{shengWoMap[riZhuWuxing]},
+			UsefulElement:     shiWX,
+			FavorableElements: []string{shaWX, yinWX},
+			UnfavorableElements: []string{riZhuWuxing},
+			HostileElements:   []string{wuxingRelations.ShengWo[riZhuWuxing]},
 		}
 	}
 	return &XiYongJiChou{
-		YongWuxing: yinWX,
-		XiWuxing:   []string{shaWX},
-		JiWuxing:   []string{shiWX, caiWX(riZhuWuxing)},
-		ChouWuxing: []string{shengWoMap[shiWX]},
+		UsefulElement:     yinWX,
+		FavorableElements: []string{shaWX},
+		UnfavorableElements: []string{shiWX, wuxingRelations.WoKe[riZhuWuxing]},
+		HostileElements:   []string{wuxingRelations.ShengWo[shiWX]},
 	}
-}
-
-func caiWX(riZhuWuxing string) string {
-	return woKeMap[riZhuWuxing]
 }
 
 func geJuYinXingYong(riZhuGan, riZhuWuxing, qiangRuo string, strengths map[string]*WuxingStrength) *XiYongJiChou {
-	yinWX := shengWoMap[riZhuWuxing]
-	guanWX := keWoMap[riZhuWuxing]
+	yinWX := wuxingRelations.ShengWo[riZhuWuxing]
+	guanWX := wuxingRelations.KeWo[riZhuWuxing]
 
 	if qiangRuo == "强" {
 		return &XiYongJiChou{
-			YongWuxing: guanWX,
-			XiWuxing:   []string{caiWX(riZhuWuxing)},
-			JiWuxing:   []string{yinWX, riZhuWuxing},
-			ChouWuxing: []string{shengWoMap[yinWX]},
+			UsefulElement:     guanWX,
+			FavorableElements: []string{wuxingRelations.WoKe[riZhuWuxing]},
+			UnfavorableElements: []string{yinWX, riZhuWuxing},
+			HostileElements:   []string{wuxingRelations.ShengWo[yinWX]},
 		}
 	}
 	return &XiYongJiChou{
-		YongWuxing: yinWX,
-		XiWuxing:   []string{guanWX},
-		JiWuxing:   []string{caiWX(riZhuWuxing), keWoMap[riZhuWuxing]},
-		ChouWuxing: []string{shengWoMap[keWoMap[riZhuWuxing]]},
+		UsefulElement:     yinWX,
+		FavorableElements: []string{guanWX},
+		UnfavorableElements: []string{wuxingRelations.WoKe[riZhuWuxing], wuxingRelations.KeWo[riZhuWuxing]},
+		HostileElements:   []string{wuxingRelations.ShengWo[wuxingRelations.KeWo[riZhuWuxing]]},
 	}
 }
 
 func geJuShiShenYong(riZhuGan, riZhuWuxing, qiangRuo string, strengths map[string]*WuxingStrength) *XiYongJiChou {
-	shiWX := woShengMap[riZhuWuxing]
-	caiWX_ := woKeMap[riZhuWuxing]
+	shiWX := wuxingRelations.WoSheng[riZhuWuxing]
+	caiWX := wuxingRelations.WoKe[riZhuWuxing]
 
 	if qiangRuo == "强" {
 		return &XiYongJiChou{
-			YongWuxing: shiWX,
-			XiWuxing:   []string{caiWX_},
-			JiWuxing:   []string{shengWoMap[riZhuWuxing], riZhuWuxing},
-			ChouWuxing: []string{shengWoMap[shengWoMap[riZhuWuxing]]},
+			UsefulElement:     shiWX,
+			FavorableElements: []string{caiWX},
+			UnfavorableElements: []string{wuxingRelations.ShengWo[riZhuWuxing], riZhuWuxing},
+			HostileElements:   []string{wuxingRelations.ShengWo[wuxingRelations.ShengWo[riZhuWuxing]]},
 		}
 	}
 	return &XiYongJiChou{
-		YongWuxing: riZhuWuxing,
-		XiWuxing:   []string{shengWoMap[riZhuWuxing]},
-		JiWuxing:   []string{shiWX, caiWX_},
-		ChouWuxing: []string{shengWoMap[shiWX]},
+		UsefulElement:     riZhuWuxing,
+		FavorableElements: []string{wuxingRelations.ShengWo[riZhuWuxing]},
+		UnfavorableElements: []string{shiWX, caiWX},
+		HostileElements:   []string{wuxingRelations.ShengWo[shiWX]},
 	}
 }
 
 func geJuShangGuanYong(riZhuGan, riZhuWuxing, qiangRuo string, strengths map[string]*WuxingStrength) *XiYongJiChou {
-	shangWX := woShengMap[riZhuWuxing]
-	yinWX := shengWoMap[riZhuWuxing]
-	caiWX_ := woKeMap[riZhuWuxing]
+	shangWX := wuxingRelations.WoSheng[riZhuWuxing]
+	yinWX := wuxingRelations.ShengWo[riZhuWuxing]
+	caiWX := wuxingRelations.WoKe[riZhuWuxing]
 
 	if qiangRuo == "强" {
 		return &XiYongJiChou{
-			YongWuxing: yinWX,
-			XiWuxing:   []string{shangWX, caiWX_},
-			JiWuxing:   []string{riZhuWuxing, keWoMap[riZhuWuxing]},
-			ChouWuxing: []string{shengWoMap[keWoMap[riZhuWuxing]]},
+			UsefulElement:     yinWX,
+			FavorableElements: []string{shangWX, caiWX},
+			UnfavorableElements: []string{riZhuWuxing, wuxingRelations.KeWo[riZhuWuxing]},
+			HostileElements:   []string{wuxingRelations.ShengWo[wuxingRelations.KeWo[riZhuWuxing]]},
 		}
 	}
 	return &XiYongJiChou{
-		YongWuxing: yinWX,
-		XiWuxing:   []string{shengWoMap[yinWX]},
-		JiWuxing:   []string{shangWX, keWoMap[riZhuWuxing]},
-		ChouWuxing: []string{shengWoMap[keWoMap[riZhuWuxing]]},
+		UsefulElement:     yinWX,
+		FavorableElements: []string{wuxingRelations.ShengWo[yinWX]},
+		UnfavorableElements: []string{shangWX, wuxingRelations.KeWo[riZhuWuxing]},
+		HostileElements:   []string{wuxingRelations.ShengWo[wuxingRelations.KeWo[riZhuWuxing]]},
 	}
 }
 
 func geJuCaiXingYong(riZhuGan, riZhuWuxing, qiangRuo string, strengths map[string]*WuxingStrength) *XiYongJiChou {
-	caiWX_ := woKeMap[riZhuWuxing]
-	shiWX := woShengMap[riZhuWuxing]
-	guanWX := keWoMap[riZhuWuxing]
+	caiWX := wuxingRelations.WoKe[riZhuWuxing]
+	shiWX := wuxingRelations.WoSheng[riZhuWuxing]
+	guanWX := wuxingRelations.KeWo[riZhuWuxing]
 
 	if qiangRuo == "强" {
 		return &XiYongJiChou{
-			YongWuxing: caiWX_,
-			XiWuxing:   []string{shiWX, guanWX},
-			JiWuxing:   []string{riZhuWuxing, shengWoMap[riZhuWuxing]},
-			ChouWuxing: []string{shengWoMap[shengWoMap[riZhuWuxing]]},
+			UsefulElement:     caiWX,
+			FavorableElements: []string{shiWX, guanWX},
+			UnfavorableElements: []string{riZhuWuxing, wuxingRelations.ShengWo[riZhuWuxing]},
+			HostileElements:   []string{wuxingRelations.ShengWo[wuxingRelations.ShengWo[riZhuWuxing]]},
 		}
 	}
 	return &XiYongJiChou{
-		YongWuxing: shengWoMap[riZhuWuxing],
-		XiWuxing:   []string{riZhuWuxing},
-		JiWuxing:   []string{caiWX_, guanWX},
-		ChouWuxing: []string{shengWoMap[caiWX_]},
+		UsefulElement:     wuxingRelations.ShengWo[riZhuWuxing],
+		FavorableElements: []string{riZhuWuxing},
+		UnfavorableElements: []string{caiWX, guanWX},
+		HostileElements:   []string{wuxingRelations.ShengWo[caiWX]},
 	}
 }
 
 func geJuJianLuYangRenYong(riZhuGan, riZhuWuxing, qiangRuo string, strengths map[string]*WuxingStrength) *XiYongJiChou {
-	guanWX := keWoMap[riZhuWuxing]
-	caiWX_ := woKeMap[riZhuWuxing]
-	shiWX := woShengMap[riZhuWuxing]
+	guanWX := wuxingRelations.KeWo[riZhuWuxing]
+	caiWX := wuxingRelations.WoKe[riZhuWuxing]
+	shiWX := wuxingRelations.WoSheng[riZhuWuxing]
 
 	if qiangRuo == "强" {
 		return &XiYongJiChou{
-			YongWuxing: guanWX,
-			XiWuxing:   []string{caiWX_, shiWX},
-			JiWuxing:   []string{riZhuWuxing, shengWoMap[riZhuWuxing]},
-			ChouWuxing: []string{shengWoMap[shengWoMap[riZhuWuxing]]},
+			UsefulElement:     guanWX,
+			FavorableElements: []string{caiWX, shiWX},
+			UnfavorableElements: []string{riZhuWuxing, wuxingRelations.ShengWo[riZhuWuxing]},
+			HostileElements:   []string{wuxingRelations.ShengWo[wuxingRelations.ShengWo[riZhuWuxing]]},
 		}
 	}
 	return &XiYongJiChou{
-		YongWuxing: shengWoMap[riZhuWuxing],
-		XiWuxing:   []string{riZhuWuxing},
-		JiWuxing:   []string{guanWX, caiWX_},
-		ChouWuxing: []string{shengWoMap[guanWX]},
+		UsefulElement:     wuxingRelations.ShengWo[riZhuWuxing],
+		FavorableElements: []string{riZhuWuxing},
+		UnfavorableElements: []string{guanWX, caiWX},
+		HostileElements:   []string{wuxingRelations.ShengWo[guanWX]},
 	}
 }
 
 func generateGeJuAnalysis(riZhuGan, qiangRuo string, geJu *GeJuInfo, xyj *XiYongJiChou) string {
 	return fmt.Sprintf("日主%s，五行%s，格局%s（%s），%s格。用神为%s，喜神为%s，忌神为%s。",
-		riZhuGan, getWuxingOfTianGan(riZhuGan), geJu.Name, geJu.ShiShen, qiangRuo,
-		xyj.YongWuxing, joinStrings(xyj.XiWuxing, "、"), joinStrings(xyj.JiWuxing, "、"))
+		riZhuGan, wuxingOfTianGan(riZhuGan), geJu.Name, geJu.TenGod, qiangRuo,
+		xyj.UsefulElement, joinStrings(xyj.FavorableElements, "、"), joinStrings(xyj.UnfavorableElements, "、"))
 }

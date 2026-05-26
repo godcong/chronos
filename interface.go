@@ -33,7 +33,30 @@ type Solar interface {
 	GetLunar() *calendar.Lunar
 }
 
+type BaziProvider interface {
+	EightChar() EightChar
+	Zodiac() Zodiac
+	YearXunKong() string
+	MonthXunKong() string
+	DayXunKong() string
+	TimeXunKong() string
+}
+
+type JieQiProvider interface {
+	JieQi() string
+	JieQiTable() map[string]*calendar.Solar
+	CurrentJieQi() *calendar.JieQi
+	NextJie() *calendar.JieQi
+	PrevJie() *calendar.JieQi
+	NextQi() *calendar.JieQi
+	PrevQi() *calendar.JieQi
+	SolarTerm() SolarTerm
+	SolarTermDetail() SolarTermDetail
+}
+
 type Lunar interface {
+	BaziProvider
+	JieQiProvider
 	GetGan() string
 	GetYearGan() string
 	GetYearGanByLiChun() string
@@ -63,7 +86,6 @@ type Lunar interface {
 	GetTimeGan() string
 	GetTimeZhi() string
 	GetTimeInGanZhi() string
-	GetZodiac() Zodiac
 	GetYearInChinese() string
 	GetMonthInChinese() string
 	GetDayInChinese() string
@@ -233,6 +255,9 @@ type Lunar interface {
 	GetTimes() []*calendar.LunarTime
 	GetFoto() *calendar.Foto
 	GetTao() *calendar.Tao
+	GetJieQi() string
+	GetJieQiTable() map[string]*calendar.Solar
+	GetZodiac() Zodiac
 }
 
 type ChineseSupport interface {
