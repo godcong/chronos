@@ -145,6 +145,11 @@ go.work
 
 !data/
 
+!.github/
+!.github/workflows/
+!.github/workflows/*.yml
+!.github/dependabot.yml
+
 # !Makefile
 
 # ...even if they are in subdirectories
