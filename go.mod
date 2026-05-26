@@ -1,3 +1,5 @@
-module github.com/godcong/chronos
+module github.com/babyname/chronos/v2
 
-go 1.12
+go 1.18
+
+require github.com/6tail/lunar-go v1.3.0

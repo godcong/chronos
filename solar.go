@@ -1,17 +1,22 @@
 package chronos
 
-import "time"
+import (
+	"time"
 
-// Solar ...
-type Solar struct {
-	time time.Time
+	"github.com/6tail/lunar-go/calendar"
+)
+
+// solar ...
+type solar struct {
+	*calendar.Solar
 }
 
-// NewSolar ...
-func NewSolar(calendar Calendar) *Solar {
-	return calendar.Solar()
+func (s solar) GetConstellation() Constellation {
+	return Constellation(constellations.FindString(s.GetXingZuo()) / 2)
 }
 
-func (s *Solar) Time() time.Time {
-	return s.time
+func ParseSolarByTime(date time.Time) Solar {
+	return &solar{Solar: calendar.NewSolarFromDate(date)}
 }
+
+var _ Solar = &solar{}

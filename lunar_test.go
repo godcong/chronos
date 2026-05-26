@@ -1,118 +1,138 @@
-package chronos_test
+package chronos
 
 import (
-	"fmt"
-	"log"
-	"strconv"
+	"reflect"
 	"testing"
-	"time"
-
-	"github.com/godcong/chronos"
 )
 
-// TestGetSolarTerm ...
-func TestGetSolarTerm(t *testing.T) {
-
-}
-
-// TestYearDays ...
-func TestYearDays(t *testing.T) {
-
-}
-
-// TestGetDayString ...
-func TestGetDayString(t *testing.T) {
-	//log.Println(GetDayString(20))
-	//reader := transform.NewReader(strings.NewReader(, simplifiedchinese.GB18030.NewDecoder())
-	//all, _ := ioutil.ReadAll(reader)
-	fmt.Println(strconv.Itoa(0x97783), strconv.Itoa(0x97bd0), strconv.Itoa(0x97c36), strconv.Itoa(0xb0b6f), strconv.Itoa(0xc9274), strconv.Itoa(0xc91aa))
-}
-
-// TestGetTerm ...
-func TestGetTerm(t *testing.T) {
-	for i := 1; i <= 24; i++ {
-		i := chronos.GetTermInfo(2018, i)
-		log.Println(i)
+func Test_lunar_GetZodiac(t *testing.T) {
+	type fields struct {
+		Lunar Lunar
 	}
-
-}
-
-// TestGetZodiac ...
-func TestGetZodiac(t *testing.T) {
-	t.Log(chronos.GetZodiac(chronos.New("2020/01/24 18:40").Lunar()) == "猪")
-	t.Log(chronos.GetZodiac(chronos.New("2020/01/25 18:40").Lunar()) == "鼠")
-	t.Log(chronos.GetZodiac(chronos.New("2021/02/11 18:40").Lunar()) == "鼠")
-	t.Log(chronos.GetZodiac(chronos.New("2021/02/12 18:40").Lunar()) == "牛")
-}
-
-// TestStemBranchYear ...
-func TestStemBranchYear(t *testing.T) {
-	log.Println(chronos.StemBranchYear(2017))
-
-}
-
-// TestStemBranchMonth ...
-func TestStemBranchMonth(t *testing.T) {
-	log.Println(chronos.StemBranchMonth(2017, 11, 14))
-}
-
-// TestStemBranchDay ...
-func TestStemBranchDay(t *testing.T) {
-	log.Println(chronos.StemBranchDay(2017, 11, 14))
-
-}
-
-// TestStemBranchHour ...
-func TestStemBranchHour(t *testing.T) {
-	log.Print(12, chronos.StemBranchDay(2018, 1, 12), "日")
-	for i := 0; i <= 23; i++ {
-
-		log.Println(i, chronos.StemBranchHour(2019, 11, 2, i))
-
+	tests := []struct {
+		name   string
+		fields fields
+		want   Zodiac
+	}{
+		{
+			name: "",
+			fields: fields{
+				Lunar: NewSolarCalendar(TimeFromYmdHms(2023, 2, 4, 10, 42, 21)).Lunar(),
+			},
+			want: ZodiacRabbit,
+		},
+		{
+			name: "",
+			fields: fields{
+				Lunar: NewSolarCalendar(TimeFromYmdHms(2023, 2, 4, 0, 0, 0)).Lunar(),
+			},
+			want: ZodiacRabbit,
+		},
+		{
+			name: "",
+			fields: fields{
+				Lunar: NewSolarCalendar(TimeFromYmdHms(2023, 2, 3, 10, 42, 20)).Lunar(),
+			},
+			want: ZodiacTiger,
+		},
 	}
-	log.Print(13, chronos.StemBranchHour(2018, 1, 13, 8), "日")
-	log.Print(14, chronos.StemBranchDay(2017, 11, 14), "日")
-	log.Println(8, chronos.StemBranchHour(2017, 11, 14, 8))
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			l := tt.fields.Lunar
+			if got := l.GetZodiac(); got != tt.want {
+				t.Errorf("GetZodiac() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }
 
-// TestNewLunar ...
-func TestNewLunar(t *testing.T) {
-	log.Print(chronos.New().Lunar().Date())
+func Test_lunar_GetSolarTerm(t *testing.T) {
+	type fields struct {
+		Lunar Lunar
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   SolarTerm
+	}{
+		{
+			name: "",
+			fields: fields{
+				Lunar: NewSolarCalendar(TimeFromYmd(2023, 2, 4)).Lunar(),
+			},
+			want: 2,
+		},
+		{
+			name: "",
+			fields: fields{
+				Lunar: NewSolarCalendar(TimeFromYmd(2023, 2, 5)).Lunar(),
+			},
+			want: 24,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			l := tt.fields.Lunar
+			if got := l.GetSolarTerm(); got != tt.want {
+				t.Errorf("GetSolarTerm() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }
 
-// TestCalculateLunar ...
-func TestCalculateLunar(t *testing.T) {
-	//log.Print("now: ", chronos.Solar2Lunar(time.Parse()))
-	//检查日柱是否正确
-	log.Print(chronos.New("2019/10/31 23:13").Lunar().EightCharacter())
-	log.Print(chronos.New("2019/11/01 0:13").Lunar().EightCharacter())
-	log.Print(chronos.New("2019/11/01 1:13").Lunar().EightCharacter())
-
-	//检查立春是否有效
-	log.Print(chronos.New("2020/02/03 23:13").Lunar().EightCharacter())
-	log.Print(chronos.New("2020/02/04 1:13").Lunar().EightCharacter())
-	log.Print(chronos.New("2020/02/04 18:13").Lunar().EightCharacter())
-
-	log.Print(chronos.New("2020/01/24 0:40").LunarDate())
-
-	log.Print(chronos.New("2020/01/25 0:40").LunarDate())
-	log.Print(chronos.New(time.Now()).LunarDate())
-
-	log.Print(chronos.New("1989/01/07 18:40").Lunar().EightCharacter())
-
-	//output:戊辰年十一月三十日
-	log.Print(chronos.New("1989/01/07 18:40").LunarDate())
-	log.Print(chronos.New("1989/01/07 0:40").LunarDate())
-
-	log.Print(chronos.New("2019/06/01 0:40").LunarDate())
-
-}
-
-func TestLunar_EightCharacter(t *testing.T) {
-	//output 己 亥 甲 戌 庚 子 丁 丑
-	log.Println(chronos.New("2019/10/30 01:30").Lunar().EightCharacter())
-	//output 己 亥 甲 戌 庚 子 丙 子
-	log.Println(chronos.New("2019/10/30 23:00").Lunar().EightCharacter())
-	log.Println(chronos.New("2019/10/31 00:30").Lunar().EightCharacter())
-
+func Test_lunar_GetEightChar(t *testing.T) {
+	type fields struct {
+		Lunar Lunar
+	}
+	tests := []struct {
+		name            string
+		fields          fields
+		want            [4]string
+		wantWuXing      [4]string
+		wantNayin       [4]string
+		wantShiShengGan [4]string
+		wantShiShengZhi [4][]string
+		wantCangGan     [4][]string
+		wantDaYun       []int
+	}{
+		{
+			name: "",
+			fields: fields{
+				Lunar: NewSolarCalendar(TimeFromYmdHms(2023, 2, 5, 12, 0, 0)).Lunar(),
+			},
+			want:            [4]string{"癸卯", "甲寅", "甲午", "庚午"},
+			wantWuXing:      [4]string{"水木", "木木", "木火", "金火"},
+			wantNayin:       [4]string{"金箔金", "大溪水", "沙中金", "路旁土"},
+			wantShiShengGan: [4]string{"正印", "比肩", "日主", "七杀"}, //偏官(七杀)
+			wantShiShengZhi: [4][]string{{"劫财"}, {"比肩", "食神", "偏财"}, {"伤官", "正财"}, {"伤官", "正财"}},
+			wantCangGan:     [4][]string{{"乙"}, {"甲", "丙", "戊"}, {"丁", "己"}, {"丁", "己"}},
+			wantDaYun:       []int{2023, 2033, 2043, 2053, 2063, 2073, 2083, 2093, 2103, 2113},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			l := tt.fields.Lunar
+			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetSiZhu(), tt.want) {
+				t.Errorf("GetSiZhu() = %v, want %v", got.GetSiZhu(), tt.want)
+			}
+			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetNaYin(), tt.wantNayin) {
+				t.Errorf("GetNaYin() = %v, want %v", got.GetNaYin(), tt.wantNayin)
+			}
+			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetWuXing(), tt.wantWuXing) {
+				t.Errorf("GetWuXing() = %v, want %v", got.GetWuXing(), tt.wantWuXing)
+			}
+			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetShiShenGan(), tt.wantShiShengGan) {
+				t.Errorf("GetShiShenGan() = %v, want %v", got.GetShiShenGan(), tt.wantShiShengGan)
+			}
+			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetShiShenZhi(), tt.wantShiShengZhi) {
+				t.Errorf("GetShiShenZhi() = %v, want %v", got.GetShiShenZhi(), tt.wantShiShengZhi)
+			}
+			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetCangGan(), tt.wantCangGan) {
+				t.Errorf("GetCangGan() = %v, want %v", got.GetCangGan(), tt.wantCangGan)
+			}
+			if got := l.GetEightChar(); !reflect.DeepEqual(got.GetDaYun(1), tt.wantDaYun) {
+				t.Errorf("GetDaYun() = %v, want %v", got.GetDaYun(1), tt.wantDaYun)
+			}
+		})
+	}
 }
