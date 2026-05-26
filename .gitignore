@@ -143,6 +143,8 @@ go.work
 !README.md
 !LICENSE
 
+!data/
+
 # !Makefile
 
 # ...even if they are in subdirectories
