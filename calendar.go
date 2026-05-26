@@ -7,6 +7,8 @@ package chronos
 import (
 	"fmt"
 	"time"
+
+	"github.com/6tail/lunar-go/calendar"
 )
 
 const minYear = 1900
@@ -124,6 +126,25 @@ func ParseSolarNow() Calendar {
 // @return Calendar
 func ParseSolarTime(t time.Time) Calendar {
 	return parseTime(t.In(loc)).initialize()
+}
+
+func ParseLunarDate(year, month, day, hour, minute, second int, isLeapMonth ...bool) Calendar {
+	if err := checkYearSupport(year); err != nil {
+		return nil
+	}
+	var l *calendar.Lunar
+	if len(isLeapMonth) > 0 && isLeapMonth[0] {
+		l = calendar.NewLunar(year, -month, day, hour, minute, second)
+	} else {
+		l = calendar.NewLunar(year, month, day, hour, minute, second)
+	}
+	solar := l.GetSolar()
+	t := time.Date(solar.GetYear(), time.Month(solar.GetMonth()), solar.GetDay(), solar.GetHour(), solar.GetMinute(), solar.GetSecond(), 0, loc)
+	return parseTime(t).initialize()
+}
+
+func ParseLunarYmd(year, month, day int, isLeapMonth ...bool) Calendar {
+	return ParseLunarDate(year, month, day, 0, 0, 0, isLeapMonth...)
 }
 
 func TimeFromY(y int) time.Time {
