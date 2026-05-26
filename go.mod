@@ -1,4 +1,4 @@
-module github.com/babyname/chronos/v2
+module github.com/godcong/chronos/v2
 
 go 1.18
 

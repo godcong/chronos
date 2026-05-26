@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"time"
 
-	"github.com/babyname/chronos/v2/runes"
+	"github.com/godcong/chronos/v2/runes"
 )
 
 //go:embed data/DataSolarTerm
