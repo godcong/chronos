@@ -70,10 +70,7 @@ func parseTime(t time.Time) *calendarTime {
 	return c
 }
 
-// ParseTime parse time.Time to Calendar
-// @param time.Time
-// @param *time.Location
-// @return Calendar
+// ParseTime creates a Calendar from a time.Time value.
 func ParseTime(t time.Time) Calendar {
 	return parseTime(t).initialize()
 }

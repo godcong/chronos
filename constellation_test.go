@@ -6,35 +6,20 @@ import (
 )
 
 func TestConstellationChinese(t *testing.T) {
-	type args struct {
-		c Constellation
-	}
 	tests := []struct {
-		name    string
-		args    args
-		want    string
-		wantErr bool
+		c    Constellation
+		want string
 	}{
-		{
-			name: "",
-			args: args{
-				c: 0,
-			},
-			want:    "摩羯",
-			wantErr: false,
-		},
+		{0, "摩羯"},
+		{1, "水瓶"},
+		{11, "射手"},
+		{12, ""},
 	}
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := ConstellationChinese(tt.args.c)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("ConstellationChinese() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if got != tt.want {
-				t.Errorf("ConstellationChinese() got = %v, want %v", got, tt.want)
-			}
-		})
+		got := tt.c.Chinese()
+		if got != tt.want {
+			t.Errorf("Constellation(%d).Chinese() = %s, want %s", tt.c, got, tt.want)
+		}
 	}
 }
 
@@ -48,134 +33,22 @@ func Test_getConstellation2(t *testing.T) {
 		args args
 		want string
 	}{
-		{
-			name: "",
-			args: args{
-				month: 1,
-				day:   19,
-			},
-			want: "摩羯",
-		},
-		{
-			name: "",
-			args: args{
-				month: 1,
-				day:   20,
-			},
-			want: "水瓶",
-		},
-		{
-			name: "",
-			args: args{
-				month: 2,
-				day:   18,
-			},
-			want: "水瓶",
-		},
-		{
-			name: "",
-			args: args{
-				month: 2,
-				day:   19,
-			},
-			want: "双鱼",
-		},
-		{
-			name: "",
-			args: args{
-				month: 3,
-				day:   20,
-			},
-			want: "双鱼",
-		},
-		{
-			name: "",
-			args: args{
-				month: 3,
-				day:   21,
-			},
-			want: "白羊",
-		},
-		{
-			name: "",
-			args: args{
-				month: 4,
-				day:   19,
-			},
-			want: "白羊",
-		},
-		{
-			name: "",
-			args: args{
-				month: 4,
-				day:   20,
-			},
-			want: "金牛",
-		},
-		{
-			name: "",
-			args: args{
-				month: 5,
-				day:   19,
-			},
-			want: "金牛",
-		},
-		{
-			name: "",
-			args: args{
-				month: 5,
-				day:   21,
-			},
-			want: "双子",
-		},
-		{
-			name: "",
-			args: args{
-				month: 10,
-				day:   23,
-			},
-			want: "天秤",
-		},
-		{
-			name: "",
-			args: args{
-				month: 10,
-				day:   24,
-			},
-			want: "天蝎",
-		},
-		{
-			name: "",
-			args: args{
-				month: 11,
-				day:   22,
-			},
-			want: "天蝎",
-		},
-		{
-			name: "",
-			args: args{
-				month: 11,
-				day:   23,
-			},
-			want: "射手",
-		},
-		{
-			name: "",
-			args: args{
-				month: 12,
-				day:   21,
-			},
-			want: "射手",
-		},
-		{
-			name: "",
-			args: args{
-				month: 12,
-				day:   22,
-			},
-			want: "摩羯",
-		},
+		{"", args{1, 19}, "摩羯"},
+		{"", args{1, 20}, "水瓶"},
+		{"", args{2, 18}, "水瓶"},
+		{"", args{2, 19}, "双鱼"},
+		{"", args{3, 20}, "双鱼"},
+		{"", args{3, 21}, "白羊"},
+		{"", args{4, 19}, "白羊"},
+		{"", args{4, 20}, "金牛"},
+		{"", args{5, 19}, "金牛"},
+		{"", args{5, 21}, "双子"},
+		{"", args{10, 23}, "天秤"},
+		{"", args{10, 24}, "天蝎"},
+		{"", args{11, 22}, "天蝎"},
+		{"", args{11, 23}, "射手"},
+		{"", args{12, 21}, "射手"},
+		{"", args{12, 22}, "摩羯"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

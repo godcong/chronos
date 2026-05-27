@@ -15,9 +15,7 @@ const minYear = 1900
 const maxYear = 3000
 
 const (
-	// DateFormatYMD ...
-	DateFormatYMD = "2006/01/02"
-	// DateFormatYMDHMS ...
+	DateFormatYMD   = "2006/01/02"
 	DateFormatYMDHMS = "2006/01/02 15:04:05"
 )
 
@@ -45,12 +43,10 @@ func (c *calendarTime) LocalTime() time.Time {
 	return c.time
 }
 
-// Lunar ...
 func (c *calendarTime) Lunar() Lunar {
 	return c.lunar
 }
 
-// Solar ...
 func (c *calendarTime) Solar() Solar {
 	return c.solar
 }
@@ -61,10 +57,11 @@ func (c *calendarTime) initialize() *calendarTime {
 	return c
 }
 
-// NewSolarCalendar can input three type of time to create the calendarTime
-// "2006/01/02 03:04" format string
-// time.Time value
-// or nil to create a new time.Now() value
+// NewSolarCalendar creates a Calendar from various input types (time.Time, int
+// year, or date string). It is kept for backward compatibility; prefer the
+// explicit ParseSolarTime, ParseSolarDate, or ParseSolarString functions.
+//
+// Deprecated: Use ParseSolarTime, ParseSolarDate, or ParseSolarString instead.
 func NewSolarCalendar(v ...any) Calendar {
 	var c *calendarTime
 	if len(v) == 0 {
@@ -89,40 +86,31 @@ func NewSolarCalendar(v ...any) Calendar {
 	return c.initialize()
 }
 
-// ParseSolarString returns Calendar parse from string(value,format?)
-// @param string
-// @param ...string
-// @return Calendar
+// ParseSolarString creates a Calendar by parsing a date string with an optional
+// format (defaults to DateFormatYMDHMS).
 func ParseSolarString(s string, format ...string) Calendar {
 	return parseStringDateFormat(s, format...).initialize()
 }
 
-// ParseSolarDate returns Calendar parse from date(year, month, day, hour, minute, second)
-// @param int
-// @param int
-// @param int
-// @param int
-// @param int
-// @param int
-// @return Calendar
+// ParseSolarDate creates a Calendar from individual year, month, day, hour,
+// minute, second components.
 func ParseSolarDate(year, month, day, hour, minute, second int) Calendar {
 	date := time.Date(year, time.Month(month), day, hour, minute, second, 0, loc)
 	return parseTime(date).initialize()
 }
 
-// ParseSolarNow returns Calendar parse from solar time now(time.Now())
-// @return Calendar
+// ParseSolarNow creates a Calendar from the current local time.
 func ParseSolarNow() Calendar {
 	return parseTime(localTime()).initialize()
 }
 
-// ParseSolarTime returns Calendar parse from solar time
-// @param time.Time
-// @return Calendar
+// ParseSolarTime creates a Calendar from a solar (Gregorian) time.Time value.
 func ParseSolarTime(t time.Time) Calendar {
 	return parseTime(t.In(loc)).initialize()
 }
 
+// ParseLunarDate creates a Calendar from a lunar date, with optional leap month
+// support. Pass isLeapMonth=true to indicate the month is a leap month.
 func ParseLunarDate(year, month, day, hour, minute, second int, isLeapMonth ...bool) Calendar {
 	if err := checkYearSupport(year); err != nil {
 		return nil

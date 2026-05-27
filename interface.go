@@ -1,23 +1,24 @@
 package chronos
 
 import (
-	"container/list"
-
 	"github.com/6tail/lunar-go/calendar"
 )
 
+// Calendar is the root interface for accessing both Solar and Lunar calendar
+// data from a single date.
 type Calendar interface {
 	Lunar() Lunar
 	Solar() Solar
 }
 
+// Solar provides Solar (Gregorian) calendar data and derived calculations.
 type Solar interface {
 	IsLeapYear() bool
 	GetWeek() int
 	GetWeekInChinese() string
 	GetConstellation() Constellation
-	GetFestivals() *list.List
-	GetOtherFestivals() *list.List
+	GetFestivals() []string
+	GetOtherFestivals() []string
 	GetYear() int
 	GetMonth() int
 	GetDay() int
@@ -33,6 +34,7 @@ type Solar interface {
 	GetLunar() *calendar.Lunar
 }
 
+// BaziProvider provides the core data needed for BaZi (八字) analysis.
 type BaziProvider interface {
 	EightChar() EightChar
 	Zodiac() Zodiac
@@ -42,6 +44,7 @@ type BaziProvider interface {
 	TimeXunKong() string
 }
 
+// JieQiProvider provides Solar Term (节气) data and navigation.
 type JieQiProvider interface {
 	JieQi() string
 	JieQiTable() map[string]*calendar.Solar
@@ -54,6 +57,8 @@ type JieQiProvider interface {
 	SolarTermDetail() SolarTermDetail
 }
 
+// Lunar provides comprehensive Lunar calendar data including Eight Characters,
+// Zodiac, Solar Terms, and various traditional Chinese calendar attributes.
 type Lunar interface {
 	BaziProvider
 	JieQiProvider
@@ -101,8 +106,8 @@ type Lunar interface {
 	GetAnimal() string
 	GetGong() string
 	GetShou() string
-	GetFestivals() *list.List
-	GetOtherFestivals() *list.List
+	GetFestivals() []string
+	GetOtherFestivals() []string
 	GetPengZuGan() string
 	GetPengZuZhi() string
 	GetPositionXi() string
@@ -183,14 +188,14 @@ type Lunar interface {
 	GetTimeChongDesc() string
 	GetSolarTerm() SolarTerm
 	GetSolarTermDetail() SolarTermDetail
-	GetDayYi() *list.List
-	GetDayYiBySect(sect int) *list.List
-	GetDayJi() *list.List
-	GetDayJiBySect(sect int) *list.List
-	GetDayJiShen() *list.List
-	GetDayXiongSha() *list.List
-	GetTimeYi() *list.List
-	GetTimeJi() *list.List
+	GetDayYi() []string
+	GetDayYiBySect(sect int) []string
+	GetDayJi() []string
+	GetDayJiBySect(sect int) []string
+	GetDayJiShen() []string
+	GetDayXiongSha() []string
+	GetTimeYi() []string
+	GetTimeJi() []string
 	GetYueXiang() string
 	GetYearNineStarBySect(sect int) *calendar.NineStar
 	GetYearNineStar() *calendar.NineStar
@@ -260,17 +265,32 @@ type Lunar interface {
 	GetZodiac() Zodiac
 }
 
+// BaziLunar combines BaziProvider with additional Lunar data accessors needed
+// for BaZi analysis.
+type BaziLunar interface {
+	BaziProvider
+	GetEightChar() EightChar
+	GetZodiac() Zodiac
+	GetJieQiTable() map[string]*calendar.Solar
+	GetSolar() *calendar.Solar
+	String() string
+}
+
+// ChineseSupport is implemented by types that can return their Chinese string
+// representation.
 type ChineseSupport interface {
 	Chinese() string
 }
 
+// EightChar provides access to the Eight Characters (八字) of a birth chart,
+// including the Four Pillars, Five Elements, NaYin, Ten Gods, and Hidden Stems.
 type EightChar interface {
 	String() string
-	GetWuXing() [4]string
-	GetNaYin() [4]string
-	GetSiZhu() [4]string
-	GetShiShenGan() [4]string
-	GetShiShenZhi() [4][]string
-	GetCangGan() [4][]string
-	GetDaYun(sex int) []int
+	FourPillars() [4]string
+	FiveElements() [4]string
+	NaYin() [4]string
+	TenGodsStems() [4]string
+	TenGodsBranches() [4][]string
+	HiddenStems() [4][]string
+	DaYun(sex int) []int
 }

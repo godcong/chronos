@@ -5,13 +5,20 @@ import (
 	"time"
 
 	"github.com/6tail/lunar-go/calendar"
-
-	"github.com/godcong/chronos/v2/runes"
 )
+
+// SolarTerm represents one of the twenty-four Solar Terms (节气) in the Chinese
+// calendar.
+type SolarTerm int
 
 const defaultSolarTerm = "节气"
 
-var solarTerms = runes.Runes("小寒大寒立春雨水惊蛰春分清明谷雨立夏小满芒种夏至小暑大暑立秋处暑白露秋分寒露霜降立冬小雪大雪冬至")
+var solarTermChinese = [...]string{
+	"小寒", "大寒", "立春", "雨水", "惊蛰", "春分",
+	"清明", "谷雨", "立夏", "小满", "芒种", "夏至",
+	"小暑", "大暑", "立秋", "处暑", "白露", "秋分",
+	"寒露", "霜降", "立冬", "小雪", "大雪", "冬至",
+}
 
 var jieQiNames = [24]string{
 	"冬至", "小寒", "大寒", "立春", "雨水", "惊蛰",
@@ -20,10 +27,25 @@ var jieQiNames = [24]string{
 	"秋分", "寒露", "霜降", "立冬", "小雪", "大雪",
 }
 
+var solarTermChineseMap = map[string]SolarTerm{
+	"小寒": SolarTermXiaoHan, "大寒": SolarTermDaHan,
+	"立春": SolarTermLiChun, "雨水": SolarTermYuShui,
+	"惊蛰": SolarTermJingZhe, "春分": SolarTermChunFen,
+	"清明": SolarTermQingMing, "谷雨": SolarTermGuYu,
+	"立夏": SolarTermLiXia, "小满": SolarTermXiaoMan,
+	"芒种": SolarTermMangZhong, "夏至": SolarTermXiaZhi,
+	"小暑": SolarTermXiaoShu, "大暑": SolarTermDaShu,
+	"立秋": SolarTermLiQiu, "处暑": SolarTermChuShu,
+	"白露": SolarTermBaiLu, "秋分": SolarTermQiuFen,
+	"寒露": SolarTermHanLu, "霜降": SolarTermShuangJiang,
+	"立冬": SolarTermLiDong, "小雪": SolarTermXiaoXue,
+	"大雪": SolarTermDaXue, "冬至": SolarTermDongZhi,
+}
+
 var solarTermCache sync.Map
 
-type SolarTerm uint32
-
+// SolarTermDetail holds detailed information about a solar term occurrence,
+// including its index, date/time, three pentads (三候), and explanation.
 type SolarTermDetail struct {
 	Index       int       `json:"index"`
 	SolarTerm   SolarTerm `json:"solar_term"`
@@ -32,12 +54,11 @@ type SolarTermDetail struct {
 	Explanation string    `json:"explanation"`
 }
 
-func (x SolarTerm) index() int {
-	return int(x * 2)
-}
-
 func (x SolarTerm) Chinese() string {
-	return SolarTermChineseV2(x)
+	if x < 0 || x >= 24 {
+		return ""
+	}
+	return solarTermChinese[x]
 }
 
 func (x SolarTerm) SanHou() string {
@@ -63,6 +84,8 @@ func (x SolarTerm) GetYearDate(year int) (month time.Month, day int) {
 	return
 }
 
+// YearSolarTermDetail returns detailed information about a solar term in the
+// specified year, including its date, three pentads (三候), and explanation.
 func YearSolarTermDetail(t time.Time, st SolarTerm) (SolarTermDetail, error) {
 	if st >= 24 {
 		return SolarTermDetail{}, ErrWrongSolarTermFormat
@@ -98,6 +121,8 @@ func afterYearLiChunTime(t time.Time) bool {
 	return getYearSolarTermTime(t.Year(), SolarTermLiChun).Sub(t) <= 0
 }
 
+// CheckSolarTermDay checks whether the given date falls on a solar term day,
+// returning the SolarTerm if it does.
 func CheckSolarTermDay(t time.Time) (SolarTerm, bool) {
 	if err := checkYearSupport(t.Year()); err != nil {
 		return SolarTermMax, false
@@ -121,16 +146,11 @@ func getYearSolarTermTimeStr(year int, st SolarTerm) string {
 	return getYearSolarTermTime(year, st).Format(DateFormatYMDHMS)
 }
 
-func SolarTermChineseV2(st SolarTerm) string {
-	return solarTerms.MustReadString(st.index(), 2)
-}
-
-func SolarTermChinese(st SolarTerm) (string, error) {
-	readString, err := solarTerms.ReadString(st.index(), 2)
-	if err != nil {
-		return "", ErrWrongSolarTermIndex
+func solarTermFromChinese(s string) SolarTerm {
+	if st, ok := solarTermChineseMap[s]; ok {
+		return st
 	}
-	return readString, nil
+	return SolarTermMax
 }
 
 func solarTermToSolar(year int, st SolarTerm) *solar {

@@ -6,10 +6,7 @@ import (
 
 const Day = 24
 
-// BetweenTime returns the time.Duration between two times
-// @param time.Time
-// @param time.Time
-// @return time.Duration
+// BetweenTime returns the duration between two times.
 func BetweenTime(d1, d2 time.Time) time.Duration {
 	return d1.Sub(d2)
 }

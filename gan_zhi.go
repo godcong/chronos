@@ -3,46 +3,37 @@ package chronos
 import (
 	"time"
 
-	"github.com/godcong/chronos/v2/runes"
 	"github.com/godcong/chronos/v2/utils"
 )
 
 const defaultTianGan = "天干"
 const defaultDiZhi = "地支"
 
-// TianGan
-// ENUM(Jia , Yi , Bing , Ding , Wu , Ji , Geng , Xin , Ren , Gui , Max)
+// TianGan represents one of the ten Heavenly Stems (天干): 甲乙丙丁戊己庚辛壬癸.
 type TianGan uint32
 
-// DiZhi
-// ENUM(Zi , Chou , Yin , Mao , Chen , Si , Wu , Wei , Shen , You , Xu , Hai , Max)
+// DiZhi represents one of the twelve Earthly Branches (地支): 子丑寅卯辰巳午未申酉戌亥.
 type DiZhi uint32
 
-// GanZhi returns the GanZhi enum
-// ENUM(JiaZi,YiChou,BingYin,DingMao,WuChen,JiSi,GengWu,XinWei,RenShen,GuiYou,JiaXu,YiHai,
-// BingZi,DingChou,WuYin,JiMao,GengChen,XinSi,RenWu,GuiWei,JiaShen,YiYou,BingXu,DingHai,
-// WuZi,JiChou,GengYin,XinMao,RenChen,GuiSi,JiaWu,YiWei,BingShen,DingYou,WuXu,JiHai,
-// GengZi,XinChou,RenYin,GuiMao,JiaChen,YiSi,BingWu,DingWei,WuShen,JiYou,GengXu,XinHai,
-// RenZi,GuiChou,JiaYin,YiMao,BingChen,DingSi,WuWu,JiWei,GengShen,XinYou,RenXu,GuiHai,Max)
+// GanZhi represents one of the sixty Stem-Branch combinations (干支) in the
+// sexagenary cycle.
 type GanZhi uint32
-
-// StemBranch is an alias name for GanZhi
+// StemBranch is an alias for GanZhi, representing a Stem-Branch combination.
 type StemBranch = GanZhi
 
-var (
-	_TianGanTable  = runes.Runes(`甲乙丙丁戊己庚辛壬癸`)
-	_DiZhiTable    = runes.Runes(`子丑寅卯辰巳午未申酉戌亥`)
-	_TianGanWuXing = runes.Runes("木木火火土土金金水水")
-	_DiZhiWuXing   = runes.Runes("水土木木土火火土金金土水")
-	_GanZhiTable   = runes.Runes(
-		"甲子乙丑丙寅丁卯戊辰己巳庚午辛未壬申癸酉甲戌乙亥" +
-			"丙子丁丑戊寅己卯庚辰辛巳壬午癸未甲申乙酉丙戌丁亥" +
-			"戊子己丑庚寅辛卯壬辰癸巳甲午乙未丙申丁酉戊戌己亥" +
-			"庚子辛丑壬寅癸卯甲辰乙巳丙午丁未戊申己酉庚戌辛亥" +
-			"壬子癸丑甲寅乙卯丙辰丁巳戊午己未庚申辛酉壬戌癸亥")
-)
+var tianGanChinese = [...]string{"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"}
 
-// 天干强度表
+var diZhiChinese = [...]string{"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"}
+
+var ganZhiChinese = [...]string{
+	"甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉",
+	"甲戌", "乙亥", "丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未",
+	"甲申", "乙酉", "丙戌", "丁亥", "戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳",
+	"甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥", "庚子", "辛丑", "壬寅", "癸卯",
+	"甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥", "壬子", "癸丑",
+	"甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥",
+}
+
 var _TianGan = [][]int{
 	{1200, 1200, 1000, 1000, 1000, 1000, 1000, 1000, 1200, 1200},
 	{1060, 1060, 1000, 1000, 1100, 1100, 1140, 1140, 1100, 1100},
@@ -58,7 +49,6 @@ var _TianGan = [][]int{
 	{1200, 1200, 1000, 1000, 1000, 1000, 1000, 1000, 1140, 1140},
 }
 
-// 地支强度表
 var _DiZhi = []map[string][]int{
 	{
 		"癸": {1200, 1100, 1000, 1000, 1040, 1060, 1000, 1000, 1200, 1200, 1060, 1140},
@@ -100,30 +90,31 @@ var _DiZhi = []map[string][]int{
 }
 
 var (
-	// PillarHour is an alias name of ShiZhu
-	PillarHour = ShiZhu
-	// PillarDay is an alias name of RiZhu
-	PillarDay = RiZhu
-	// PillarMonty is an alias name of YueZhu
+	PillarHour  = ShiZhu
+	PillarDay   = RiZhu
 	PillarMonth = YueZhu
-	// PillarYear is an alias name of NianZhu
-	PillarYear = NianZhu
+	PillarYear  = NianZhu
 )
 
 func (x TianGan) Chinese() string {
-	return TianGanChineseV2(x)
+	if x >= TianGanMax {
+		return ""
+	}
+	return tianGanChinese[x]
 }
 
 func (x DiZhi) Chinese() string {
-	return DiZhiChineseV2(x)
+	if x >= DiZhiMax {
+		return ""
+	}
+	return diZhiChinese[x]
 }
 
 func (x GanZhi) Chinese() string {
-	return GanZhiChineseV2(x)
-}
-
-func (x GanZhi) index() int {
-	return int(x * 2)
+	if x >= GanZhiMax {
+		return ""
+	}
+	return ganZhiChinese[x]
 }
 
 func nianZhu(year int) GanZhi {
@@ -134,7 +125,7 @@ func nianZhuChinese(year int) string {
 	return nianZhu(year).Chinese()
 }
 
-func ganZhiChinese(gz int) string {
+func ganZhiStr(gz int) string {
 	return getTianGan(gz).Chinese() + getDiZhi(gz).Chinese()
 }
 
@@ -158,10 +149,6 @@ func splitGanZhi(gz GanZhi) (TianGan, DiZhi) {
 	return TianGan(gz % 10), DiZhi(gz % 12)
 }
 
-// parseGanZhiV2
-// @param TianGan
-// @param DiZhi
-// @return GanZhi
 func parseGanZhiV2(tiangan TianGan, dizhi DiZhi) GanZhi {
 	if tiangan >= TianGanMax || dizhi >= DiZhiMax {
 		return GanZhiMax
@@ -169,11 +156,6 @@ func parseGanZhiV2(tiangan TianGan, dizhi DiZhi) GanZhi {
 	return _TianGanDiZhiGanZhiTable[tiangan][dizhi]
 }
 
-// parseGanZhi
-// @param TianGan
-// @param DiZhi
-// @return GanZhi
-// decrypted use parseGanZhiV2
 func parseGanZhi(tiangan TianGan, dizhi DiZhi) GanZhi {
 	gz := int(tiangan)*6 - int(dizhi)*5
 	if gz < 0 {
@@ -183,92 +165,7 @@ func parseGanZhi(tiangan TianGan, dizhi DiZhi) GanZhi {
 	return GanZhi(gz)
 }
 
-// YearGanZhiChinese returns the year of the chinese GanZhi string
-// @param int
-// @return string
-// @return error
-func YearGanZhiChinese(t time.Time) (string, error) {
-	tgc, err := TianGanChinese(TianGan((t.Year() - 4) % 10))
-	if err != nil {
-		return "", err
-	}
-	dzc, err := DiZhiChinese(DiZhi((t.Year() - 4) % 12))
-	if err != nil {
-		return "", err
-	}
-	return tgc + dzc, nil
-}
-
-// TianGanChineseV2 returns the chinese TianGan string
-// @param TianGan
-// @return string
-func TianGanChineseV2(tiangan TianGan) string {
-	return _TianGanTable.MustReadString(int(tiangan), 1)
-}
-
-// TianGanChinese returns the chinese TianGan string
-// @param TianGan
-// @return string
-// @return error
-func TianGanChinese(tiangan TianGan) (string, error) {
-	readString, err := _TianGanTable.ReadString(int(tiangan), 1)
-	if err != nil {
-		return "", ErrWrongTianGanTypes
-	}
-	return readString, nil
-}
-
-// DiZhiChineseV2 returns the chinese DiZhi string
-// @param DiZhi
-// @return string
-func DiZhiChineseV2(dizhi DiZhi) string {
-	return _DiZhiTable.MustReadString(int(dizhi), 1)
-}
-
-// DiZhiChinese returns the chinese DiZhi string
-// @param DiZhi
-// @return string
-// @return error
-func DiZhiChinese(dizhi DiZhi) (string, error) {
-	readString, err := _DiZhiTable.ReadString(int(dizhi), 1)
-	if err != nil {
-		return "", ErrWrongDiZhiTypes
-	}
-	return readString, nil
-}
-
-// GanZhiChineseV2 returns the chinese GanZhi string
-// @param GanZhi
-// @return string
-func GanZhiChineseV2(ganzhi GanZhi) string {
-	return _GanZhiTable.MustReadString(ganzhi.index(), 2)
-}
-
-// GanZhiChinese returns the chinese GanZhi string
-// @param GanZhi
-// @return string
-// @return error
-func GanZhiChinese(ganzhi GanZhi) (string, error) {
-	readString, err := _GanZhiTable.ReadString(ganzhi.index(), 2)
-	if err != nil {
-		return "", ErrWrongGanZhiTypes
-	}
-	return readString, nil
-}
-
-// ShiZhu returns a GanZhi of hour
-// @param time.Time
-// @return GanZhi
-// @descriptions
-// 子 　　丑 　　寅 　　卯 　　辰 　　己
-// 23-01：01-03：03-05 :05-07：07-09：09-11
-// 午 　　未 　　申 　　酉 　　戊 　　亥
-// 11-13：13-15：15-17：17-19：19-21：21-23
-// `甲子`, `乙丑`, `丙寅`, `丁卯`, `戊辰`, `己巳`, `庚午`, `辛未`, `壬申`, `癸酉`, `甲戌`, `乙亥`, //甲或己日
-// `丙子`, `丁丑`, `戊寅`, `己卯`, `庚辰`, `辛巳`, `壬午`, `癸未`, `甲申`, `乙酉`, `丙戌`, `丁亥`, //乙或庚日
-// `戊子`, `己丑`, `庚寅`, `辛卯`, `壬辰`, `癸巳`, `甲午`, `乙未`, `丙申`, `丁酉`, `戊戌`, `己亥`, //丙或辛日
-// `庚子`, `辛丑`, `壬寅`, `癸卯`, `甲辰`, `乙巳`, `丙午`, `丁未`, `戊申`, `己酉`, `庚戌`, `辛亥`, //丁或壬日
-// `壬子`, `癸丑`, `甲寅`, `乙卯`, `丙辰`, `丁巳`, `戊午`, `己未`, `庚申`, `辛酉`, `壬戌`, `癸亥`, //戊或癸日
+// ShiZhu returns the Hour Pillar (时柱) for the given time.
 func ShiZhu(t time.Time) GanZhi {
 	return shiZhu(t.Year(), t.Month(), t.Day(), t.Hour())
 }
@@ -283,9 +180,7 @@ func shiZhu(y int, m time.Month, d int, h int) GanZhi {
 	return parseGanZhi(getTianGan(gan), getDiZhi(zhi))
 }
 
-// RiZhu returns a GanZhi of day
-// @param time.Time
-// @return GanZhi
+// RiZhu returns the Day Pillar (日柱) for the given time.
 func RiZhu(t time.Time) GanZhi {
 	return riZhu(t.Date())
 }
@@ -295,17 +190,7 @@ func riZhu(y int, m time.Month, d int) GanZhi {
 	return parseGanZhi(getTianGan(days), getDiZhi(days))
 }
 
-// YueZhuChineseV2 returns the chinese YueZhuChineseV2 string
-// @param time.Time
-// @return string
-func YueZhuChineseV2(t time.Time) string {
-	//月柱 1900年1月小寒以前为 丙子月(60进制12)
-	return yueZhu(t.Date()).Chinese()
-}
-
-// YueZhu returns a GanZhi of month
-// @param time.Time
-// @return GanZhi
+// YueZhu returns the Month Pillar (月柱) for the given time.
 func YueZhu(t time.Time) GanZhi {
 	return yueZhu(t.Date())
 }
@@ -320,18 +205,9 @@ func yueZhu(y int, m time.Month, d int) GanZhi {
 	return GanZhi(gz)
 }
 
-// NianZhu returns a GanZhi of year
-// @param time.Time
-// @return string
+// NianZhu returns the Year Pillar (年柱) for the given time.
 func NianZhu(t time.Time) GanZhi {
 	return nianZhu(t.Year())
-}
-
-// NianZhuChineseV2 returns the chinese NianZhu string
-// @param time.Time
-// @return string
-func NianZhuChineseV2(t time.Time) string {
-	return nianZhuChinese(t.Year())
 }
 
 func yearOffset(y int) int {

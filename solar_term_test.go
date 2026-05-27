@@ -7,115 +7,31 @@ import (
 )
 
 func TestSolarTermChinese(t *testing.T) {
-	type args struct {
-		i SolarTerm
-	}
 	tests := []struct {
-		name    string
-		args    args
-		want    string
-		wantErr bool
+		st       SolarTerm
+		want     string
+		wantEmpty bool
 	}{
-		{
-			name: "",
-			args: args{
-				i: 0,
-			},
-			want:    "小寒",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 1,
-			},
-			want:    "大寒",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 2,
-			},
-			want:    "立春",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 3,
-			},
-			want:    "雨水",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 4,
-			},
-			want:    "惊蛰",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 5,
-			},
-			want:    "春分",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 6,
-			},
-			want:    "清明",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 7,
-			},
-			want:    "谷雨",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 8,
-			},
-			want:    "立夏",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 23,
-			},
-			want:    "冬至",
-			wantErr: false,
-		},
-		{
-			name: "",
-			args: args{
-				i: 24,
-			},
-			want:    "",
-			wantErr: true,
-		},
+		{0, "小寒", false},
+		{1, "大寒", false},
+		{2, "立春", false},
+		{3, "雨水", false},
+		{4, "惊蛰", false},
+		{5, "春分", false},
+		{6, "清明", false},
+		{7, "谷雨", false},
+		{8, "立夏", false},
+		{23, "冬至", false},
+		{24, "", true},
 	}
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := SolarTermChinese(tt.args.i)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("SolarTermChinese() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if got != tt.want {
-				t.Errorf("SolarTermChinese() got = %v, want %v", got, tt.want)
-			}
-		})
+		got := tt.st.Chinese()
+		if (got == "") != tt.wantEmpty {
+			t.Errorf("SolarTerm(%d).Chinese() = %q, wantEmpty %v", tt.st, got, tt.wantEmpty)
+		}
+		if got != tt.want {
+			t.Errorf("SolarTerm(%d).Chinese() = %v, want %v", tt.st, got, tt.want)
+		}
 	}
 }
 
@@ -129,14 +45,7 @@ func Test_getSolarTermTime(t *testing.T) {
 		args args
 		want string
 	}{
-		{
-			name: "",
-			args: args{
-				year: 1900,
-				st:   SolarTermDaHan,
-			},
-			want: "1900-01-20 19:32:25",
-		},
+		{"", args{1900, SolarTermDaHan}, "1900-01-20 19:32:25"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -157,48 +66,9 @@ func TestYearSolarTermDetail(t *testing.T) {
 		args args
 		want SolarTermDetail
 	}{
-		{
-			name: "",
-			args: args{
-				year: TimeFromY(1900),
-				st:   0,
-			},
-			want: SolarTermDetail{
-				Index:       0,
-				SolarTerm:   0,
-				Time:        "1900/01/06 02:03:57",
-				SanHou:      "",
-				Explanation: "",
-			},
-		},
-		{
-			name: "",
-			args: args{
-				year: TimeFromY(1900),
-				st:   SolarTermDaHan,
-			},
-			want: SolarTermDetail{
-				Index:       0,
-				SolarTerm:   0,
-				Time:        "1900/01/20 19:32:25",
-				SanHou:      "",
-				Explanation: "",
-			},
-		},
-		{
-			name: "",
-			args: args{
-				year: TimeFromY(1900),
-				st:   SolarTermLiChun,
-			},
-			want: SolarTermDetail{
-				Index:       0,
-				SolarTerm:   0,
-				Time:        "1900/02/04 13:51:31",
-				SanHou:      "",
-				Explanation: "",
-			},
-		},
+		{"", args{TimeFromY(1900), 0}, SolarTermDetail{Index: 0, SolarTerm: 0, Time: "1900/01/06 02:03:57"}},
+		{"", args{TimeFromY(1900), SolarTermDaHan}, SolarTermDetail{Index: 0, SolarTerm: 0, Time: "1900/01/20 19:32:25"}},
+		{"", args{TimeFromY(1900), SolarTermLiChun}, SolarTermDetail{Index: 0, SolarTerm: 0, Time: "1900/02/04 13:51:31"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -210,54 +80,22 @@ func TestYearSolarTermDetail(t *testing.T) {
 }
 
 func TestIsSolarTermDetailDay(t *testing.T) {
-	type args struct {
-		t time.Time
-	}
 	tests := []struct {
-		name string
-		args args
+		t    time.Time
 		want bool
 	}{
-		{
-			name: "",
-			args: args{
-				t: time.Date(1900, 01, 20, 19, 32, 25, 0, time.Local),
-			},
-			want: true,
-		},
+		{time.Date(1900, 01, 20, 19, 32, 25, 0, time.Local), true},
 	}
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if _, got := CheckSolarTermDay(tt.args.t); got != tt.want {
-				t.Errorf("IsSolarTermDetailDay() = %v, want %v", got, tt.want)
-			}
-		})
+		if _, got := CheckSolarTermDay(tt.t); got != tt.want {
+			t.Errorf("IsSolarTermDetailDay() = %v, want %v", got, tt.want)
+		}
 	}
 }
 
 func Test_yearLiChunDay(t *testing.T) {
-	type args struct {
-		year int
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantDay int
-	}{
-		{
-			name: "",
-			args: args{
-				year: 1900,
-			},
-			wantDay: 4,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if gotDay := yearLiChunDay(tt.args.year); gotDay != tt.wantDay {
-				t.Errorf("yearLiChunDay() = %v, want %v", gotDay, tt.wantDay)
-			}
-		})
+	if gotDay := yearLiChunDay(1900); gotDay != 4 {
+		t.Errorf("yearLiChunDay() = %v, want 4", gotDay)
 	}
 }
 
@@ -346,12 +184,9 @@ func TestCheckSolarTermDay(t *testing.T) {
 }
 
 func TestSolarTermChineseV2(t *testing.T) {
-	got, err := SolarTermChinese(SolarTermLiChun)
-	if err != nil {
-		t.Fatal(err)
-	}
+	got := SolarTermLiChun.Chinese()
 	if got != "立春" {
-		t.Errorf("SolarTermChinese(LiChun) = %s, want 立春", got)
+		t.Errorf("SolarTermLiChun.Chinese() = %s, want 立春", got)
 	}
 }
 

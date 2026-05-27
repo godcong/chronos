@@ -1,6 +1,7 @@
 package chronos
 
 import (
+	"container/list"
 	"time"
 
 	"github.com/6tail/lunar-go/calendar"
@@ -67,14 +68,14 @@ func (l *lunar) PrevQi() *calendar.JieQi {
 }
 
 func (l *lunar) SolarTerm() SolarTerm {
-	jieQi := solarTerms.FindString(l.GetJieQi())
-	if jieQi == 0 {
+	st := solarTermFromChinese(l.GetJieQi())
+	if st == SolarTermMax {
 		return SolarTermMax
 	}
 	if !l.GetCurrentJieQi().IsJie() {
 		return SolarTermMax
 	}
-	return SolarTerm(jieQi / 2)
+	return st
 }
 
 func (l *lunar) SolarTermDetail() SolarTermDetail {
@@ -105,8 +106,60 @@ func (l *lunar) GetEightChar() EightChar {
 	return &eightChar{EightChar: l.Lunar.GetEightChar()}
 }
 
+func (l *lunar) GetFestivals() []string {
+	return listToStrings(l.Lunar.GetFestivals())
+}
+
+func (l *lunar) GetOtherFestivals() []string {
+	return listToStrings(l.Lunar.GetOtherFestivals())
+}
+
+func (l *lunar) GetDayYi() []string {
+	return listToStrings(l.Lunar.GetDayYi())
+}
+
+func (l *lunar) GetDayYiBySect(sect int) []string {
+	return listToStrings(l.Lunar.GetDayYiBySect(sect))
+}
+
+func (l *lunar) GetDayJi() []string {
+	return listToStrings(l.Lunar.GetDayJi())
+}
+
+func (l *lunar) GetDayJiBySect(sect int) []string {
+	return listToStrings(l.Lunar.GetDayJiBySect(sect))
+}
+
+func (l *lunar) GetDayJiShen() []string {
+	return listToStrings(l.Lunar.GetDayJiShen())
+}
+
+func (l *lunar) GetDayXiongSha() []string {
+	return listToStrings(l.Lunar.GetDayXiongSha())
+}
+
+func (l *lunar) GetTimeYi() []string {
+	return listToStrings(l.Lunar.GetTimeYi())
+}
+
+func (l *lunar) GetTimeJi() []string {
+	return listToStrings(l.Lunar.GetTimeJi())
+}
+
+// ParseLunarTime creates a Lunar from a time.Time value.
 func ParseLunarTime(t time.Time) Lunar {
 	return &lunar{Lunar: calendar.NewLunarFromDate(t)}
 }
 
 var _ Lunar = &lunar{}
+
+func listToStrings(l *list.List) []string {
+	if l == nil {
+		return nil
+	}
+	result := make([]string, 0, l.Len())
+	for e := l.Front(); e != nil; e = e.Next() {
+		result = append(result, e.Value.(string))
+	}
+	return result
+}

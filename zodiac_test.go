@@ -38,12 +38,9 @@ func TestYearZodiacNoFix(t *testing.T) {
 }
 
 func TestZodiacChinese(t *testing.T) {
-	got, err := ZodiacChinese(ZodiacRat)
-	if err != nil {
-		t.Fatal(err)
-	}
+	got := ZodiacRat.Chinese()
 	if got != "鼠" {
-		t.Errorf("ZodiacChinese(Rat) = %s, want 鼠", got)
+		t.Errorf("ZodiacRat.Chinese() = %s, want 鼠", got)
 	}
 }
 

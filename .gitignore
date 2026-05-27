@@ -143,8 +143,6 @@ go.work
 !README.md
 !LICENSE
 
-!data/
-
 !.github/
 !.github/workflows/
 !.github/workflows/*.yml
