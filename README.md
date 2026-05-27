@@ -16,7 +16,6 @@ chronos is a Go library for Chinese calendar calculations. It provides:
 - Chinese Zodiac (生肖) with LiChun boundary correction
 - Western Constellation (星座) lookup
 - Eight Characters (八字) analysis — Four Pillars, Five Elements, NaYin, Ten Gods, Hidden Stems, DaYun
-- Five Element (五行) favorability analysis for name selection — Balance method and Pattern (格局) method
 
 ### Installation
 
@@ -34,7 +33,6 @@ import (
     "time"
 
     "github.com/godcong/chronos/v2"
-    "github.com/godcong/chronos/v2/fate"
 )
 
 func main() {
@@ -50,20 +48,6 @@ func main() {
     fmt.Println("Four Pillars:", lunar.GetEightChar().FourPillars())
     fmt.Println("Five Elements:", lunar.GetEightChar().FiveElements())
     fmt.Println("NaYin:", lunar.GetEightChar().NaYin())
-
-    // Fate analysis for name selection
-    data, err := fate.GetFateData(fate.FateInput{
-        Calendar:     cal,
-        Gender:       1,
-        XiYongMethod: fate.XiYongMethodBalance,
-    })
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println("Xi (Favorable):", data.XiYongJiChou.Xi)
-    fmt.Println("Yong (Useful):", data.XiYongJiChou.Yong)
-    fmt.Println("Ji (Unfavorable):", data.XiYongJiChou.Ji)
-    fmt.Println("Chou (Hostile):", data.XiYongJiChou.Chou)
 }
 ```
 
@@ -100,12 +84,6 @@ chronos/v2/
 ├── zodiac.go            # 12 Chinese Zodiac animals
 ├── constellation.go     # 12 Western constellations
 ├── eightchar.go         # Eight Characters (八字) implementation
-├── fate/                # BaZi analysis and Five Element calculations
-│   ├── fate.go          # FateInput → FateData entry point
-│   ├── wuxing.go        # Five Element strength and favorability
-│   ├── xiyong_balance.go # Balance method (平衡用神法)
-│   ├── xiyong_geju.go   # Pattern method (格局用神法)
-│   └── types.go         # Shared types (BaziInfo, XiYongJiChou, GeJuInfo, etc.)
 └── utils/               # Internal utilities
 ```
 
@@ -137,34 +115,6 @@ fmt.Println(chronos.ZodiacDragon.Chinese())         // "龙"
 fmt.Println(chronos.ConstellationAries.Chinese())   // "白羊座"
 ```
 
-### Fate Analysis
-
-The `fate` sub-package provides BaZi analysis with two methods for determining Xi-Yong-Ji-Chou (喜用忌仇):
-
-**Balance Method (平衡用神法)** — analyzes Five Element strength and balances the Day Master:
-
-```go
-data, _ := fate.GetFateData(fate.FateInput{
-    Calendar:     cal,
-    Gender:       1,
-    XiYongMethod: fate.XiYongMethodBalance,
-})
-// data.XiYongJiChou → {Xi, Yong, Ji, Chou}
-// data.WuxingStrength → {WuxingFen: map[木/火/土/金/水]float64, Total}
-```
-
-**Pattern Method (格局用神法)** — identifies the GeJu (格局) from the month branch and derives Xi-Yong-Ji-Chou:
-
-```go
-data, _ := fate.GetFateData(fate.FateInput{
-    Calendar:     cal,
-    Gender:       1,
-    XiYongMethod: fate.XiYongMethodGeJu,
-})
-// data.GeJuInfo → {Type, Name, YongShen, XiShen, JiShen, ChouShen, Analysis}
-// Supported patterns: 正官格, 七杀格, 正财格, 偏财格, 正印格, 偏印格, 食神格, 伤官格
-```
-
 ### License
 
 MIT License
@@ -183,7 +133,6 @@ chronos 是一个 Go 语言的中国农历计算库，提供：
 - 带立春边界修正的生肖查询
 - 西方星座查询
 - 八字分析 — 四柱、五行、纳音、十神、藏干、大运
-- 五行喜用忌仇分析（支持平衡用神法和格局用神法）
 
 ### 安装
 
@@ -201,7 +150,6 @@ import (
     "time"
 
     "github.com/godcong/chronos/v2"
-    "github.com/godcong/chronos/v2/fate"
 )
 
 func main() {
@@ -217,20 +165,6 @@ func main() {
     fmt.Println("四柱:", lunar.GetEightChar().FourPillars())
     fmt.Println("五行:", lunar.GetEightChar().FiveElements())
     fmt.Println("纳音:", lunar.GetEightChar().NaYin())
-
-    // 命理分析（起名用）
-    data, err := fate.GetFateData(fate.FateInput{
-        Calendar:     cal,
-        Gender:       1,
-        XiYongMethod: fate.XiYongMethodBalance,
-    })
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println("喜神:", data.XiYongJiChou.Xi)
-    fmt.Println("用神:", data.XiYongJiChou.Yong)
-    fmt.Println("忌神:", data.XiYongJiChou.Ji)
-    fmt.Println("仇神:", data.XiYongJiChou.Chou)
 }
 ```
 
@@ -267,12 +201,6 @@ chronos/v2/
 ├── zodiac.go            # 12 生肖
 ├── constellation.go     # 12 西方星座
 ├── eightchar.go         # 八字实现
-├── fate/                # 八字分析与五行计算
-│   ├── fate.go          # FateInput → FateData 入口
-│   ├── wuxing.go        # 五行力量与喜忌
-│   ├── xiyong_balance.go # 平衡用神法
-│   ├── xiyong_geju.go   # 格局用神法
-│   └── types.go         # 共享类型（BaziInfo, XiYongJiChou, GeJuInfo 等）
 └── utils/               # 内部工具
 ```
 
@@ -302,34 +230,6 @@ fmt.Println(chronos.GanZhiJiaZi.Chinese())          // "甲子"
 fmt.Println(chronos.SolarTermLiChun.Chinese())      // "立春"
 fmt.Println(chronos.ZodiacDragon.Chinese())         // "龙"
 fmt.Println(chronos.ConstellationAries.Chinese())   // "白羊座"
-```
-
-### 命理分析
-
-`fate` 子包提供两种喜用忌仇分析方法：
-
-**平衡用神法** — 分析五行力量，平衡日主：
-
-```go
-data, _ := fate.GetFateData(fate.FateInput{
-    Calendar:     cal,
-    Gender:       1,
-    XiYongMethod: fate.XiYongMethodBalance,
-})
-// data.XiYongJiChou → {Xi, Yong, Ji, Chou}
-// data.WuxingStrength → {WuxingFen: map[木/火/土/金/水]float64, Total}
-```
-
-**格局用神法** — 从月支识别格局，推导喜用忌仇：
-
-```go
-data, _ := fate.GetFateData(fate.FateInput{
-    Calendar:     cal,
-    Gender:       1,
-    XiYongMethod: fate.XiYongMethodGeJu,
-})
-// data.GeJuInfo → {Type, Name, YongShen, XiShen, JiShen, ChouShen, Analysis}
-// 支持格局：正官格、七杀格、正财格、偏财格、正印格、偏印格、食神格、伤官格
 ```
 
 ### 许可证

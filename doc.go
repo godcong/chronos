@@ -13,12 +13,4 @@
 //	fmt.Println(cal.Lunar().Zodiac().Chinese())
 //	fmt.Println(cal.Lunar().EightChar().FourPillars())
 //
-// # Sub-packages
-//
-// The fate sub-package provides BaZi (八字) analysis and Five Element (五行)
-// calculations for name selection:
-//
-//	import "github.com/godcong/chronos/v2/fate"
-//
-//	data, err := fate.GetFateData(&fate.FateInput{BirthDate: time.Now()})
 package chronos
