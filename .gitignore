@@ -153,3 +153,8 @@ go.work
 # ...even if they are in subdirectories
 !*/
 
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
