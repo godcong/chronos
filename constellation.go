@@ -8,8 +8,6 @@ import (
 // (星座).
 type Constellation uint32
 
-const defaultConstellation = "星座"
-
 var constellationChinese = [...]string{"摩羯", "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹", "狮子", "处女", "天秤", "天蝎", "射手"}
 
 var constellationDays = [ConstellationMax]int{20, 19, 21, 20, 21, 22, 23, 23, 23, 24, 23, 22}

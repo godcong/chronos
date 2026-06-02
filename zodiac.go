@@ -7,8 +7,6 @@ import (
 // Zodiac represents one of the twelve Chinese Zodiac animals (生肖).
 type Zodiac uint32
 
-const defaultZodiac = "猫"
-
 var zodiacChinese = [...]string{"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"}
 
 func (x Zodiac) Chinese() string {
